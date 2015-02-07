@@ -4,6 +4,7 @@ import ned.IUnidirectionalChannel;
 import org.omnetpp.queueing.Allocate;
 import org.omnetpp.queueing.Deallocate;
 import org.omnetpp.queueing.Delay;
+import org.omnetpp.queueing.Dot;
 import org.omnetpp.queueing.Queue;
 import org.omnetpp.queueing.ResourceBasedQueue;
 import org.omnetpp.queueing.ResourcePool;
@@ -25,18 +26,22 @@ module DataCenter
     types:
     submodules:
         Pres: ResourcePool {
-            @display("p=182,269");
+            @display("p=242,277");
         }
         Pqueue: ResourceBasedQueue {
             @display("p=84,140");
             resourceModuleName = default("Pres");
         }
-        Prun: Queue {
-            @display("p=306,140");
+        Prun: Delay {
+            @display("p=489,140");
+        }
+        Tdrop: Sink {
+            @display("p=84,23");
         }
     connections:
         in --> Pqueue.in++;
         Pqueue.out --> Prun.in++;
+        Prun.out --> Pqueue.in++;
 }
 
 //
