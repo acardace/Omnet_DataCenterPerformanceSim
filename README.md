@@ -1,1 +1,0 @@
-Una cosa di omnet

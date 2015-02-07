@@ -2,8 +2,10 @@ package datacenter;
 
 import ned.IUnidirectionalChannel;
 import org.omnetpp.queueing.Allocate;
+import org.omnetpp.queueing.Classifier;
 import org.omnetpp.queueing.Deallocate;
 import org.omnetpp.queueing.Delay;
+import org.omnetpp.queueing.Dot;
 import org.omnetpp.queueing.Queue;
 import org.omnetpp.queueing.ResourceBasedQueue;
 import org.omnetpp.queueing.ResourcePool;
@@ -21,22 +23,31 @@ module DataCenter
     @display("bgb=626,341");
     gates:
         input in;
-        output out;
+        output out[];
     types:
     submodules:
         Pres: ResourcePool {
-            @display("p=182,269");
+            @display("p=242,277");
         }
-        Pqueue: ResourceBasedQueue {
-            @display("p=84,140");
-            resourceModuleName = default("Pres");
+        Prun: Delay {
+            @display("p=361,144");
         }
-        Prun: Queue {
-            @display("p=306,140");
+        classifier: Classifier {
+            @display("p=184,144");
+        }
+        allocate: Allocate {
+            @display("p=88,144");
+        }
+        deallocate: Deallocate {
+            @display("p=497,144");
         }
     connections:
-        in --> Pqueue.in++;
-        Pqueue.out --> Prun.in++;
+        classifier.out++ --> Prun.in++;
+        in --> allocate.in++;
+        allocate.out --> classifier.in++;
+        Prun.out --> deallocate.in++;
+        classifier.out++ --> out++;
+        deallocate.out --> out++;
 }
 
 //
