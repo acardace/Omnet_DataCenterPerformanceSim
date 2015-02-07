@@ -1,4 +1,4 @@
-package datacenter;
+package datacenter.src;
 
 import ned.IUnidirectionalChannel;
 import org.omnetpp.queueing.Allocate;
@@ -23,7 +23,7 @@ module DataCenter
     @display("bgb=626,341");
     gates:
         input in;
-        output out[];
+        output out;
     types:
     submodules:
         Pres: ResourcePool {
@@ -36,18 +36,21 @@ module DataCenter
             @display("p=184,144");
         }
         allocate: Allocate {
-            @display("p=88,144");
+            @display("p=53,144");
         }
         deallocate: Deallocate {
             @display("p=497,144");
+        }
+        Job_Completed: Sink {
+            @display("p=498,31");
         }
     connections:
         classifier.out++ --> Prun.in++;
         in --> allocate.in++;
         allocate.out --> classifier.in++;
         Prun.out --> deallocate.in++;
-        classifier.out++ --> out++;
-        deallocate.out --> out++;
+        deallocate.out --> Job_Completed.in++;
+        classifier.out++ --> out;
 }
 
 //
@@ -58,13 +61,13 @@ network Network
     @display("bgb=488,200");
     submodules:
         sink: Sink {
-            @display("p=383,103");
+            @display("p=380,84");
         }
         source: Source {
             @display("p=56,84");
         }
         dataCenter: DataCenter {
-            @display("p=231,94");
+            @display("p=232,84");
         }
     connections:
         source.out --> dataCenter.in;
