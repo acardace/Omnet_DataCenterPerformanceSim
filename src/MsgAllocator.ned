@@ -12,13 +12,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-import org.omnetpp.queueing.Allocate;
+
 package datacenter.src;
+import org.omnetpp.queueing.Allocate;
 
 //
-// TODO auto-generated module
+// TODO auto-generated type
 //
 simple MsgAllocator extends Allocate
 {
-    @class(MsgAllocator);
+	@class(queueing::MsgAllocator);
 }
