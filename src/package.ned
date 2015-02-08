@@ -34,11 +34,7 @@ module DataCenter
             @display("p=907,43");
         }
         router: Router {
-<<<<<<< HEAD
-            @display("p=326,144");
-=======
             @display("p=345,144");
->>>>>>> 482120f28fb0b62cb7b78fddd6ead901fdd7ee24
             gates:
                 out[phisicalMachines];
         }
