@@ -43,21 +43,21 @@ module DataCenter
             @display("p=498,31");
         }
         Pqueue_in: MsgAllocator {
-            @display("p=83,144");
+            @display("p=81,144");
         }
     connections:
         classifier.out++ --> Prun.in++;
         Prun.out --> Pqueue_out.in++;
         Pqueue_out.out --> Job_Completed.in++;
         classifier.out++ --> out;
-        in --> Pqueue_in.in++;
         Pqueue_in.out --> classifier.in++;
+        in --> Pqueue_in.in++;
 }
 
 //
 // TODO documentation
 //
-network Network
+network Cloud
 {
     @display("bgb=488,200");
     submodules:
