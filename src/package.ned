@@ -23,48 +23,52 @@ module DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=726,248");
+        @display("bgb=1177,305");
     gates:
         input in;
         output out;
     types:
     submodules:
         VMs: ResourcePool {
-            @display("p=53,61");
+            @display("p=484,35");
             amount = virtualMachines;
         }
         classifier: Classifier {
-            @display("p=184,144");
+            @display("p=232,144");
         }
-        allocate: Allocate {
-            @display("p=53,144");
-            resourceModuleName = "VMs";
-        }
-        deallocate: Deallocate {
-            @display("p=666,144");
+        Pqueue_out: Deallocate {
+            @display("p=888,144");
             resourceModuleName = "VMs";
         }
         Job_Completed: Sink {
-            @display("p=666,35");
+            @display("p=907,43");
         }
         router: Router {
+<<<<<<< HEAD
             @display("p=326,144");
+=======
+            @display("p=345,144");
+>>>>>>> 482120f28fb0b62cb7b78fddd6ead901fdd7ee24
             gates:
                 out[phisicalMachines];
         }
         machine[phisicalMachines]: Queue {
-            @display("p=491,144");
+            @display("p=585,144");
+        }
+        Pqueue_in: MsgAllocator {
+            @display("p=81,150");
+            resourceModuleName = "VMs";
         }
     connections:
-        in --> allocate.in++;
-        allocate.out --> classifier.in++;
-        deallocate.out --> Job_Completed.in++;
+        Pqueue_out.out --> Job_Completed.in++;
         classifier.out++ --> router.in++;
         classifier.out++ --> out;
         for i=0..phisicalMachines-1 {
             router.out[i] --> machine[i].in++;
-            machine[i].out --> deallocate.in++;
+            machine[i].out --> Pqueue_out.in++;
         }
+        in --> Pqueue_in.in++;
+        Pqueue_in.out --> classifier.in++;
 }
 
 //
