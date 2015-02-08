@@ -13,11 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "ResAllocator.h"
+#include <ResAllocator.h>
 
 Define_Module(ResAllocator);
 
-void ResAllocator::handleMessage(cMessage *msg)
-{
+void ResAllocator::handleMessage(cMessage *msg){
 
 }

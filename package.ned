@@ -42,13 +42,13 @@ module DataCenter
             @display("p=427,34");
             amount = virtualMachines;
         }
+        resAllocator: ResAllocator {
+            @display("p=82,134");
+            resourceModuleName = ".VMs";
+        }
         Pqueue_out: Deallocate {
             @display("p=948,240");
-            resourceModuleName = "VMs";
-        }
-        resAllocator: ResAllocator {
-            @display("p=61,130");
-            resourceModuleName = "VMs";
+            resourceModuleName = ".VMs";
         }
     connections:
         classifier.out++ --> router.in++;

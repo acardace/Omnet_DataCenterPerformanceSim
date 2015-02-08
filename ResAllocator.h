@@ -13,17 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __SDS_PROJECT_RESALLOCATOR_H_
-#define __SDS_PROJECT_RESALLOCATOR_H_
+#ifndef RESALLOCATOR_H_
+#define RESALLOCATOR_H_
 
-#include <omnetpp.h>
 #include <Allocate.h>
 
-
-class ResAllocator : public queueing::Allocate
-{
-  protected:
-    virtual void handleMessage(cMessage *msg);
+class ResAllocator: public queueing::Allocate {
+    protected:
+        virtual void handleMessage(cMessage *msg);
 };
 
-#endif
+#endif /* RESALLOCATOR_H_ */
