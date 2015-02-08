@@ -19,6 +19,8 @@
 #include <omnetpp.h>
 #include <Allocate.h>
 
+#define ACCEPTED 0
+#define REJECTED 1
 
 class MsgAllocator : public queueing::Allocate
 {

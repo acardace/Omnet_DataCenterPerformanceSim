@@ -15,9 +15,6 @@
 
 #include "MsgAllocator.h"
 
-#define ACCEPTED 0
-#define REJECTED 1
-
 void MsgAllocator::handleMessage(cMessage *msg)
 {
     Job *job = check_and_cast<Job *>(msg);
