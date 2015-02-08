@@ -18,6 +18,7 @@ package datacenter.src;
 //
 // TODO auto-generated module
 //
-simple Newmodule extends Allocate
+simple MsgAllocator extends Allocate
 {
+    @class(MsgAllocator);
 }

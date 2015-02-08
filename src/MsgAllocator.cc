@@ -13,20 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __DATACENTER_NEWMODULE_H_
-#define __DATACENTER_NEWMODULE_H_
+#include "MsgAllocator.h"
 
-#include <omnetpp.h>
-#include <Allocate.h>
+Define_Module(MsgAllocator);
 
-/**
- * TODO - Generated class
- */
-class Newmodule : public queueing::Allocate
+void MsgAllocator::handleMessage(cMessage *msg)
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-};
 
-#endif
+}
