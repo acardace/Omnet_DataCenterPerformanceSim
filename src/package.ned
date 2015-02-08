@@ -49,7 +49,6 @@ module DataCenter
         }
         router: Router {
             @display("p=326,144");
-            probabilities = "0.2 0.2 0.2 0.2 0.2";
             gates:
                 out[phisicalMachines];
         }
