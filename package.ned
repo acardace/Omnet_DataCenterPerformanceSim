@@ -42,23 +42,22 @@ module DataCenter
         machine[phisicalMachines]: Queue {
             @display("p=585,144");
         }
-        Pqueue_out: Deallocate {
-            @display("p=888,144");
-            resourceModuleName = "VMs";
+        resAllocator: ResAllocator {
+            @display("p=90,144");
         }
-        Pqueue_in: Allocate {
-            @display("p=77,134");
+        deallocate: Deallocate {
+            @display("p=868,144");
         }
     connections:
-        Pqueue_out.out --> Job_Completed.in++;
         classifier.out++ --> router.in++;
         for i=0..phisicalMachines-1 {
             router.out[i] --> machine[i].in++;
-            machine[i].out --> Pqueue_out.in++;
         }
         classifier.rest --> out;
-        Pqueue_in.out --> classifier.in++;
-        in --> Pqueue_in.in++;
+        resAllocator.out --> classifier.in++;
+        in --> resAllocator.in++;
+        machine[0].out --> deallocate.in++;
+        deallocate.out --> Job_Completed.in++;
 }
 //
 // TODO documentation
