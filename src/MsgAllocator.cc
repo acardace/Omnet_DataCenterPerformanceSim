@@ -15,9 +15,19 @@
 
 #include "MsgAllocator.h"
 
-Define_Module(MsgAllocator);
+#define ACCEPTED 0
+#define REJECTED 1
 
 void MsgAllocator::handleMessage(cMessage *msg)
 {
-
+    Job *job = check_and_cast<Job *>(msg);
+    if (queue.isEmpty() && allocateResource(job)){
+        job->setKind(ACCEPTED);
+        send(job, "out");
+    }else{
+        job->setKind(REJECTED);
+        send(job, "out");
+    }
 }
+
+Define_Module(MsgAllocator);
