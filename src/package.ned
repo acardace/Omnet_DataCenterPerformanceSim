@@ -52,7 +52,8 @@ module DataCenter
             @display("p=585,144");
         }
         Pqueue_in: MsgAllocator {
-            @display("p=81,144");
+            @display("p=81,150");
+            resourceModuleName = "VMs";
         }
     connections:
         Pqueue_out.out --> Job_Completed.in++;
