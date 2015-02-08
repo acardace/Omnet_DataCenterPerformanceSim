@@ -38,15 +38,20 @@ module DataCenter
         }
         allocate: Allocate {
             @display("p=53,144");
+            resourceModuleName = "VMs";
         }
         deallocate: Deallocate {
             @display("p=666,144");
+            resourceModuleName = "VMs";
         }
         Job_Completed: Sink {
             @display("p=666,35");
         }
         router: Router {
             @display("p=326,144");
+            probabilities = "0.2 0.2 0.2 0.2 0.2";
+            gates:
+                out[phisicalMachines];
         }
         machine[phisicalMachines]: Queue {
             @display("p=491,144");
@@ -55,9 +60,9 @@ module DataCenter
         in --> allocate.in++;
         allocate.out --> classifier.in++;
         deallocate.out --> Job_Completed.in++;
-        classifier.out++ --> out;
         classifier.out++ --> router.in++;
-        for i=0..5 {
+        classifier.out++ --> out;
+        for i=0..phisicalMachines-1 {
             router.out[i] --> machine[i].in++;
             machine[i].out --> deallocate.in++;
         }
@@ -75,6 +80,7 @@ network Network
         }
         source: Source {
             @display("p=56,84");
+            interArrivalTime = exponential(3s);
         }
         dataCenter: DataCenter {
             @display("p=232,84");
