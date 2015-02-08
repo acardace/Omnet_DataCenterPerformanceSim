@@ -1,5 +1,6 @@
 package datacenter.src;
 
+import datacenter.modules.MsgAllocator;
 import ned.IUnidirectionalChannel;
 import org.omnetpp.queueing.Allocate;
 import org.omnetpp.queueing.Classifier;
@@ -33,30 +34,30 @@ module DataCenter
             @display("p=361,144");
         }
         classifier: Classifier {
-            @display("p=184,144");
+            @display("p=225,144");
         }
-        allocate: Allocate {
-            @display("p=53,144");
-        }
-        deallocate: Deallocate {
+        Pqueue_out: Deallocate {
             @display("p=497,144");
         }
         Job_Completed: Sink {
             @display("p=498,31");
         }
+        Pqueue_in: MsgAllocator {
+            @display("p=81,144");
+        }
     connections:
         classifier.out++ --> Prun.in++;
-        in --> allocate.in++;
-        allocate.out --> classifier.in++;
-        Prun.out --> deallocate.in++;
-        deallocate.out --> Job_Completed.in++;
+        Prun.out --> Pqueue_out.in++;
+        Pqueue_out.out --> Job_Completed.in++;
         classifier.out++ --> out;
+        Pqueue_in.out --> classifier.in++;
+        in --> Pqueue_in.in++;
 }
 
 //
 // TODO documentation
 //
-network Network
+network Cloud
 {
     @display("bgb=488,200");
     submodules:
