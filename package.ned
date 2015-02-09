@@ -19,38 +19,38 @@ network DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=1278,322");
+        @display("bgb=689,236");
     gates:
         //input in;
         //output out;
     submodules:
         classifier: Classifier {
-            @display("p=232,144");
+            @display("p=217,162");
         }
         Job_Completed: Sink {
-            @display("p=955,49");
+            @display("p=610,43");
         }
         router: Router {
-            @display("p=373,201");
+            @display("p=345,162");
             gates:
                 out[phisicalMachines];
         }
         machine[phisicalMachines]: Queue {
-            @display("p=648,240");
+            @display("p=476,162");
         }
         resAllocator: ResAllocator {
             @display("p=99,162");
             resourceModuleName = ".VMs";
         }
         Pqueue_out: Deallocate {
-            @display("p=948,240");
+            @display("p=610,162");
             resourceModuleName = ".VMs";
         }
         source: Source {
-            @display("p=60,43");
+            @display("p=99,43");
         }
         VMs: VMPool {
-            @display("p=412,32");
+            @display("p=345,43");
             amount = virtualMachines;
         }
     connections:
