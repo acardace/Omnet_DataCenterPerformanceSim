@@ -55,14 +55,12 @@ network DataCenter
         source: Source {
             @display("p=60,43");
         }
-<<<<<<< HEAD
         sink: Sink {
             @display("p=191,51");
-=======
+        }
         VMs: VMPool {
             @display("p=412,32");
             amount = virtualMachines;
->>>>>>> 44d9c7dff75467a90e45a09adb42447c3bac7cfc
         }
     connections:
         classifier.out++ --> router.in++;
