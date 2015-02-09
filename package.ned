@@ -22,7 +22,7 @@ network DataCenter
         @display("bgb=1278,322");
     gates:
         //input in;
-        output out;
+        //output out;
     submodules:
         classifier: Classifier {
             @display("p=232,144");
@@ -38,12 +38,8 @@ network DataCenter
         machine[phisicalMachines]: Queue {
             @display("p=648,240");
         }
-        VMs: ResourcePool {
-            @display("p=427,34");
-            amount = virtualMachines;
-        }
         resAllocator: ResAllocator {
-            @display("p=82,134");
+            @display("p=99,162");
             resourceModuleName = ".VMs";
         }
         Pqueue_out: Deallocate {
@@ -53,16 +49,20 @@ network DataCenter
         source: Source {
             @display("p=60,43");
         }
+        VMs: VMPool {
+            @display("p=412,32");
+            amount = virtualMachines;
+        }
     connections:
         classifier.out++ --> router.in++;
         for i=0..phisicalMachines-1 {
             router.out[i] --> machine[i].in++;
             machine[i].out --> Pqueue_out.in++;
         }
-        classifier.rest --> out;
         Pqueue_out.out --> Job_Completed.in++;
         resAllocator.out --> classifier.in++;
         source.out --> resAllocator.in++;
+        classifier.rest --> Job_Completed.in++;
 }
 //
 // TODO documentation
@@ -83,5 +83,5 @@ network Network
         }
     connections:
         //source.out --> dataCenter.in;
-        dataCenter.out --> sink.in++;
+        //dataCenter.out --> sink.in++;
 }

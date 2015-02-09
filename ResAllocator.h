@@ -23,9 +23,6 @@
 
 class ResAllocator: public queueing::Allocate {
     private:
-        // parameters
-        int capacity;
-        bool fifo;
         queueing::IResourcePool *resourcePool;
         int resourceAmount;
         int resourcePriority;
