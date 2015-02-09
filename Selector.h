@@ -21,15 +21,19 @@
 /**
  * TODO - Generated class
  */
+
+namespace sds_project {
+
 class Selector : public cSimpleModule
 {
 private:
     int neighbourSize;
-    int *neighbour;
+    cModule **neighbour;
     int rrCounter;
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 };
 
+}; //namespace
 #endif

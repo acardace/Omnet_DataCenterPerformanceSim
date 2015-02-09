@@ -14,22 +14,25 @@
 // 
 
 #include "Selector.h"
+#include "ResourcePool.h"
+
+namespace sds_project {
 
 Define_Module(Selector);
 
 void Selector::initialize()
 {
     neighbourSize = getParentModule()->gateSize("out");
-    neighbour = new int [neighbourSize];
+    neighbour = new cModule* [neighbourSize];
     for (int i=0; i<neighbourSize; i++) {
-        neighbour[i] = getParentModule->gate("out", i)->getNextGate()->getOwnerModule();
+        cGate *gate = getParentModule()->gate("out", i);
+        neighbour[i] = gate->getNextGate()->getOwnerModule();
     }
     rrCounter = 0;
 }
 
 void Selector::handleMessage(cMessage *msg)
 {
-    bool freeDatacenter = false;
     for (int i=0; i<neighbourSize; i++) {
         int j = (rrCounter + i) % neighbourSize;
         queueing::IResourcePool *pool = check_and_cast<queueing::IResourcePool*>(neighbour[j]->getSubModule("VMs"));
@@ -40,3 +43,5 @@ void Selector::handleMessage(cMessage *msg)
     }
     rrCounter = (rrCounter+1)%neighbourSize;
 }
+
+}; //namespace
