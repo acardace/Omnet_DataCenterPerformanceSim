@@ -30,9 +30,6 @@ void ResAllocator::initialize()
     queueLengthSignal = registerSignal("queueLength");
     emit(queueLengthSignal, 0l);
 
-    fifo = par("fifo");
-    capacity = par("capacity");
-
     resourceAmount = par("resourceAmount");
     resourcePriority = par("resourcePriority");
 

@@ -55,8 +55,14 @@ network DataCenter
         source: Source {
             @display("p=60,43");
         }
+<<<<<<< HEAD
         sink: Sink {
             @display("p=191,51");
+=======
+        VMs: VMPool {
+            @display("p=412,32");
+            amount = virtualMachines;
+>>>>>>> 44d9c7dff75467a90e45a09adb42447c3bac7cfc
         }
     connections:
         classifier.out++ --> router.in++;
@@ -67,5 +73,30 @@ network DataCenter
         Pqueue_out.out --> Job_Completed.in++;
         resAllocator.out --> classifier.in++;
         source.out --> resAllocator.in++;
+<<<<<<< HEAD
         classifier.rest --> sink.in++;
+=======
+        classifier.rest --> Job_Completed.in++;
+}
+//
+// TODO documentation
+//
+network Network
+{
+    @display("bgb=488,200");
+    submodules:
+        sink: Sink {
+            @display("p=380,84");
+        }
+        source: Source {
+            @display("p=56,84");
+            interArrivalTime = exponential(3s);
+        }
+        dataCenter: DataCenter {
+            @display("p=232,84");
+        }
+    connections:
+        //source.out --> dataCenter.in;
+        //dataCenter.out --> sink.in++;
+>>>>>>> 44d9c7dff75467a90e45a09adb42447c3bac7cfc
 }
