@@ -19,36 +19,38 @@ network DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=1278,322");
+        @display("bgb=708,232");
     gates:
         //input in;
         output out;
     submodules:
         classifier: Classifier {
-            @display("p=232,144");
+            @display("p=192,144");
         }
         Job_Completed: Sink {
-            @display("p=955,49");
+            @display("p=635,43");
         }
         router: Router {
-            @display("p=345,144");
+            @display("p=317,144");
             gates:
                 out[phisicalMachines];
         }
         machine[phisicalMachines]: Queue {
-            @display("p=648,240");
+            @display("p=466,144");
         }
         VMs: ResourcePool {
-            @display("p=427,34");
+            @display("p=368,43");
             amount = virtualMachines;
         }
         resAllocator: ResAllocator {
-            @display("p=82,134");
+            @display("p=60,144");
             resourceModuleName = ".VMs";
+            resourceAmount = virtualMachines;
         }
         Pqueue_out: Deallocate {
-            @display("p=948,240");
+            @display("p=635,144");
             resourceModuleName = ".VMs";
+            resourceAmount = virtualMachines;
         }
         source: Source {
             @display("p=60,43");
@@ -63,25 +65,4 @@ network DataCenter
         Pqueue_out.out --> Job_Completed.in++;
         resAllocator.out --> classifier.in++;
         source.out --> resAllocator.in++;
-}
-//
-// TODO documentation
-//
-network Network
-{
-    @display("bgb=488,200");
-    submodules:
-        sink: Sink {
-            @display("p=380,84");
-        }
-        source: Source {
-            @display("p=56,84");
-            interArrivalTime = exponential(3s);
-        }
-        dataCenter: DataCenter {
-            @display("p=232,84");
-        }
-    connections:
-        //source.out --> dataCenter.in;
-        dataCenter.out --> sink.in++;
 }
