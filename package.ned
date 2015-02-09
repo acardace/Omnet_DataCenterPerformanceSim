@@ -14,14 +14,14 @@ import org.omnetpp.queueing.Source;
 //
 // TODO documentation
 //
-module DataCenter
+network DataCenter
 {
     parameters:
         int phisicalMachines;
         int virtualMachines;
         @display("bgb=1278,322");
     gates:
-        input in;
+        //input in;
         output out;
     submodules:
         classifier: Classifier {
@@ -50,6 +50,9 @@ module DataCenter
             @display("p=948,240");
             resourceModuleName = ".VMs";
         }
+        source: Source {
+            @display("p=60,43");
+        }
     connections:
         classifier.out++ --> router.in++;
         for i=0..phisicalMachines-1 {
@@ -59,7 +62,7 @@ module DataCenter
         classifier.rest --> out;
         Pqueue_out.out --> Job_Completed.in++;
         resAllocator.out --> classifier.in++;
-        in --> resAllocator.in++;
+        source.out --> resAllocator.in++;
 }
 //
 // TODO documentation
@@ -79,6 +82,6 @@ network Network
             @display("p=232,84");
         }
     connections:
-        source.out --> dataCenter.in;
+        //source.out --> dataCenter.in;
         dataCenter.out --> sink.in++;
 }

@@ -13,10 +13,51 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+#include <omnetpp.h>
 #include <ResAllocator.h>
+#include <Job.h>
 
-Define_Module(ResAllocator);
+Define_Module(ResAllocator)
 
-void ResAllocator::handleMessage(cMessage *msg){
+ResAllocator::ResAllocator(){};
+
+ResAllocator::~ResAllocator(){};
+
+void ResAllocator::initialize()
+{
+    droppedSignal = registerSignal("dropped");
+    queueingTimeSignal = registerSignal("queueingTime");
+    queueLengthSignal = registerSignal("queueLength");
+    emit(queueLengthSignal, 0l);
+
+    fifo = par("fifo");
+    capacity = par("capacity");
+
+    resourceAmount = par("resourceAmount");
+    resourcePriority = par("resourcePriority");
+
+    const char *resourceName = par("resourceModuleName");
+    cModule *mod = getParentModule()->getModuleByPath(resourceName);
+    if (!mod)
+        throw cRuntimeError("Cannot find resource pool module `%s'", resourceName);
+    resourcePool = check_and_cast<queueing::IResourcePool*>(mod);
 
 }
+
+bool ResAllocator::allocateResource(queueing::Job *job){
+    return resourcePool->tryToAllocate(this, resourceAmount, resourcePriority + job->getPriority());
+}
+
+void ResAllocator::handleMessage(cMessage *msg){
+    queueing::Job *job = check_and_cast<queueing::Job *>(msg);
+    if (allocateResource(job)){
+        job->setKind(ACCEPTED);
+        send(job, "out");
+    }else{
+        job->setKind(REJECTED);
+        send(job, "out");
+    }
+};
+
+
+

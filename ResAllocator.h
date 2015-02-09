@@ -18,9 +18,29 @@
 
 #include <Allocate.h>
 
+#define ACCEPTED 0
+#define REJECTED 1
+
 class ResAllocator: public queueing::Allocate {
+    private:
+        // parameters
+        int capacity;
+        bool fifo;
+        queueing::IResourcePool *resourcePool;
+        int resourceAmount;
+        int resourcePriority;
+
+        // statistics
+        simsignal_t droppedSignal;
+        simsignal_t queueLengthSignal;
+        simsignal_t queueingTimeSignal;
+    public:
+        ResAllocator();
+        virtual ~ResAllocator();
     protected:
+        virtual void initialize();
         virtual void handleMessage(cMessage *msg);
+        virtual bool allocateResource(queueing::Job *job);
 };
 
 #endif /* RESALLOCATOR_H_ */
