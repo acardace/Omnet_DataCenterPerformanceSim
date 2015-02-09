@@ -19,7 +19,7 @@
 #include <Allocate.h>
 
 #define ACCEPTED 0
-#define REJECTED 1
+#define REJECTED 1 //this goes out to .rest because there's no gate[1]
 
 class ResAllocator: public queueing::Allocate {
     private:
