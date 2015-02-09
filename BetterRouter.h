@@ -47,6 +47,6 @@ class BetterRouter : public cSimpleModule
         virtual void handleMessage(cMessage *msg);
 };
 
-};//namespace
+}; //namespace
 
 #endif

@@ -30,8 +30,9 @@ network DataCenter
         Job_Completed: Sink {
             @display("p=610,43");
         }
-        router: Router {
+        router: BetterRouter {
             @display("p=345,162");
+            routingAlgorithm = default("minQueueLength");
             gates:
                 out[phisicalMachines];
         }

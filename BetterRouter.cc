@@ -58,7 +58,6 @@ void BetterRouter::handleMessage(cMessage *msg)
         case ALG_MIN_QUEUE_LENGTH:
             int min;
             min = std::numeric_limits<int>::max();
-            outGateIndex = -1;
             for (int i=0; i < gateSize("out"); i++) {
                 cGate *otherGate = gate("out", i)->getNextGate();
                 queueing::Queue *queue = check_and_cast<queueing::Queue *>(otherGate->getOwnerModule());
