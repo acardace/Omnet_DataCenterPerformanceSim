@@ -55,7 +55,7 @@ network DataCenter
         source: Source {
             @display("p=60,43");
         }
-        sink: Sink {
+        refused: Sink {
             @display("p=191,51");
         }
         VMs: VMPool {
@@ -71,10 +71,7 @@ network DataCenter
         Pqueue_out.out --> Job_Completed.in++;
         resAllocator.out --> classifier.in++;
         source.out --> resAllocator.in++;
-<<<<<<< HEAD
-        classifier.rest --> sink.in++;
-=======
-        classifier.rest --> Job_Completed.in++;
+        classifier.rest --> refused.in++;
 }
 //
 // TODO documentation
@@ -96,5 +93,4 @@ network Network
     connections:
         //source.out --> dataCenter.in;
         //dataCenter.out --> sink.in++;
->>>>>>> 44d9c7dff75467a90e45a09adb42447c3bac7cfc
 }
