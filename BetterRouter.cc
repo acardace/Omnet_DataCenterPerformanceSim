@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "Queue.h"
+#include "PMachine.h"
 #include "BetterRouter.h"
 #include <limits>
 
@@ -60,10 +60,10 @@ void BetterRouter::handleMessage(cMessage *msg)
             min = std::numeric_limits<int>::max();
             for (int i=0; i < gateSize("out"); i++) {
                 cGate *otherGate = gate("out", i)->getNextGate();
-                queueing::Queue *queue = check_and_cast<queueing::Queue *>(otherGate->getOwnerModule());
+                PMachine *pm = check_and_cast<PMachine *>(otherGate->getOwnerModule());
                 ev << "Considering output " << i << endl;
-                if (queue->length() < min) {
-                    min = queue->length();
+                if (pm->length() < min) {
+                    min = pm->length();
                     outGateIndex = i;
                     ev << "Assigning index " << i << endl;
                 }

@@ -71,7 +71,7 @@ network DataCenter
             gates:
                 out[phisicalMachines];
         }
-        machine[phisicalMachines]: Queue {
+        machine[phisicalMachines]: PMachine {
             @display("p=667,162");
         }
         resAllocator: ResAllocator {
