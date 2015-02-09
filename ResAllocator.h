@@ -18,6 +18,8 @@
 
 #include <Allocate.h>
 
+namespace sds_project {
+
 /*
  * This is a variant of the Allocate module: when the resource pool is empty tokens are not queued;
  * instead they are marked as rejected and forwarded.
@@ -44,5 +46,7 @@ class ResAllocator: public queueing::Allocate {
         virtual void handleMessage(cMessage *msg);
         virtual bool allocateResource(queueing::Job *job);
 };
+
+};//namespace
 
 #endif /* RESALLOCATOR_H_ */

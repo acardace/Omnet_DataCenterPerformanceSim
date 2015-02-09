@@ -19,5 +19,5 @@ import org.omnetpp.queueing.Allocate;
 
 simple ResAllocator extends Allocate
 {
-    @class(ResAllocator);
+    @class(sds_project::ResAllocator);
 }

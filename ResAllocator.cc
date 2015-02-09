@@ -17,6 +17,8 @@
 #include <ResAllocator.h>
 #include <Job.h>
 
+namespace sds_project {
+
 Define_Module(ResAllocator)
 
 ResAllocator::ResAllocator(){};
@@ -56,5 +58,5 @@ void ResAllocator::handleMessage(cMessage *msg){
     }
 };
 
-
+}; //namespace
 

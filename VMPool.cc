@@ -15,6 +15,8 @@
 
 #include "VMPool.h"
 
+namespace sds_project {
+
 Define_Module(VMPool);
 
 VMPool::VMPool(){};
@@ -56,3 +58,5 @@ void VMPool::release(long amountToRelease){
     if (ev.isGUI())
         updateDisplayString();
 }
+
+}; //namespace

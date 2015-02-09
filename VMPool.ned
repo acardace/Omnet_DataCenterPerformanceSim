@@ -19,6 +19,7 @@ package sds_project;
 simple VMPool
 {
     parameters:
+        @class(sds_project::VMPool);
         @signal[amount](type="long");
         @statistic[amount](title="available resource";record=vector?,timeavg,min;interpolationmode=sample-hold);
         @display("i=block/buffer;t=,r,black");

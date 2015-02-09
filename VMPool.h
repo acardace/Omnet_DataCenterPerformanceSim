@@ -19,6 +19,7 @@
 #include <omnetpp.h>
 #include <ResourcePool.h>
 
+namespace sds_project {
 
 class VMPool : public queueing::ResourcePool
 {
@@ -37,5 +38,7 @@ class VMPool : public queueing::ResourcePool
     virtual bool tryToAllocate(queueing::IResourceAllocator *allocator, long amountToAllocate, int priority);
     virtual void release(long amountToRelease);
 };
+
+}; //namespace
 
 #endif

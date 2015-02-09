@@ -21,5 +21,5 @@ package sds_project;
 //
 simple BetterRouter extends Router
 {
-    @class(BetterRouter);
+    @class(sds_project::BetterRouter);
 }
