@@ -22,7 +22,7 @@ network DataCenter
         @display("bgb=708,232");
     gates:
         //input in;
-        output out;
+        //output out;
     submodules:
         classifier: Classifier {
             @display("p=192,144");
@@ -55,14 +55,17 @@ network DataCenter
         source: Source {
             @display("p=60,43");
         }
+        sink: Sink {
+            @display("p=191,51");
+        }
     connections:
         classifier.out++ --> router.in++;
         for i=0..phisicalMachines-1 {
             router.out[i] --> machine[i].in++;
             machine[i].out --> Pqueue_out.in++;
         }
-        classifier.rest --> out;
         Pqueue_out.out --> Job_Completed.in++;
         resAllocator.out --> classifier.in++;
         source.out --> resAllocator.in++;
+        classifier.rest --> sink.in++;
 }

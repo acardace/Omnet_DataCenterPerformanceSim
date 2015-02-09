@@ -18,6 +18,11 @@
 
 #include <Allocate.h>
 
+/*
+ * This is a variant of the Allocate module: when the resource pool is empty tokens are not queued;
+ * instead they are marked as rejected and forwarded.
+ */
+
 #define ACCEPTED 0
 #define REJECTED 1 //this goes out to .rest because there's no gate[1]
 
