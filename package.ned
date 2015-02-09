@@ -35,7 +35,7 @@ module UploadQueue
             @display("p=220,64");
         }
         discarded: Sink {
-            @display("p=381,64");
+            @display("p=442,64");
         }
     connections:
         in --> selector.in;
@@ -54,32 +54,32 @@ network DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=689,236");
+        @display("bgb=1214,246");
     gates:
         //input in;
         //output out;
     submodules:
         classifier: Classifier {
-            @display("p=217,162");
+            @display("p=238,162");
         }
         Job_Completed: Sink {
-            @display("p=610,43");
+            @display("p=853,34");
         }
         router: BetterRouter {
-            @display("p=345,162");
+            @display("p=384,162");
             routingAlgorithm = default("minQueueLength");
             gates:
                 out[phisicalMachines];
         }
         machine[phisicalMachines]: Queue {
-            @display("p=476,162");
+            @display("p=667,162");
         }
         resAllocator: ResAllocator {
             @display("p=99,162");
             resourceModuleName = ".VMs";
         }
         Pqueue_out: Deallocate {
-            @display("p=610,162");
+            @display("p=1042,162");
             resourceModuleName = ".VMs";
         }
         source: Source {
