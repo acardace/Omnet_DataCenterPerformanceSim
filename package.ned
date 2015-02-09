@@ -19,45 +19,35 @@ network DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=708,232");
+        @display("bgb=1278,322");
     gates:
         //input in;
         //output out;
     submodules:
         classifier: Classifier {
-            @display("p=192,144");
+            @display("p=232,144");
         }
         Job_Completed: Sink {
-            @display("p=635,43");
+            @display("p=955,49");
         }
-        router: BetterRouter {
-            @display("p=317,144");
-            routingAlgorithm = default("minQueueLength");
+        router: Router {
+            @display("p=373,201");
             gates:
                 out[phisicalMachines];
         }
         machine[phisicalMachines]: Queue {
-            @display("p=466,144");
-        }
-        VMs: ResourcePool {
-            @display("p=368,43");
-            amount = virtualMachines;
+            @display("p=648,240");
         }
         resAllocator: ResAllocator {
-            @display("p=60,144");
+            @display("p=99,162");
             resourceModuleName = ".VMs";
-            resourceAmount = virtualMachines;
         }
         Pqueue_out: Deallocate {
-            @display("p=635,144");
+            @display("p=948,240");
             resourceModuleName = ".VMs";
-            resourceAmount = virtualMachines;
         }
         source: Source {
             @display("p=60,43");
-        }
-        refused: Sink {
-            @display("p=191,51");
         }
         VMs: VMPool {
             @display("p=412,32");
@@ -72,7 +62,7 @@ network DataCenter
         Pqueue_out.out --> Job_Completed.in++;
         resAllocator.out --> classifier.in++;
         source.out --> resAllocator.in++;
-        classifier.rest --> refused.in++;
+        classifier.rest --> Job_Completed.in++;
 }
 //
 // TODO documentation
