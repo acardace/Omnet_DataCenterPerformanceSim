@@ -15,12 +15,26 @@
 
 #include <VirtualMachineImage.h>
 
-VirtualMachineImage::VirtualMachineImage() {
-    cPacket
+namespace sds_project {
 
+VirtualMachineImage::VirtualMachineImage() {
+    // TODO Auto-generated constructor stub
+}
+
+VirtualMachineImage::VirtualMachineImage(const char *name, short kind, int64 bitLength)
+:cPacket(name, kind, bitLength) {
 }
 
 VirtualMachineImage::~VirtualMachineImage() {
     // TODO Auto-generated destructor stub
 }
 
+queueing::Job *VirtualMachineImage::getJob() {
+    return job;
+}
+
+void VirtualMachineImage::setJob(queueing::Job *inJob) {
+    job = inJob;
+}
+
+}; //namespace

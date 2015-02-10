@@ -35,7 +35,7 @@ module UploadQueue
         uploadQueueSize: VMPool {
             @display("p=220,64");
         }
-        discarded: Sink {
+        discarded: PacketSink {
             @display("p=381,64");
         }
     connections:

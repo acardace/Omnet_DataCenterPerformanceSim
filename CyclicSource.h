@@ -17,6 +17,7 @@
 #define __SDS_PROJECT_CYCLICSOURCE_H_
 
 #include <omnetpp.h>
+#include "VirtualMachineImage.h"
 
 /**
  * TODO - Generated class
@@ -27,12 +28,13 @@ namespace sds_project {
 class SourceBase : public cSimpleModule
 {
     protected:
-        int VMCounter;
-        std::string VMName;
+        int jobCounter;
+        std::string jobName;
         simsignal_t createdSignal;
     protected:
         virtual void initialize();
         virtual void finish();
+        queueing::Job *createJob();
 };
 
 
@@ -44,12 +46,12 @@ class CyclicSource : public SourceBase
     private:
         simtime_t startTime;
         simtime_t stopTime;
-        int numVMs;
+        int numJobs;
 
     protected:
         virtual void initialize();
         virtual void handleMessage(cMessage *msg);
-        virtual cPacket *createPacket();
+        virtual VirtualMachineImage *createImage();
 };
 
 }; //namespace

@@ -13,27 +13,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef VIRTUALMACHINEIMAGE_H_
-#define VIRTUALMACHINEIMAGE_H_
+#ifndef __SDS_PROJECT_PACKETSINK_H_
+#define __SDS_PROJECT_PACKETSINK_H_
 
-#include <cmessage.h>
-#include <Job.h>
+#include "QueueingDefs.h"
 
 namespace sds_project {
 
-class VirtualMachineImage: public cPacket {
-protected:
-    queueing::Job *job;
-protected:
-    void createJob();
-public:
-    VirtualMachineImage();
-    VirtualMachineImage(const char *name=NULL, short kind=0, int64 bitLength=0);
-    virtual ~VirtualMachineImage();
-    queueing::Job *getJob();
-    void setJob(queueing::Job *job);
+/**
+ * Consumes jobs; see NED file for more info.
+ */
+class QUEUEING_API Sink : public cSimpleModule
+{
+  private:
+    simsignal_t lifeTimeSignal;
+    simsignal_t totalQueueingTimeSignal;
+    simsignal_t queuesVisitedSignal;
+    simsignal_t totalServiceTimeSignal;
+    simsignal_t totalDelayTimeSignal;
+    simsignal_t delaysVisitedSignal;
+    simsignal_t generationSignal;
+    bool keepJobs;
+
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+    virtual void finish();
 };
 
 }; //namespace
 
-#endif /* VIRTUALMACHINEIMAGE_H_ */
+#endif
+

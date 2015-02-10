@@ -23,17 +23,17 @@ simple CyclicSource
 {
     parameters:
         @signal[created](type="long");
-        @statistic[created](title="the number of VMs created";record=last;interpolationmode=none);
+        @statistic[created](title="the number of jobs created";record=last;interpolationmode=none);
         @display("i=block/source");
         @class(sds_project::CyclicSource);
-        int numVMs = default(-1);               // number of VMs to be generated (-1 means no limit)
-        volatile double interArrivalTime @unit(s); // time between generated VMs
+        int numJobs = default(-1);               // number of jobs to be generated (-1 means no limit)
+        volatile double interArrivalTime @unit(s); // time between generated jobs
         volatile int diskSize @unit(b);
-        string VMName = default("VM");         // the base name of the generated VM (will be the module name if left empty)
-        volatile int VMType = default(0);       // the type attribute of the created VM (used by classifers and other modules)
-        volatile int VMPriority = default(0);   // priority of the VM
-        double startTime @unit(s) = default(interArrivalTime); // when the module sends out the first VM
-        double stopTime @unit(s) = default(-1s); // when the module stops the VM generation (-1 means no limit)
+        string jobName = default("job");         // the base name of the generated job (will be the module name if left empty)
+        volatile int jobType = default(0);       // the type attribute of the created job (used by classifers and other modules)
+        volatile int jobPriority = default(0);   // priority of the job
+        double startTime @unit(s) = default(interArrivalTime); // when the module sends out the first job
+        double stopTime @unit(s) = default(-1s); // when the module stops the job generation (-1 means no limit)
     gates:
         output out;
 }

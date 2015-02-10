@@ -44,7 +44,7 @@ class ResAllocator: public queueing::Allocate {
     protected:
         virtual void initialize();
         virtual void handleMessage(cMessage *msg);
-        virtual bool allocateResource(cMessage *msg);
+        virtual bool allocateResource(queueing::Job *job);
 };
 
 };//namespace

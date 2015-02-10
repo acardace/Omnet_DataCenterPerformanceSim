@@ -22,16 +22,26 @@ Define_Module(CyclicSource);
 void SourceBase::initialize()
 {
     createdSignal = registerSignal("created");
-    VMCounter = 0;
-    WATCH(VMCounter);
-    VMName = par("VMName").stringValue();
-    if (VMName == "")
-        VMName = getName();
+    jobCounter = 0;
+    WATCH(jobCounter);
+    jobName = par("jobName").stringValue();
+    if (jobName == "")
+        jobName = getName();
+}
+
+queueing::Job *SourceBase::createJob()
+{
+    char buf[80];
+    sprintf(buf, "%.60s-%d", jobName.c_str(), ++jobCounter);
+    queueing::Job *job = new queueing::Job(buf);
+    job->setKind(par("jobType"));
+    job->setPriority(par("jobPriority"));
+    return job;
 }
 
 void SourceBase::finish()
 {
-    emit(createdSignal, VMCounter);
+    emit(createdSignal, jobCounter);
 }
 
 void CyclicSource::initialize()
@@ -39,31 +49,32 @@ void CyclicSource::initialize()
     SourceBase::initialize();
     startTime = par("startTime");
     stopTime = par("stopTime");
-    numVMs = par("numVMs");
+    numJobs = par("numJobs");
 
     // schedule the first message timer for start time
-    scheduleAt(startTime, new cMessage("newVMTimer"));
+    scheduleAt(startTime, new cMessage("newjobTimer"));
 }
 
-cPacket *CyclicSource::createPacket()
+VirtualMachineImage *CyclicSource::createImage()
 {
     char buf[80];
-    sprintf(buf, "%.60s-%d", VMName.c_str(), ++VMCounter);
-    cPacket *packet = new cPacket(buf, par("VMType"), par("diskSize").longValue());
-    return packet;
+    sprintf(buf, "%.60s-%d", jobName.c_str(), ++jobCounter);
+    VirtualMachineImage *image = new VirtualMachineImage(buf, par("jobType"), par("diskSize").longValue());
+    image->setJob(SourceBase::createJob());
+    return image;
 }
 
 void CyclicSource::handleMessage(cMessage *msg)
 {
     ASSERT(msg->isSelfMessage());
 
-    if ((numVMs < 0 || numVMs > VMCounter) && (stopTime < 0 || stopTime > simTime()))
+    if ((numJobs < 0 || numJobs > jobCounter) && (stopTime < 0 || stopTime > simTime()))
     {
         // reschedule the timer for the next message
         scheduleAt(simTime() + par("interArrivalTime").doubleValue(), msg);
 
-        cPacket *packet = createPacket();
-        send(packet, "out");
+        VirtualMachineImage *image = createImage();
+        send(image, "out");
     }
     else
     {

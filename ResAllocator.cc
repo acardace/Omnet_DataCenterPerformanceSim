@@ -15,7 +15,7 @@
 
 #include <omnetpp.h>
 #include <ResAllocator.h>
-#include <Job.h>
+#include <VirtualMachineImage.h>
 
 namespace sds_project {
 
@@ -43,16 +43,18 @@ void ResAllocator::initialize()
 
 }
 
-bool ResAllocator::allocateResource(cMessage *msg){
-    return resourcePool->tryToAllocate(this, resourceAmount, resourcePriority);
+bool ResAllocator::allocateResource(queueing::Job *job){
+    return resourcePool->tryToAllocate(this, resourceAmount, resourcePriority + job->getPriority());
 }
 
 void ResAllocator::handleMessage(cMessage *msg){
-    if (allocateResource(msg))
-        msg->setKind(ACCEPTED);
+    VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
+    queueing::Job *job = vm->getJob();
+    if (allocateResource(job))
+        vm->setKind(ACCEPTED);
     else
-        msg->setKind(REJECTED);
-    send(msg, "out");
+        vm->setKind(REJECTED);
+    send(vm, "out");
 };
 
 }; //namespace
