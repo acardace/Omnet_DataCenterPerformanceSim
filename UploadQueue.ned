@@ -15,15 +15,36 @@
 
 package sds_project;
 
-//
-// TODO auto-generated module
-//
-simple Selector
+import org.omnetpp.queueing.Classifier;
+import org.omnetpp.queueing.ResourcePool;
+import org.omnetpp.queueing.Sink;
+
+
+module UploadQueue
 {
-    parameters:
-        @class(sds_project::Selector);
-  		@display("i=block/dispatch");
+    @display("i=block/network");
     gates:
         input in;
         output out;
+    submodules:
+        enqueue: ResAllocator {
+            @display("p=104,141");
+            resourceModuleName = ".queueSize";
+        }
+        classifier: Classifier {
+            @display("p=244,141");
+        }
+        dropped: Sink {
+            @display("p=244,45");
+        }
+        selector: Selector {
+            @display("p=421,141");
+        }
+        queueSize: ResourcePool {
+            @display("p=413,45");
+        }
+    connections:
+        in --> enqueue.in++;
+        enqueue.out --> classifier.in++;
+        classifier.rest --> dropped.in++;
 }

@@ -21,16 +21,19 @@ namespace sds_project {
 
 Define_Module(ResAllocator)
 
-ResAllocator::ResAllocator(){};
+ResAllocator::ResAllocator(){}
 
-ResAllocator::~ResAllocator(){};
+ResAllocator::~ResAllocator(){}
 
-void ResAllocator::initialize()
-{
-    droppedSignal = registerSignal("dropped");
+void ResAllocator::initialize(){
+    forwardedSignal = registerSignal("forwarded");
     queueingTimeSignal = registerSignal("queueingTime");
     queueLengthSignal = registerSignal("queueLength");
     emit(queueLengthSignal, 0l);
+
+    fifo = par("fifo");
+    capacity = par("capacity");
+    queue.setName("queue");
 
     resourceAmount = par("resourceAmount");
     resourcePriority = par("resourcePriority");
@@ -40,7 +43,25 @@ void ResAllocator::initialize()
     if (!mod)
         throw cRuntimeError("Cannot find resource pool module `%s'", resourceName);
     resourcePool = check_and_cast<queueing::IResourcePool*>(mod);
+}
 
+void ResAllocator::enqueueOrForward(queueing::Job *job){
+    // check for container capacity
+    if (capacity >=0 && queue.length() >= capacity)
+    {
+        EV << "Capacity full! Job forwarded.\n";
+        if (ev.isGUI()) bubble("Forwarded!");
+        emit(forwardedSignal, 1);
+        job->setKind(REJECTED);
+        send(job, "out");
+    }
+    else
+    {
+        EV << "Job enqueued.\n";
+        job->setTimestamp();
+        queue.insert(job);
+        emit(queueLengthSignal, queue.length());
+    }
 }
 
 bool ResAllocator::allocateResource(queueing::Job *job){
@@ -50,12 +71,42 @@ bool ResAllocator::allocateResource(queueing::Job *job){
 void ResAllocator::handleMessage(cMessage *msg){
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
     queueing::Job *job = vm->getJob();
-    if (allocateResource(job))
-        vm->setKind(ACCEPTED);
-    else
-        vm->setKind(REJECTED);
-    send(vm, "out");
+    if (queue.isEmpty() && allocateResource(job)){
+        job->setKind(ACCEPTED);
+        send(vm, "out");
+    } else
+        enqueueOrForward(job);
 };
+
+queueing::Job *ResAllocator::dequeue(){
+    queueing::Job *job;
+    job = (queueing::Job *)queue.pop();
+    emit(queueLengthSignal, queue.length());
+
+    simtime_t dt = simTime() - job->getTimestamp();
+    job->setTotalQueueingTime(job->getTotalQueueingTime() + dt);
+    emit(queueingTimeSignal, dt);
+
+    return job;
+}
+
+void ResAllocator::resourceGranted(queueing::IResourcePool *provider){
+    Enter_Method("resourceGranted");
+
+    // send out job for which resource was granted
+    ASSERT2(!queue.empty(), "Resource granted while no jobs are waiting");
+    queueing::Job *job = dequeue();
+    job->setKind(ACCEPTED);
+    send(job, "out");
+
+    // try to handle other waiting jobs as well
+    while (!queue.isEmpty() && allocateResource( (queueing::Job *) queue.front() ))
+    {
+        queueing::Job *job = dequeue();
+        job->setKind(ACCEPTED);
+        send(job, "out");
+    }
+}
 
 }; //namespace
 

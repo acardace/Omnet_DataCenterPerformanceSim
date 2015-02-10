@@ -11,46 +11,10 @@ import org.omnetpp.queueing.ResourcePool;
 import org.omnetpp.queueing.Router;
 import org.omnetpp.queueing.Sink;
 import org.omnetpp.queueing.Source;
-@license(LGPL);
 
-module UploadQueue
-{
-    @display("bgb=615,251");
-    gates:
-        input in;
-        output out;
-    submodules:
-        selector: Selector {
-            @display("p=60,176");
-        }
-        resAllocator: ResAllocator {
-            @display("p=220,176");
-        }
-        deallocate: Deallocate {
-            @display("p=532,176");
-        }
-        classifier: GenericClassifier {
-            @display("p=381,176");
-        }
-        uploadQueueSize: VMPool {
-            @display("p=220,64");
-        }
-        discarded: PacketSink {
-            @display("p=381,64");
-        }
-    connections:
-        in --> selector.in;
-        selector.out --> resAllocator.in++;
-        resAllocator.out --> classifier.in++;
-        classifier.out++ --> deallocate.in++;
-        deallocate.out --> out;
-        classifier.rest --> discarded.in++;
-}
+import ned.DatarateChannel;
 
-//
-// TODO documentation
-//
-network DataCenter
+network Cloud
 {
     parameters:
         int phisicalMachines;
@@ -83,10 +47,6 @@ network DataCenter
             @display("p=605,162");
             resourceModuleName = ".VMs";
         }
-        VMs: VMPool {
-            @display("p=345,43");
-            amount = virtualMachines;
-        }
         cyclicSource: CyclicSource {
             @display("p=99,43");
         }
@@ -116,9 +76,7 @@ network Network
             interArrivalTime = exponential(3s);
         }
         dataCenter: DataCenter {
-            @display("p=232,84");
+            @display("p=83,45");
         }
     connections:
-        //source.out --> dataCenter.in;
-        //dataCenter.out --> sink.in++;
 }
