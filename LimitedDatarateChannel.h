@@ -13,35 +13,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __SDS_PROJECT_PMACHINE_H_
-#define __SDS_PROJECT_PMACHINE_H_
+#ifndef LIMITEDDATARATECHANNEL_H_
+#define LIMITEDDATARATECHANNEL_H_
 
-#include <omnetpp.h>
-#include <Job.h>
+#include <cdataratechannel.h>
 
-namespace sds_project{
-
-class PMachine : public cSimpleModule
-{
-  private:
-    simsignal_t assigned_VMs_Signal;
-
-    int VMs;
-    double degradation;
-
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-    virtual simtime_t startService(cMessage *job);
-    virtual void endService(cMessage *job);
-
-  public:
-    PMachine();
-    virtual ~PMachine();
-    int length();
-
+class LimitedDatarateChannel: public cDatarateChannel {
+public:
+    LimitedDatarateChannel();
+    virtual ~LimitedDatarateChannel();
 };
 
-}; //namespace
-
-#endif
+#endif /* LIMITEDDATARATECHANNEL_H_ */

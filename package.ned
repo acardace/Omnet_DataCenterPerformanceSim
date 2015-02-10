@@ -12,6 +12,7 @@ import org.omnetpp.queueing.Router;
 import org.omnetpp.queueing.Sink;
 import org.omnetpp.queueing.Source;
 @license(LGPL);
+
 module UploadQueue
 {
     @display("bgb=615,251");
@@ -28,7 +29,7 @@ module UploadQueue
         deallocate: Deallocate {
             @display("p=532,176");
         }
-        classifier: Classifier {
+        classifier: GenericClassifier {
             @display("p=381,176");
         }
         uploadQueueSize: VMPool {
@@ -54,12 +55,12 @@ network DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=722,246");
+        @display("bgb=722,244");
     gates:
         //input in;
         //output out;
     submodules:
-        classifier: Classifier {
+        classifier: GenericClassifier {
             @display("p=238,162");
         }
         Job_Completed: Sink {
@@ -82,12 +83,12 @@ network DataCenter
             @display("p=605,162");
             resourceModuleName = ".VMs";
         }
-        source: Source {
-            @display("p=99,43");
-        }
         VMs: VMPool {
             @display("p=345,43");
             amount = virtualMachines;
+        }
+        cyclicSource: CyclicSource {
+            @display("p=99,43");
         }
     connections:
         classifier.out++ --> router.in++;
@@ -97,8 +98,8 @@ network DataCenter
         }
         Pqueue_out.out --> Job_Completed.in++;
         resAllocator.out --> classifier.in++;
-        source.out --> resAllocator.in++;
         classifier.rest --> Job_Completed.in++;
+        cyclicSource.out --> resAllocator.in++;
 }
 //
 // TODO documentation

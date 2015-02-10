@@ -13,35 +13,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __SDS_PROJECT_PMACHINE_H_
-#define __SDS_PROJECT_PMACHINE_H_
+#ifndef VIRTUALMACHINEIMAGE_H_
+#define VIRTUALMACHINEIMAGE_H_
 
-#include <omnetpp.h>
+#include <cmessage.h>
 #include <Job.h>
 
-namespace sds_project{
-
-class PMachine : public cSimpleModule
-{
-  private:
-    simsignal_t assigned_VMs_Signal;
-
-    int VMs;
-    double degradation;
-
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-    virtual simtime_t startService(cMessage *job);
-    virtual void endService(cMessage *job);
-
-  public:
-    PMachine();
-    virtual ~PMachine();
-    int length();
-
+class VirtualMachineImage: public cPacket {
+protected:
+    Job *job;
+public:
+    VirtualMachineImage();
+    virtual ~VirtualMachineImage();
+    Job *getJob();
+    void setJob(Job *job);
 };
 
-}; //namespace
-
-#endif
+#endif /* VIRTUALMACHINEIMAGE_H_ */

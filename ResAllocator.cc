@@ -43,19 +43,16 @@ void ResAllocator::initialize()
 
 }
 
-bool ResAllocator::allocateResource(queueing::Job *job){
-    return resourcePool->tryToAllocate(this, resourceAmount, resourcePriority + job->getPriority());
+bool ResAllocator::allocateResource(cMessage *msg){
+    return resourcePool->tryToAllocate(this, resourceAmount, resourcePriority);
 }
 
 void ResAllocator::handleMessage(cMessage *msg){
-    queueing::Job *job = check_and_cast<queueing::Job *>(msg);
-    if (allocateResource(job)){
-        job->setKind(ACCEPTED);
-        send(job, "out");
-    }else{
-        job->setKind(REJECTED);
-        send(job, "out");
-    }
+    if (allocateResource(msg))
+        msg->setKind(ACCEPTED);
+    else
+        msg->setKind(REJECTED);
+    send(msg, "out");
 };
 
 }; //namespace

@@ -13,40 +13,45 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RESALLOCATOR_H_
-#define RESALLOCATOR_H_
+#ifndef __SDS_PROJECT_CYCLICSOURCE_H_
+#define __SDS_PROJECT_CYCLICSOURCE_H_
 
-#include <Allocate.h>
+#include <omnetpp.h>
+
+/**
+ * TODO - Generated class
+ */
 
 namespace sds_project {
 
-/*
- * This is a variant of the Allocate module: when the resource pool is empty tokens are not queued;
- * instead they are marked as rejected and forwarded.
+class SourceBase : public cSimpleModule
+{
+    protected:
+        int VMCounter;
+        std::string VMName;
+        simsignal_t createdSignal;
+    protected:
+        virtual void initialize();
+        virtual void finish();
+};
+
+
+/**
+ * Generates VM packets.
  */
-
-#define ACCEPTED 0
-#define REJECTED 1 //this goes out to .rest because there's no gate[1]
-
-class ResAllocator: public queueing::Allocate {
+class CyclicSource : public SourceBase
+{
     private:
-        queueing::IResourcePool *resourcePool;
-        int resourceAmount;
-        int resourcePriority;
+        simtime_t startTime;
+        simtime_t stopTime;
+        int numVMs;
 
-        // statistics
-        simsignal_t droppedSignal;
-        simsignal_t queueLengthSignal;
-        simsignal_t queueingTimeSignal;
-    public:
-        ResAllocator();
-        virtual ~ResAllocator();
     protected:
         virtual void initialize();
         virtual void handleMessage(cMessage *msg);
-        virtual bool allocateResource(cMessage *msg);
+        virtual cPacket *createPacket();
 };
 
-};//namespace
+}; //namespace
 
-#endif /* RESALLOCATOR_H_ */
+#endif

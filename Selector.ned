@@ -20,6 +20,7 @@ package sds_project;
 //
 simple Selector
 {
+    @display("i=block/dispatch");
     gates:
         input in;
         output out;

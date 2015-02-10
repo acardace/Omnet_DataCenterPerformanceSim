@@ -31,35 +31,34 @@ void PMachine::initialize(){
 }
 
 void PMachine::handleMessage(cMessage *msg){
-    queueing::Job *job = check_and_cast<queueing::Job *>(msg);
-    if(job->isSelfMessage()){
-        //the job has already been serviced
+    if(msg->isSelfMessage()){
+        //the msg has already been serviced
         VMs--;
         emit(assigned_VMs_Signal,VMs);
-        endService(job);
+        endService(msg);
     }else{
         //the message just got here
         VMs++;
         emit(assigned_VMs_Signal,VMs);
-        simtime_t serviceTime = startService( job );
-        scheduleAt( simTime()+serviceTime, job );
+        simtime_t serviceTime = startService( msg );
+        scheduleAt( simTime()+serviceTime, msg );
     }
 }
 
 
-simtime_t PMachine::startService(queueing::Job *job){
+simtime_t PMachine::startService(cMessage *msg){
     double scheduleTime;
     scheduleTime = par("serviceTime").doubleValue()*pow((1+degradation),VMs-1);
-    EV << "Starting service of " << job->getName() << endl;
-    job->setTimestamp();
+    EV << "Starting service of " << msg->getName() << endl;
+    msg->setTimestamp();
     return scheduleTime;
 }
 
-void PMachine::endService(queueing::Job *job){
-    EV << "Finishing service of " << job->getName() << endl;
-    simtime_t d = simTime() - job->getTimestamp();
-    job->setTotalServiceTime(job->getTotalServiceTime() + d);
-    send(job, "out");
+void PMachine::endService(cMessage *msg){
+   /* EV << "Finishing service of " << msg->getName() << endl;
+    simtime_t d = simTime() - msg->getTimestamp();
+    msg->setTotalServiceTime(msg->getTotalServiceTime() + d);*/
+    send(msg, "out");
 }
 
 int PMachine::length(){

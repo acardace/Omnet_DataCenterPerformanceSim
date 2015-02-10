@@ -13,33 +13,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __SDS_PROJECT_PMACHINE_H_
-#define __SDS_PROJECT_PMACHINE_H_
+#ifndef __SDS_PROJECT_CLASSIFIER_H_
+#define __SDS_PROJECT_CLASSIFIER_H_
 
 #include <omnetpp.h>
-#include <Job.h>
 
-namespace sds_project{
+/**
+ * TODO - Generated class
+ */
 
-class PMachine : public cSimpleModule
+namespace sds_project {
+
+class GenericClassifier : public cSimpleModule
 {
-  private:
-    simsignal_t assigned_VMs_Signal;
-
-    int VMs;
-    double degradation;
-
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-    virtual simtime_t startService(cMessage *job);
-    virtual void endService(cMessage *job);
-
-  public:
-    PMachine();
-    virtual ~PMachine();
-    int length();
-
 };
 
 }; //namespace
