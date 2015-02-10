@@ -21,6 +21,7 @@ package sds_project;
 simple Selector
 {
     parameters:
+        @class(sds_project::Selector);
         @display("i=block/classifier2");
     gates:
         input in;
