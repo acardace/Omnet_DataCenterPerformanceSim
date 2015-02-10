@@ -20,6 +20,8 @@ package sds_project;
 //
 simple Selector
 {
+    parameters:
+        @display("i=block/classifier2");
     gates:
         input in;
         output out;
