@@ -30,21 +30,31 @@ namespace sds_project {
 
 class ResAllocator: public queueing::Allocate {
     private:
+        // state
+        cQueue queue;
+
+        // parameters
+        int capacity;
+        bool fifo;
         queueing::IResourcePool *resourcePool;
         int resourceAmount;
         int resourcePriority;
 
         // statistics
-        simsignal_t droppedSignal;
+        simsignal_t forwardedSignal;
         simsignal_t queueLengthSignal;
         simsignal_t queueingTimeSignal;
     public:
         ResAllocator();
         virtual ~ResAllocator();
+
+        virtual void resourceGranted(queueing::IResourcePool *provider);
     protected:
         virtual void initialize();
         virtual void handleMessage(cMessage *msg);
+        virtual void enqueueOrForward(queueing::Job *job);
         virtual bool allocateResource(queueing::Job *job);
+        virtual queueing::Job *dequeue();
 };
 
 };//namespace

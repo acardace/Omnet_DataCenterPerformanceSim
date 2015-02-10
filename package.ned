@@ -14,36 +14,33 @@ import org.omnetpp.queueing.Source;
 @license(LGPL);
 module UploadQueue
 {
-    @display("bgb=615,251");
+    @display("bgb=517,206");
     gates:
         input in;
         output out;
     submodules:
-        selector: Selector {
-            @display("p=60,176");
-        }
-        resAllocator: ResAllocator {
-            @display("p=220,176");
-        }
         deallocate: Deallocate {
-            @display("p=532,176");
+            @display("p=400,110");
+            resourceModuleName = ".uploadQueueSize";
         }
-        classifier: Classifier {
-            @display("p=381,176");
+        allocate: Allocate {
+            @display("p=127,110");
+            resourceModuleName = ".uploadQueueSize";
         }
-        uploadQueueSize: VMPool {
-            @display("p=220,64");
+        selector: Selector {
+            @display("p=259,110");
         }
-        discarded: Sink {
-            @display("p=381,64");
+        drop: Sink {
+            @display("p=399,20");
+        }
+        uploadQueueSize: ResourcePool {
+            @display("p=127,20");
         }
     connections:
-        in --> selector.in;
-        selector.out --> resAllocator.in++;
-        resAllocator.out --> classifier.in++;
-        classifier.out++ --> deallocate.in++;
         deallocate.out --> out;
-        classifier.rest --> discarded.in++;
+        in --> allocate.in++;
+        allocate.out --> selector.in;
+        selector.out --> deallocate.in++;
 }
 
 //
@@ -54,7 +51,7 @@ network DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=722,246");
+        @display("bgb=1214,246");
     gates:
         //input in;
         //output out;
@@ -63,30 +60,30 @@ network DataCenter
             @display("p=238,162");
         }
         Job_Completed: Sink {
-            @display("p=605,43");
+            @display("p=853,34");
         }
         router: BetterRouter {
-            @display("p=345,162");
+            @display("p=384,162");
             routingAlgorithm = default("minQueueLength");
             gates:
                 out[phisicalMachines];
         }
         machine[phisicalMachines]: PMachine {
-            @display("p=478,162");
+            @display("p=667,162");
         }
         resAllocator: ResAllocator {
             @display("p=99,162");
             resourceModuleName = ".VMs";
         }
         Pqueue_out: Deallocate {
-            @display("p=605,162");
+            @display("p=1042,162");
             resourceModuleName = ".VMs";
         }
         source: Source {
             @display("p=99,43");
         }
-        VMs: VMPool {
-            @display("p=345,43");
+        VMs: ResourcePool {
+            @display("p=325,34");
             amount = virtualMachines;
         }
     connections:
@@ -107,15 +104,8 @@ network Network
 {
     @display("bgb=488,200");
     submodules:
-        sink: Sink {
-            @display("p=380,84");
-        }
-        source: Source {
-            @display("p=56,84");
-            interArrivalTime = exponential(3s);
-        }
         dataCenter: DataCenter {
-            @display("p=232,84");
+            @display("p=83,45");
         }
     connections:
         //source.out --> dataCenter.in;
