@@ -25,7 +25,7 @@ void Selector::initialize()
     neighbourSize = getParentModule()->gateSize("out");
     neighbour = new cModule* [neighbourSize];
     for (int i=0; i<neighbourSize; i++) {
-        cGate *gate = getParentModule()->gate("out", i);
+        cGate *gate = getParentModule()->gate("out");
         neighbour[i] = gate->getNextGate()->getOwnerModule();
     }
     rrCounter = 0;
