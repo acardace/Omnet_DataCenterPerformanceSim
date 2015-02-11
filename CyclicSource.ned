@@ -27,14 +27,18 @@ simple CyclicSource
         @display("i=block/source");
         @class(sds_project::CyclicSource);
         int numJobs = default(-1);               // number of jobs to be generated (-1 means no limit)
-        volatile double interArrivalTime @unit(s); // time between generated jobs
-		volatile double first_distribution @unit(s);
-		volatile double second_distribution @unit(s);
-		volatile double third_distribution @unit(s);
-		double first_distribution_time @unit(s);
-		double second_distribution_time @unit(s);
-		double third_distribution_time @unit(s);
-		bool cycle; //loop through distributions? 
+        // time between generated jobs
+        volatile double interArrivalTime @unit(s); 
+		volatile double interArrivalTime1 @unit(s);
+		volatile double interArrivalTime2 @unit(s);
+		volatile double interArrivalTime3 @unit(s);
+		volatile double interArrivalTime4 @unit(s);
+		volatile double interArrivalTime5 @unit(s);
+		double interArrivaTimeDuration1 @unit(s);
+		double interArrivaTimeDuration2 @unit(s);
+		double interArrivaTimeDuration3 @unit(s);
+		double interArrivaTimeDuration4 @unit(s);
+		double interArrivaTimeDuration5 @unit(s);
         volatile int diskSize @unit(b);
         string jobName = default("job");         // the base name of the generated job (will be the module name if left empty)
         volatile int jobType = default(0);       // the type attribute of the created job (used by classifers and other modules)

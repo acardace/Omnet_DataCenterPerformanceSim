@@ -19,7 +19,7 @@
 #include <omnetpp.h>
 #include "VirtualMachineImage.h"
 
-#define DIST_SIZE 3
+#define DIST_SIZE 5
 
 /**
  * TODO - Generated class
@@ -58,6 +58,7 @@ class CyclicSource : public SourceBase
         virtual void initialize();
         virtual void handleMessage(cMessage *msg);
         virtual VirtualMachineImage *createImage();
+        virtual void generateDistributionLength();
         virtual double generateInterArrivalTime();
 };
 

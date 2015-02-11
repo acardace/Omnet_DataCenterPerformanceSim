@@ -23,7 +23,9 @@ import org.omnetpp.queueing.Sink;
 
 module UploadQueue
 {
-    @display("i=block/network;bgb=535,248");
+    parameters:
+    	@display("i=block/network;bgb=535,248");
+    	int capacity = default(-1);
     gates:
         input in;
         output out[];
@@ -40,6 +42,7 @@ module UploadQueue
         }
         queueSize: ResourcePool {
             @display("p=104,45");
+            amount = capacity;
         }
         deallocate: Deallocate {
             @display("p=413,45");

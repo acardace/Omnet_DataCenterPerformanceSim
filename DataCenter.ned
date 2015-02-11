@@ -27,6 +27,9 @@ module DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
+        int mainQueueCapacity = default(-1);
+        int uploadQueueCapacity = default(-1);
+        volatile double serviceTime @unit(s);
         @display("bgb=722,417;i=device/mainframe;tt=A data center network, which includes a group of servers and generates its own VMs.");
     gates:
         input in[];
@@ -47,6 +50,7 @@ module DataCenter
         resAllocator: ResAllocator {
             @display("p=89,221");
             resourceModuleName = ".VMs";
+            capacity = mainQueueCapacity;
         }
         Pqueue_out: Deallocate {
             @display("p=654,221");
@@ -58,6 +62,7 @@ module DataCenter
         }
         uploadQueue: UploadQueue {
             @display("p=210,100");
+            capacity = uploadQueueCapacity;
         }
         VMs: ResourcePool {
             @display("p=446,100");

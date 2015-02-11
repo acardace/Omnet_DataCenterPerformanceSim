@@ -14,6 +14,8 @@
 // 
 
 #include "CyclicSource.h"
+#include <sstream>
+#include <string>
 
 namespace sds_project {
 
@@ -50,14 +52,17 @@ void CyclicSource::initialize()
     startTime = par("startTime");
     stopTime = par("stopTime");
     numJobs = par("numJobs");
-    cycle = par("cycle");
 
-    //init distributions length
-    distribution_length[0] = par("first_distribution").doubleValue();
-    distribution_length[1] = par("second_distribution").doubleValue() + distribution_length[0];
-    tot_dist_length = distribution_length[2] = par("third_distribution").doubleValue() + distribution_length[1];
-
-
+    // decide to cycle only if more than one interArrivalTime was given
+    int counter;
+    for (int i=1; i<DIST_SIZE; i++) {
+        std::ostringstream strs;
+        strs << (i+1);
+        std::string num = strs.str();
+        double duration = par("interArrivalTimeDuration"+num).doubleValue();
+        if (duration >= 0) counter++;
+    }
+    cycle = counter > 1;
     // schedule the first message timer for start time
     scheduleAt(startTime, new cMessage("newjobTimer"));
 }
@@ -71,7 +76,24 @@ VirtualMachineImage *CyclicSource::createImage()
     return image;
 }
 
+void CyclicSource::generateDistributionLength() {
+    //generate inter-arrival time duration
+    double duration = par("interArrivaTimeDuration1").doubleValue();
+    distribution_length[0] = duration > 0 ? duration : 0;
+    for (int i=1; i<DIST_SIZE; i++) {
+        std::ostringstream strs;
+        strs << (i+1);
+        std::string num;
+        num = strs.str();
+        duration = par("interArrivalTimeDuration"+num).doubleValue();
+        distribution_length[i] = distribution_length[0];
+        distribution_length[i] += duration > 0 ? duration : 0;
+    }
+    tot_dist_length = distribution_length[DIST_SIZE-1];
+}
+
 double CyclicSource::generateInterArrivalTime(){
+    generateDistributionLength();
     double currTime = fmod(simTime().dbl(),tot_dist_length);
     double interArrTime;
     int i;
@@ -79,19 +101,10 @@ double CyclicSource::generateInterArrivalTime(){
     for(i=0; i<DIST_SIZE; i++)
         if( currTime <= distribution_length[i] )
             break;
-
-    switch( i ){
-        case 0:
-            interArrTime = par("first_distribution");
-            break;
-        case 1:
-            interArrTime = par("second_distribution");
-            break;
-        case 2:
-            interArrTime = par("third_distribution");
-            break;
-    }
-
+    std::ostringstream strs;
+    strs << (i+1);
+    std::string num = strs.str();
+    interArrTime = par("interArrivalTime"+num);
     return interArrTime;
 }
 
