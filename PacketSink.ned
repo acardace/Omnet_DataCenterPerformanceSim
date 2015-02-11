@@ -21,7 +21,7 @@ package sds_project;
 simple PacketSink
 {
     parameters:
-        @group(Queueing);
+        @class(sds_project::PacketSink);
         @display("i=block/sink");
         @signal[lifeTime](type="simtime_t");
         @signal[totalQueueingTime](type="simtime_t");

@@ -25,5 +25,6 @@ simple Selector
   		@display("i=block/dispatch");
     gates:
         input in;
-        output out;
+        output out[];
+        output discard;
 }

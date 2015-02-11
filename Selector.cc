@@ -22,27 +22,45 @@ Define_Module(Selector);
 
 void Selector::initialize()
 {
-    neighbourSize = getParentModule()->gateSize("out");
-    neighbour = new cModule* [neighbourSize];
-    for (int i=0; i<neighbourSize; i++) {
-        cGate *gate = getParentModule()->gate("out");
-        neighbour[i] = gate->getNextGate()->getOwnerModule();
+    neighbourSize = gateSize("out");
+    if (neighbourSize > 0) {
+        neighbour = new cModule* [neighbourSize];
+        for (int i=0; i<neighbourSize; i++) {
+            cGate *outGate = gate("out", i); //gate of Selector
+            // Iterate 3 times to get:
+            // gate of UploadQueue
+            // gate of DataCenter
+            // gate of neighbour DataCenter
+            for (int j=1; j<=3; j++)
+                if (outGate)
+                    outGate = outGate->getNextGate();
+            if (outGate)
+                neighbour[i] = outGate->getOwnerModule();
+            else
+                neighbour[i] = NULL;
+        }
     }
     rrCounter = 0;
 }
 
 void Selector::handleMessage(cMessage *msg)
 {
+    bool sent = false;
     for (int i=0; i<neighbourSize; i++) {
         int j = (rrCounter + i) % neighbourSize;
-        queueing::IResourcePool *pool = check_and_cast<queueing::IResourcePool*>(neighbour[j]->getSubmodule("VMs"));
-        queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("ResAllocator"));
-        if (pool->tryToAllocate(allocator, 1, 0)) {
-            send(msg, "out");
-            break;
+        if (neighbour[j]) {
+            queueing::IResourcePool *pool = check_and_cast<queueing::IResourcePool*>(neighbour[j]->getSubmodule("VMs"));
+            queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("ResAllocator"));
+            if (pool->tryToAllocate(allocator, 1, 0)) {
+                send(msg, "out", j);
+                sent = true;
+                break;
+            }
         }
     }
-    rrCounter = (rrCounter+1)%neighbourSize;
+    if (!sent) send(msg, "discard");
+    if (neighbourSize > 0)
+        rrCounter = (rrCounter+1)%neighbourSize;
 }
 
 }; //namespace

@@ -24,4 +24,6 @@ simple ResAllocator extends Allocate
         @statistic[forwarded](title="forwarded event";record=vector?,count;interpolationmode=none);
     	@class(sds_project::ResAllocator);
     	fifo = true;
+   	gates:
+   	    output discard;
 }

@@ -27,45 +27,53 @@ module DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=722,244");
+        @display("bgb=722,291");
     gates:
-        //input in;
-        //output out;
+        input in[];
+        output out[];
     submodules:
-        classifier: GenericClassifier {
-            @display("p=238,162");
-        }
-        Job_Completed: Sink {
-            @display("p=605,43");
+        Job_Completed: PacketSink {
+            @display("p=654,43");
         }
         router: BetterRouter {
-            @display("p=345,162");
+            @display("p=347,221");
             routingAlgorithm = default("minQueueLength");
             gates:
                 out[phisicalMachines];
         }
         machine[phisicalMachines]: PMachine {
-            @display("p=478,162");
+            @display("p=476,221");
         }
         resAllocator: ResAllocator {
-            @display("p=99,162");
+            @display("p=89,221");
             resourceModuleName = ".VMs";
         }
         Pqueue_out: Deallocate {
-            @display("p=605,162");
+            @display("p=654,221");
             resourceModuleName = ".VMs";
         }
         cyclicSource: CyclicSource {
-            @display("p=99,43");
+            @display("p=89,43");
+        }
+        uploadQueue: UploadQueue {
+            @display("p=238,100");
+        }
+        VMs: ResourcePool {
+            @display("p=446,100");
         }
     connections:
-        classifier.out++ --> router.in++;
         for i=0..phisicalMachines-1 {
             router.out[i] --> machine[i].in++;
             machine[i].out --> Pqueue_out.in++;
         }
         Pqueue_out.out --> Job_Completed.in++;
-        resAllocator.out --> classifier.in++;
-        classifier.rest --> Job_Completed.in++;
         cyclicSource.out --> resAllocator.in++;
+        for i=0..sizeof(out)-1 {
+            uploadQueue.out[i] --> out[i];
+        }
+        for i=0..sizeof(in)-1 {
+            in[i] --> router.in++;
+        }
+        resAllocator.out --> router.in++;
+        resAllocator.discard --> uploadQueue.in;
 }

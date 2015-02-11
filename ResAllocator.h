@@ -17,6 +17,7 @@
 #define RESALLOCATOR_H_
 
 #include <Allocate.h>
+#include <VirtualMachineImage.h>
 
 namespace sds_project {
 
@@ -52,9 +53,9 @@ class ResAllocator: public queueing::Allocate {
     protected:
         virtual void initialize();
         virtual void handleMessage(cMessage *msg);
-        virtual void enqueueOrForward(queueing::Job *job);
-        virtual bool allocateResource(queueing::Job *job);
-        virtual queueing::Job *dequeue();
+        virtual void enqueueOrForward(VirtualMachineImage *vm);
+        virtual bool allocateResource(VirtualMachineImage *vm);
+        virtual VirtualMachineImage *vmDequeue();
 };
 
 };//namespace

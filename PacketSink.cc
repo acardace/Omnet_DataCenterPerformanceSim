@@ -13,14 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include "Sink.h"
+#include "PacketSink.h"
 #include <VirtualMachineImage.h>
 
-namespace queueing {
+namespace sds_project {
 
-Define_Module(Sink);
+Define_Module(PacketSink);
 
-void Sink::initialize()
+void PacketSink::initialize()
 {
     lifeTimeSignal = registerSignal("lifeTime");
     totalQueueingTimeSignal = registerSignal("totalQueueingTime");
@@ -32,9 +32,9 @@ void Sink::initialize()
     keepJobs = par("keepJobs");
 }
 
-void Sink::handleMessage(cMessage *msg)
+void PacketSink::handleMessage(cMessage *msg)
 {
-    sds_project::VirtualMachineImage *vm = check_and_cast<sds_project::VirtualMachineImage*>(msg);
+    VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
     queueing::Job *job = vm->getJob();
     // gather statistics
     emit(lifeTimeSignal, simTime()- job->getCreationTime());
@@ -49,7 +49,7 @@ void Sink::handleMessage(cMessage *msg)
         delete msg;
 }
 
-void Sink::finish()
+void PacketSink::finish()
 {
     // TODO missing scalar statistics
 }

@@ -23,7 +23,7 @@ namespace sds_project {
 /**
  * Consumes jobs; see NED file for more info.
  */
-class QUEUEING_API Sink : public cSimpleModule
+class PacketSink : public cSimpleModule
 {
   private:
     simsignal_t lifeTimeSignal;

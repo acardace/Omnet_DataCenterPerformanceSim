@@ -16,37 +16,42 @@
 package sds_project;
 
 import org.omnetpp.queueing.Classifier;
+import org.omnetpp.queueing.Deallocate;
 import org.omnetpp.queueing.ResourcePool;
 import org.omnetpp.queueing.Sink;
 
 
 module UploadQueue
 {
-    @display("i=block/network;bgb=525,248");
+    @display("i=block/network;bgb=535,248");
     gates:
         input in;
-        output out;
+        output out[];
     submodules:
         enqueue: ResAllocator {
             @display("p=104,141");
             resourceModuleName = ".queueSize";
         }
-        classifier: Classifier {
-            @display("p=244,141");
-        }
-        dropped: Sink {
+        dropped: PacketSink {
             @display("p=244,45");
         }
         selector: Selector {
-            @display("p=421,141");
+            @display("p=413,141");
         }
         queueSize: ResourcePool {
+            @display("p=104,45");
+        }
+        deallocate: Deallocate {
             @display("p=413,45");
+            resourceModuleName = ".queueSize";
         }
     connections:
         in --> enqueue.in++;
-        enqueue.out --> classifier.in++;
-        classifier.rest --> dropped.in++;
-        classifier.out++ --> selector.in;
-        selector.out --> out;
+        for i=0..sizeof(out)-1 {
+            selector.out[i] --> out[i];
+        }
+        selector.discard --> deallocate.in++;
+        deallocate.out --> dropped.in++;
+        enqueue.out --> selector.in;
+        enqueue.discard --> dropped.in++;
 }
