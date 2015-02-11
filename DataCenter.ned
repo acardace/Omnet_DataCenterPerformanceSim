@@ -29,7 +29,6 @@ module DataCenter
         int virtualMachines;
         int mainQueueCapacity = default(-1);
         int uploadQueueCapacity = default(-1);
-        volatile double serviceTime @unit(s);
         @display("bgb=722,417;i=device/mainframe;tt=A data center network, which includes a group of servers and generates its own VMs.");
     gates:
         input in[];
@@ -46,7 +45,6 @@ module DataCenter
         }
         machine[phisicalMachines]: PMachine {
             @display("p=476,221");
-            serviceTime = serviceTime;
         }
         resAllocator: ResAllocator {
             @display("p=89,221");
