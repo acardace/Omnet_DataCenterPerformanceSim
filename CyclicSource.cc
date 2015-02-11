@@ -85,7 +85,7 @@ void CyclicSource::generateDistributionLength() {
         strs << (i+1);
         const char *num = ("interArrivalTimeDuration"+(strs.str())).c_str();
         duration = par(num).doubleValue();
-        distribution_length[i] = distribution_length[0];
+        distribution_length[i] = distribution_length[i-1];
         distribution_length[i] += duration > 0 ? duration : 0;
     }
     tot_dist_length = distribution_length[DIST_SIZE-1];
