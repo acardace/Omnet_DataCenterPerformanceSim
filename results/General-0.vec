@@ -1,0 +1,74 @@
+version 2
+run General-0-20150211-16:46:37-12388
+attr configname General
+attr datetime 20150211-16:46:37
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network Network
+attr processid 12388
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 22  Network.dataCenter.machine[0]  assigned_VMs:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "assigned VMs, vector"
+vector 23  Network.dataCenter.machine[1]  assigned_VMs:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "assigned VMs, vector"
+vector 24  Network.dataCenter.machine[2]  assigned_VMs:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "assigned VMs, vector"
+vector 25  Network.dataCenter.resAllocator  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 26  Network.dataCenter.uploadQueue.enqueue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 29  Network.dataCenter1.machine[0]  assigned_VMs:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "assigned VMs, vector"
+vector 30  Network.dataCenter1.machine[1]  assigned_VMs:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "assigned VMs, vector"
+vector 31  Network.dataCenter1.machine[2]  assigned_VMs:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "assigned VMs, vector"
+vector 32  Network.dataCenter1.resAllocator  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 33  Network.dataCenter1.uploadQueue.enqueue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 36  Network.dataCenter2.machine[0]  assigned_VMs:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "assigned VMs, vector"
+vector 37  Network.dataCenter2.machine[1]  assigned_VMs:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "assigned VMs, vector"
+vector 38  Network.dataCenter2.machine[2]  assigned_VMs:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "assigned VMs, vector"
+vector 39  Network.dataCenter2.resAllocator  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 40  Network.dataCenter2.uploadQueue.enqueue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 21  Network.dataCenter.Job_Completed  lifeTime:vector  ETV
+attr interpolationmode  none
+attr title  "lifetime of arrived jobs, vector"
+attr unit  s
+vector 28  Network.dataCenter1.Job_Completed  lifeTime:vector  ETV
+attr interpolationmode  none
+attr title  "lifetime of arrived jobs, vector"
+attr unit  s
+vector 35  Network.dataCenter2.Job_Completed  lifeTime:vector  ETV
+attr interpolationmode  none
+attr title  "lifetime of arrived jobs, vector"
+attr unit  s
