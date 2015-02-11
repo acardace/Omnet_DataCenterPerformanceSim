@@ -1,1 +1,0 @@
--g -Wall -fPIC  -fno-stack-protector -DHAVE_SWAPCONTEXT  -DHAVE_PCAP -DXMLPARSER=libxml -DWITH_PARSIM -DWITH_NETBUILDER -DQUEUEING_IMPORT -I/home/asig/Source/omnet/omnetpp-4.5/samples/queueinglib -I. -Iresults -I/home/asig/Source/omnet/omnetpp-4.5/include
