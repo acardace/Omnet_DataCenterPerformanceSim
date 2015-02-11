@@ -27,7 +27,7 @@ module DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=722,291");
+        @display("i=device/mainframe");
     gates:
         input in[];
         output out[];
@@ -60,6 +60,7 @@ module DataCenter
         }
         VMs: ResourcePool {
             @display("p=446,100");
+            amount = virtualMachines;
         }
     connections:
         for i=0..phisicalMachines-1 {

@@ -19,6 +19,8 @@
 #include <omnetpp.h>
 #include "VirtualMachineImage.h"
 
+#define DIST_SIZE 3
+
 /**
  * TODO - Generated class
  */
@@ -46,12 +48,17 @@ class CyclicSource : public SourceBase
     private:
         simtime_t startTime;
         simtime_t stopTime;
+
         int numJobs;
+        double distribution_length[3];
+        double tot_dist_length;
+        bool cycle;
 
     protected:
         virtual void initialize();
         virtual void handleMessage(cMessage *msg);
         virtual VirtualMachineImage *createImage();
+        virtual double generateInterArrivalTime();
 };
 
 }; //namespace
