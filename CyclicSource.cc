@@ -50,6 +50,13 @@ void CyclicSource::initialize()
     startTime = par("startTime");
     stopTime = par("stopTime");
     numJobs = par("numJobs");
+    cycle = par("cycle");
+
+    //init distributions length
+    distribution_length[0] = par("first_distribution").doubleValue();
+    distribution_length[1] = par("second_distribution").doubleValue() + distribution_length[0];
+    tot_dist_length = distribution_length[2] = par("third_distribution").doubleValue() + distribution_length[1];
+
 
     // schedule the first message timer for start time
     scheduleAt(startTime, new cMessage("newjobTimer"));
@@ -64,6 +71,30 @@ VirtualMachineImage *CyclicSource::createImage()
     return image;
 }
 
+double CyclicSource::generateInterArrivalTime(){
+    double currTime = fmod(simTime().dbl(),tot_dist_length);
+    double interArrTime;
+    int i;
+
+    for(i=0; i<DIST_SIZE; i++)
+        if( currTime <= distribution_length[i] )
+            break;
+
+    switch( i ){
+        case 0:
+            interArrTime = par("first_distribution");
+            break;
+        case 1:
+            interArrTime = par("second_distribution");
+            break;
+        case 2:
+            interArrTime = par("third_distribution");
+            break;
+    }
+
+    return interArrTime;
+}
+
 void CyclicSource::handleMessage(cMessage *msg)
 {
     ASSERT(msg->isSelfMessage());
@@ -71,7 +102,10 @@ void CyclicSource::handleMessage(cMessage *msg)
     if ((numJobs < 0 || numJobs > jobCounter) && (stopTime < 0 || stopTime > simTime()))
     {
         // reschedule the timer for the next message
-        scheduleAt(simTime() + par("interArrivalTime").doubleValue(), msg);
+        if( cycle )
+            scheduleAt(simTime() + generateInterArrivalTime(), msg);
+        else
+            scheduleAt(simTime() + par("interArrivalTime").doubleValue(), msg);
 
         VirtualMachineImage *image = createImage();
         send(image, "out");
