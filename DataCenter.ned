@@ -27,44 +27,36 @@ module DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("i=device/mainframe");
+        @display("bgb=722,244");
     gates:
-        input in @loose;
-        output out @loose;
-    types:
+        //input in;
+        //output out;
     submodules:
-        classifier: Classifier {
+        classifier: GenericClassifier {
             @display("p=238,162");
         }
         Job_Completed: Sink {
-            @display("p=853,34");
+            @display("p=605,43");
         }
         router: BetterRouter {
-            @display("p=384,162");
+            @display("p=345,162");
             routingAlgorithm = default("minQueueLength");
             gates:
                 out[phisicalMachines];
         }
         machine[phisicalMachines]: PMachine {
-            @display("p=667,162");
+            @display("p=478,162");
         }
         resAllocator: ResAllocator {
             @display("p=99,162");
             resourceModuleName = ".VMs";
         }
         Pqueue_out: Deallocate {
-            @display("p=1042,162");
+            @display("p=605,162");
             resourceModuleName = ".VMs";
         }
-        source: Source {
+        cyclicSource: CyclicSource {
             @display("p=99,43");
-        }
-        VMs: ResourcePool {
-            @display("p=1109,34");
-            amount = virtualMachines;
-        }
-        uploadQueue: UploadQueue {
-            @display("p=238,43");
         }
     connections:
         classifier.out++ --> router.in++;
@@ -74,8 +66,6 @@ module DataCenter
         }
         Pqueue_out.out --> Job_Completed.in++;
         resAllocator.out --> classifier.in++;
-        source.out --> resAllocator.in++;
-        classifier.rest --> uploadQueue.in;
-        uploadQueue.out --> out;
-        in --> router.in++;
+        classifier.rest --> Job_Completed.in++;
+        cyclicSource.out --> resAllocator.in++;
 }

@@ -22,7 +22,7 @@ import org.omnetpp.queueing.Sink;
 
 module UploadQueue
 {
-    @display("i=block/network");
+    @display("i=block/network;bgb=525,248");
     gates:
         input in;
         output out;

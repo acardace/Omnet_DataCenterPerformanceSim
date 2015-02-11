@@ -76,7 +76,7 @@ network Network
             interArrivalTime = exponential(3s);
         }
         dataCenter: DataCenter {
-            @display("p=83,45");
+            @display("p=215,84");
         }
     connections:
 }
