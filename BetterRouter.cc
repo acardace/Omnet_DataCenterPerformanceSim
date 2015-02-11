@@ -61,11 +61,9 @@ void BetterRouter::handleMessage(cMessage *msg)
             for (int i=0; i < gateSize("out"); i++) {
                 cGate *otherGate = gate("out", i)->getNextGate();
                 PMachine *pm = check_and_cast<PMachine *>(otherGate->getOwnerModule());
-                ev << "Considering output " << i << endl;
                 if (pm->length() < min) {
                     min = pm->length();
                     outGateIndex = i;
-                    ev << "Assigning index " << i << endl;
                 }
             }
             break;

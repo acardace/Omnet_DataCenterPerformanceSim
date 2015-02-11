@@ -16,8 +16,8 @@
 #ifndef RESALLOCATOR_H_
 #define RESALLOCATOR_H_
 
-#include <Allocate.h>
-#include <VirtualMachineImage.h>
+#include "Allocate.h"
+#include "VirtualMachineImage.h"
 
 namespace sds_project {
 

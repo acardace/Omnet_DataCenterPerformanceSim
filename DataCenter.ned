@@ -27,7 +27,7 @@ module DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        @display("bgb=722,291");
+        @display("bgb=722,417;i=device/server;tt=A data center network, which includes a group of servers and generates its own VMs.");
     gates:
         input in[];
         output out[];
@@ -36,7 +36,7 @@ module DataCenter
             @display("p=654,43");
         }
         router: BetterRouter {
-            @display("p=347,221");
+            @display("p=269,221");
             routingAlgorithm = default("minQueueLength");
             gates:
                 out[phisicalMachines];
@@ -54,12 +54,17 @@ module DataCenter
         }
         cyclicSource: CyclicSource {
             @display("p=89,43");
+            jobName = default("VM");
         }
         uploadQueue: UploadQueue {
-            @display("p=238,100");
+            @display("p=210,100");
         }
         VMs: ResourcePool {
             @display("p=446,100");
+        }
+        remoteDeallocate: RemoteDeallocate {
+            @display("p=269,322");
+            resourceModuleName = "queueSize";
         }
     connections:
         for i=0..phisicalMachines-1 {
@@ -69,11 +74,12 @@ module DataCenter
         Pqueue_out.out --> Job_Completed.in++;
         cyclicSource.out --> resAllocator.in++;
         for i=0..sizeof(out)-1 {
-            uploadQueue.out[i] --> out[i];
+            uploadQueue.out++ --> out[i];
         }
         for i=0..sizeof(in)-1 {
-            in[i] --> router.in++;
+            in[i] --> remoteDeallocate.in++;
         }
         resAllocator.out --> router.in++;
         resAllocator.discard --> uploadQueue.in;
+        remoteDeallocate.out --> router.in++;
 }

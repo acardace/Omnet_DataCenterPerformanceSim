@@ -48,7 +48,7 @@ module UploadQueue
     connections:
         in --> enqueue.in++;
         for i=0..sizeof(out)-1 {
-            selector.out[i] --> out[i];
+            selector.out++ --> out[i];
         }
         selector.discard --> deallocate.in++;
         deallocate.out --> dropped.in++;

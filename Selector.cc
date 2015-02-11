@@ -50,7 +50,7 @@ void Selector::handleMessage(cMessage *msg)
         int j = (rrCounter + i) % neighbourSize;
         if (neighbour[j]) {
             queueing::IResourcePool *pool = check_and_cast<queueing::IResourcePool*>(neighbour[j]->getSubmodule("VMs"));
-            queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("ResAllocator"));
+            queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("resAllocator"));
             if (pool->tryToAllocate(allocator, 1, 0)) {
                 send(msg, "out", j);
                 sent = true;
