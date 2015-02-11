@@ -46,6 +46,7 @@ module DataCenter
         }
         machine[phisicalMachines]: PMachine {
             @display("p=476,221");
+            serviceTime = serviceTime;
         }
         resAllocator: ResAllocator {
             @display("p=89,221");

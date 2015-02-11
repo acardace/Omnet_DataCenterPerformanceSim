@@ -28,7 +28,6 @@ simple CyclicSource
         @class(sds_project::CyclicSource);
         int numJobs = default(-1);               // number of jobs to be generated (-1 means no limit)
         // time between generated jobs
-        volatile double interArrivalTime @unit(s); 
 		volatile double interArrivalTime1 @unit(s);
 		volatile double interArrivalTime2 @unit(s);
 		volatile double interArrivalTime3 @unit(s);

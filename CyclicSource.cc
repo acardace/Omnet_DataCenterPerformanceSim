@@ -118,8 +118,6 @@ void CyclicSource::handleMessage(cMessage *msg)
         // reschedule the timer for the next message
         if( cycle )
             scheduleAt(simTime() + generateInterArrivalTime(), msg);
-        else
-            scheduleAt(simTime() + par("interArrivalTime").doubleValue(), msg);
 
         VirtualMachineImage *image = createImage();
         send(image, "out");
