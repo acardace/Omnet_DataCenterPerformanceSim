@@ -58,8 +58,8 @@ void CyclicSource::initialize()
     for (int i=1; i<DIST_SIZE; i++) {
         std::ostringstream strs;
         strs << (i+1);
-        std::string num = strs.str();
-        double duration = par("interArrivalTimeDuration"+num).doubleValue();
+        const char *num = ("interArrivalTimeDuration"+(strs.str())).c_str();
+        double duration = par(num).doubleValue();
         if (duration >= 0) counter++;
     }
     cycle = counter > 1;
@@ -83,9 +83,8 @@ void CyclicSource::generateDistributionLength() {
     for (int i=1; i<DIST_SIZE; i++) {
         std::ostringstream strs;
         strs << (i+1);
-        std::string num;
-        num = strs.str();
-        duration = par("interArrivalTimeDuration"+num).doubleValue();
+        const char *num = ("interArrivalTimeDuration"+(strs.str())).c_str();
+        duration = par(num).doubleValue();
         distribution_length[i] = distribution_length[0];
         distribution_length[i] += duration > 0 ? duration : 0;
     }
@@ -96,15 +95,17 @@ double CyclicSource::generateInterArrivalTime(){
     generateDistributionLength();
     double currTime = fmod(simTime().dbl(),tot_dist_length);
     double interArrTime;
+    std::ostringstream strs;
+    const char *num;
     int i;
 
     for(i=0; i<DIST_SIZE; i++)
         if( currTime <= distribution_length[i] )
             break;
-    std::ostringstream strs;
+
     strs << (i+1);
-    std::string num = strs.str();
-    interArrTime = par("interArrivalTime"+num);
+    num = ("interArrivalTime"+(strs.str())).c_str();
+    interArrTime = par(num);
     return interArrTime;
 }
 
