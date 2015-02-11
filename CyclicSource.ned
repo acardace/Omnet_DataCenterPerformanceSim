@@ -42,7 +42,7 @@ simple CyclicSource
         string jobName = default("job");         // the base name of the generated job (will be the module name if left empty)
         volatile int jobType = default(0);       // the type attribute of the created job (used by classifers and other modules)
         volatile int jobPriority = default(0);   // priority of the job
-        double startTime @unit(s) = default(interArrivalTime); // when the module sends out the first job
+        double startTime @unit(s) = default(interArrivalTime1); // when the module sends out the first job
         double stopTime @unit(s) = default(-1s); // when the module stops the job generation (-1 means no limit)
     gates:
         output out;
