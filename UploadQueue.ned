@@ -47,4 +47,6 @@ module UploadQueue
         in --> enqueue.in++;
         enqueue.out --> classifier.in++;
         classifier.rest --> dropped.in++;
+        classifier.out++ --> selector.in;
+        selector.out --> out;
 }
