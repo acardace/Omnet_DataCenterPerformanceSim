@@ -52,7 +52,6 @@ class CyclicSource : public SourceBase
         int numJobs;
         double distribution_length[3];
         double tot_dist_length;
-        bool cycle;
 
     protected:
         virtual void initialize();

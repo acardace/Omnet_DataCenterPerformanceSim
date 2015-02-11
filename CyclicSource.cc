@@ -54,7 +54,7 @@ void CyclicSource::initialize()
     numJobs = par("numJobs");
 
     // decide to cycle only if more than one interArrivalTime was given
-    int counter;
+    /*int counter;
     for (int i=1; i<DIST_SIZE; i++) {
         std::ostringstream strs;
         strs << (i+1);
@@ -62,7 +62,7 @@ void CyclicSource::initialize()
         double duration = par(num).doubleValue();
         if (duration >= 0) counter++;
     }
-    cycle = counter > 1;
+    cycle = counter > 1;*/
     // schedule the first message timer for start time
     scheduleAt(startTime, new cMessage("newjobTimer"));
 }
@@ -116,8 +116,7 @@ void CyclicSource::handleMessage(cMessage *msg)
     if ((numJobs < 0 || numJobs > jobCounter) && (stopTime < 0 || stopTime > simTime()))
     {
         // reschedule the timer for the next message
-        if( cycle )
-            scheduleAt(simTime() + generateInterArrivalTime(), msg);
+        scheduleAt(simTime() + generateInterArrivalTime(), msg);
 
         VirtualMachineImage *image = createImage();
         send(image, "out");
