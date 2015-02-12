@@ -30,6 +30,20 @@ network Network
         dataCenter2: DataCenter {
             @display("p=254,190");
         }
+        dataCenter3: DataCenter {
+            @display("p=523,73");
+        }
+        dataCenter4: DataCenter {
+            @display("p=469,218");
+        }
     connections:
         dataCenter.out++ --> DatarateChannel --> dataCenter1.in++;
+        dataCenter.out++ --> DatarateChannel --> dataCenter2.in++;
+        dataCenter1.out++ --> DatarateChannel --> dataCenter.in++;
+        dataCenter3.out++ --> DatarateChannel --> dataCenter2.in++;
+        dataCenter4.out++ --> DatarateChannel --> dataCenter1.in++;
+        dataCenter1.out++ --> DatarateChannel --> dataCenter3.in++;
+        dataCenter3.out++ --> DatarateChannel --> dataCenter4.in++;
+        dataCenter4.out++ --> DatarateChannel --> dataCenter2.in++;
+        dataCenter1.out++ --> DatarateChannel --> dataCenter4.in++;
 }
