@@ -50,8 +50,8 @@ void Selector::handleMessage(cMessage *msg)
         int j = (rrCounter + i) % neighbourSize;
         if (neighbour[j]) {
             queueing::IResourcePool *pool = check_and_cast<queueing::IResourcePool*>(neighbour[j]->getSubmodule("VMs"));
-            queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("resAllocator"));
-            if (pool->tryToAllocate(allocator, 1, 0)) {
+            //queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("resAllocator"));
+            if (pool->tryToAllocate(this, 1, 0)) {
                 send(msg, "out", j);
                 sent = true;
                 break;
@@ -61,6 +61,10 @@ void Selector::handleMessage(cMessage *msg)
     if (!sent) send(msg, "discard");
     if (neighbourSize > 0)
         rrCounter = (rrCounter+1)%neighbourSize;
+}
+
+void Selector::resourceGranted(queueing::IResourcePool *provider) {
+    //Messages are never enqueued, so there's nothing to do here.
 }
 
 }; //namespace

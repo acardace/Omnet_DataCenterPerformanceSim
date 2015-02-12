@@ -17,6 +17,7 @@
 #define __SDS_PROJECT_SELECTOR_H_
 
 #include <omnetpp.h>
+#include "Allocate.h"
 
 /**
  * TODO - Generated class
@@ -24,7 +25,7 @@
 
 namespace sds_project {
 
-class Selector : public cSimpleModule
+class Selector : public queueing::Allocate
 {
 private:
     int neighbourSize;
@@ -33,6 +34,8 @@ private:
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+  public:
+    void resourceGranted(queueing::IResourcePool *provider);
 };
 
 }; //namespace
