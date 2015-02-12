@@ -55,6 +55,7 @@ void CyclicSource::initialize()
     }
     cycle = counter > 1;*/
     // schedule the first message timer for start time
+    generateDistributionLength(); // also initialize distributions' length!
     scheduleAt(startTime, new cMessage("newjobTimer"));
 }
 
