@@ -78,8 +78,8 @@ VirtualMachineImage *CyclicSource::createImage()
 
 void CyclicSource::generateDistributionLength() {
     //generate inter-arrival time duration
-    double duration = par("interArrivaTimeDuration1").doubleValue();
-    distribution_length[0] = duration > 0 ? duration : 0;
+    double duration = par("interArrivalTimeDuration1").doubleValue();
+    distribution_length[0] = duration > 0 ? duration : 1;
     for (int i=1; i<DIST_SIZE; i++) {
         std::ostringstream strs;
         strs << (i+1);
