@@ -36,7 +36,6 @@ class SourceBase : public cSimpleModule
     protected:
         virtual void initialize();
         virtual void finish();
-        queueing::Job *createJob();
 };
 
 
@@ -52,6 +51,7 @@ class CyclicSource : public SourceBase
         int numJobs;
         double distribution_length[3];
         double tot_dist_length;
+        VirtualMachineImage *last;
 
     protected:
         virtual void initialize();

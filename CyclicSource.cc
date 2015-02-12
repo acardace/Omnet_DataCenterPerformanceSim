@@ -19,8 +19,6 @@
 
 namespace sds_project {
 
-Define_Module(CyclicSource);
-
 void SourceBase::initialize()
 {
     createdSignal = registerSignal("created");
@@ -31,20 +29,13 @@ void SourceBase::initialize()
         jobName = getName();
 }
 
-queueing::Job *SourceBase::createJob()
-{
-    char buf[80];
-    sprintf(buf, "%.60s-%d", jobName.c_str(), ++jobCounter);
-    queueing::Job *job = new queueing::Job(buf);
-    job->setKind(par("jobType"));
-    job->setPriority(par("jobPriority"));
-    return job;
-}
-
 void SourceBase::finish()
 {
     emit(createdSignal, jobCounter);
 }
+
+//----
+Define_Module(CyclicSource);
 
 void CyclicSource::initialize()
 {
@@ -72,7 +63,6 @@ VirtualMachineImage *CyclicSource::createImage()
     char buf[80];
     sprintf(buf, "%.60s-%d", jobName.c_str(), ++jobCounter);
     VirtualMachineImage *image = new VirtualMachineImage(buf, par("jobType"), par("diskSize").longValue());
-    image->setJob(SourceBase::createJob());
     return image;
 }
 
@@ -119,6 +109,7 @@ void CyclicSource::handleMessage(cMessage *msg)
         scheduleAt(simTime() + generateInterArrivalTime(), msg);
 
         VirtualMachineImage *image = createImage();
+        last = image;
         send(image, "out");
     }
     else

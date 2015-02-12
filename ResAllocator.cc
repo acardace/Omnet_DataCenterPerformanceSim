@@ -56,7 +56,7 @@ void ResAllocator::enqueueOrForward(VirtualMachineImage *vm){
     else
     {
         EV << "Message enqueued.\n";
-        vm->getJob()->setTimestamp();
+        vm->setTimestamp();
         queue.insert(vm);
         emit(queueLengthSignal, queue.length());
     }
@@ -78,9 +78,8 @@ VirtualMachineImage *ResAllocator::vmDequeue(){
     VirtualMachineImage *vm;
     vm = (VirtualMachineImage *)queue.pop();
     emit(queueLengthSignal, queue.length());
-    queueing::Job *job = vm->getJob();
-    simtime_t dt = simTime() - job->getTimestamp();
-    job->setTotalQueueingTime(job->getTotalQueueingTime() + dt);
+    simtime_t dt = simTime() - vm->getTimestamp();
+    vm->setTotalQueueingTime(vm->getTotalQueueingTime() + dt);
     emit(queueingTimeSignal, dt);
 
     return vm;

@@ -14,6 +14,7 @@
 // 
 
 #include "PMachine.h"
+#include <VirtualMachineImage.h>
 
 namespace sds_project{
 
@@ -55,9 +56,10 @@ simtime_t PMachine::startService(cMessage *msg){
 }
 
 void PMachine::endService(cMessage *msg){
-   /* EV << "Finishing service of " << msg->getName() << endl;
-    simtime_t d = simTime() - msg->getTimestamp();
-    msg->setTotalServiceTime(msg->getTotalServiceTime() + d);*/
+    EV << "Finishing service of " << msg->getName() << endl;
+    VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
+    simtime_t d = simTime() - vm->getTimestamp();
+    vm->setTotalServiceTime(vm->getTotalServiceTime() + d);
     send(msg, "out");
 }
 

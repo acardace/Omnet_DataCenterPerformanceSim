@@ -31,5 +31,5 @@ network Network
             @display("p=254,190");
         }
     connections:
-        dataCenter.out++ --> dataCenter1.in++;
+        dataCenter.out++ --> DatarateChannel --> dataCenter1.in++;
 }

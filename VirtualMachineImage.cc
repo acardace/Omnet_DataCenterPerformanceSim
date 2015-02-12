@@ -26,15 +26,77 @@ VirtualMachineImage::VirtualMachineImage(const char *name, short kind, int64 bit
 }
 
 VirtualMachineImage::~VirtualMachineImage() {
-    // TODO Auto-generated destructor stub
+
 }
 
-queueing::Job *VirtualMachineImage::getJob() {
-    return job;
+int VirtualMachineImage::getPriority() const
+{
+    return priority_var;
 }
 
-void VirtualMachineImage::setJob(queueing::Job *inJob) {
-    job = inJob;
+void VirtualMachineImage::setPriority(int priority)
+{
+    this->priority_var = priority;
+}
+
+simtime_t VirtualMachineImage::getTotalQueueingTime() const
+{
+    return totalQueueingTime_var;
+}
+
+void VirtualMachineImage::setTotalQueueingTime(simtime_t totalQueueingTime)
+{
+    this->totalQueueingTime_var = totalQueueingTime;
+}
+
+simtime_t VirtualMachineImage::getTotalServiceTime() const
+{
+    return totalServiceTime_var;
+}
+
+void VirtualMachineImage::setTotalServiceTime(simtime_t totalServiceTime)
+{
+    this->totalServiceTime_var = totalServiceTime;
+}
+
+simtime_t VirtualMachineImage::getTotalDelayTime() const
+{
+    return totalDelayTime_var;
+}
+
+void VirtualMachineImage::setTotalDelayTime(simtime_t totalDelayTime)
+{
+    this->totalDelayTime_var = totalDelayTime;
+}
+
+int VirtualMachineImage::getQueueCount() const
+{
+    return queueCount_var;
+}
+
+void VirtualMachineImage::setQueueCount(int queueCount)
+{
+    this->queueCount_var = queueCount;
+}
+
+int VirtualMachineImage::getDelayCount() const
+{
+    return delayCount_var;
+}
+
+void VirtualMachineImage::setDelayCount(int delayCount)
+{
+    this->delayCount_var = delayCount;
+}
+
+int VirtualMachineImage::getGeneration() const
+{
+    return generation_var;
+}
+
+void VirtualMachineImage::setGeneration(int generation)
+{
+    this->generation_var = generation;
 }
 
 }; //namespace

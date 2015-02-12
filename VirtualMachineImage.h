@@ -17,21 +17,40 @@
 #define VIRTUALMACHINEIMAGE_H_
 
 #include <cmessage.h>
-#include <Job.h>
 
 namespace sds_project {
 
-class VirtualMachineImage: public cPacket {
+class VirtualMachineImage: public cPacket{
 protected:
-    queueing::Job *job;
-protected:
-    void createJob();
+    int priority_var;
+    int queueCount_var;
+    int delayCount_var;
+    int generation_var;
+    simtime_t totalQueueingTime_var;
+    simtime_t totalServiceTime_var;
+    simtime_t totalDelayTime_var;
+
 public:
     VirtualMachineImage();
     VirtualMachineImage(const char *name=NULL, short kind=0, int64 bitLength=0);
     virtual ~VirtualMachineImage();
-    queueing::Job *getJob();
-    void setJob(queueing::Job *job);
+
+    virtual int getPriority() const;
+    virtual void setPriority(int priority);
+
+    //statistics related functions
+    virtual simtime_t getTotalQueueingTime() const;
+    virtual void setTotalQueueingTime(simtime_t totalQueueingTime);
+    virtual simtime_t getTotalServiceTime() const;
+    virtual void setTotalServiceTime(simtime_t totalServiceTime);
+    virtual simtime_t getTotalDelayTime() const;
+    virtual void setTotalDelayTime(simtime_t totalDelayTime);
+    virtual int getQueueCount() const;
+    virtual void setQueueCount(int queueCount);
+    virtual int getDelayCount() const;
+    virtual void setDelayCount(int delayCount);
+    virtual int getGeneration() const;
+    virtual void setGeneration(int generation);
 };
 
 }; //namespace

@@ -35,15 +35,15 @@ void PacketSink::initialize()
 void PacketSink::handleMessage(cMessage *msg)
 {
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
-    queueing::Job *job = vm->getJob();
+
     // gather statistics
-    emit(lifeTimeSignal, simTime()- job->getCreationTime());
-    emit(totalQueueingTimeSignal, job->getTotalQueueingTime());
-    emit(queuesVisitedSignal, job->getQueueCount());
-    emit(totalServiceTimeSignal, job->getTotalServiceTime());
-    emit(totalDelayTimeSignal, job->getTotalDelayTime());
-    emit(delaysVisitedSignal, job->getDelayCount());
-    emit(generationSignal, job->getGeneration());
+    emit(lifeTimeSignal, simTime()- vm->getCreationTime());
+    emit(totalQueueingTimeSignal, vm->getTotalQueueingTime());
+    emit(queuesVisitedSignal, vm->getQueueCount());
+    emit(totalServiceTimeSignal, vm->getTotalServiceTime());
+    emit(totalDelayTimeSignal, vm->getTotalDelayTime());
+    emit(delaysVisitedSignal, vm->getDelayCount());
+    emit(generationSignal, vm->getGeneration());
 
     if (!keepJobs)
         delete msg;
