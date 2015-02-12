@@ -34,6 +34,7 @@ private:
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    virtual void Selector::tryToSend(cMessage *msg, int i);
   public:
     void resourceGranted(queueing::IResourcePool *provider);
 };

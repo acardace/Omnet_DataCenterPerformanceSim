@@ -43,6 +43,15 @@ void Selector::initialize()
     rrCounter = 0;
 }
 
+void Selector::tryToSend(cMessage *msg, int i) {
+    cGate *outGate = gate("out", i);
+    cChannel channel = outGate->getChannel();
+    if (channel->isBusy())
+        scheduleAt(channel->getTransmissionFinishTime(), msg);
+    else
+        send(msg, "out", i);
+}
+
 void Selector::handleMessage(cMessage *msg)
 {
     bool sent = false;
@@ -52,7 +61,7 @@ void Selector::handleMessage(cMessage *msg)
             queueing::IResourcePool *pool = check_and_cast<queueing::IResourcePool*>(neighbour[j]->getSubmodule("VMs"));
             //queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("resAllocator"));
             if (pool->tryToAllocate(this, 1, 0)) {
-                send(msg, "out", j);
+                tryToSend(msg, j);
                 sent = true;
                 break;
             }
