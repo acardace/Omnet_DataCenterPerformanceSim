@@ -19,17 +19,19 @@ import ned.DatarateChannel;
 //
 network Network
 {
-    @display("bgb=775,348");
+    @display("bgb=650,334");
     submodules:
         dataCenter: DataCenter {
             @display("p=105,92");
         }
         dataCenter1: DataCenter {
-            @display("p=307,43");
+            @display("p=404,131");
         }
         dataCenter2: DataCenter {
-            @display("p=254,190");
+            @display("p=296,288");
         }
     connections:
-        dataCenter.out++ --> dataCenter1.in++;
+        dataCenter.out++ --> DatarateChannel --> dataCenter1.in++;
+        dataCenter.out++ --> DatarateChannel --> dataCenter2.in++;
+        dataCenter1.out++ --> DatarateChannel --> dataCenter2.in++;
 }
