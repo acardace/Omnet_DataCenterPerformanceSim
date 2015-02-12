@@ -33,11 +33,13 @@ simple CyclicSource
 		volatile double interArrivalTime3 @unit(s) = default(-1s);
 		volatile double interArrivalTime4 @unit(s) = default(-1s);
 		volatile double interArrivalTime5 @unit(s) = default(-1s);
+		volatile double interArrivalTime6 @unit(s) = default(-1s);
 		volatile double interArrivalTimeDuration1 @unit(s) = default(0s);
 		volatile double interArrivalTimeDuration2 @unit(s) = default(0s);
 		volatile double interArrivalTimeDuration3 @unit(s) = default(0s);
 		volatile double interArrivalTimeDuration4 @unit(s) = default(0s);
 		volatile double interArrivalTimeDuration5 @unit(s) = default(0s);
+		volatile double interArrivalTimeDuration6 @unit(s) = default(0s);
         volatile int diskSize @unit(b);
         string jobName = default("job");         // the base name of the generated job (will be the module name if left empty)
         volatile int jobType = default(0);       // the type attribute of the created job (used by classifers and other modules)

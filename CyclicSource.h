@@ -19,7 +19,7 @@
 #include <omnetpp.h>
 #include "VirtualMachineImage.h"
 
-#define DIST_SIZE 5
+#define DIST_SIZE 6
 
 /**
  * TODO - Generated class
