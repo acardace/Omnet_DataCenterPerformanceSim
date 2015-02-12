@@ -25,10 +25,17 @@ PMachine::PMachine(){};
 PMachine::~PMachine(){};
 
 void PMachine::initialize(){
+    int logicalRes,physicalRes;
+    physicalRes = getParentModule()->par("phisicalMachines");
+    logicalRes = getParentModule()->par("virtualMachines");
     VMs = 0;
     assigned_VMs_Signal = registerSignal("assigned_VMs");
     emit(assigned_VMs_Signal, VMs);
-    degradation = par("degradation_factor").doubleValue();
+
+    if( physicalRes < logicalRes )
+        degradation = par("degradation_factor").doubleValue(); //multiplexing allowed
+    else
+        degradation = 0; //multiplexing not allowed
 }
 
 void PMachine::handleMessage(cMessage *msg){
