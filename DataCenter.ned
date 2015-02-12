@@ -31,6 +31,7 @@ module DataCenter
         int mainQueueCapacity = default(-1);
         int uploadQueueCapacity = default(-1);
         @display("bgb=722,417;i=device/mainframe;tt=A data center network, which includes a group of servers and generates its own VMs.");
+
     gates:
         input in[];
         output out[];

@@ -20,17 +20,18 @@ namespace sds_project{
 
 Define_Module(PMachine);
 
+int PMachine::assigned_VMs = 0; //class variable
+
 PMachine::PMachine(){};
 
 PMachine::~PMachine(){};
 
 void PMachine::initialize(){
-    int logicalRes,physicalRes;
     physicalRes = getParentModule()->par("phisicalMachines");
     logicalRes = getParentModule()->par("virtualMachines");
+    utilizationRatio = registerSignal("utilization");
+    emit(utilizationRatio, PMachine::assigned_VMs/physicalRes);
     VMs = 0;
-    assigned_VMs_Signal = registerSignal("assigned_VMs");
-    emit(assigned_VMs_Signal, VMs);
 
     if( physicalRes < logicalRes )
         degradation = par("degradation_factor").doubleValue(); //multiplexing allowed
@@ -41,13 +42,15 @@ void PMachine::initialize(){
 void PMachine::handleMessage(cMessage *msg){
     if(msg->isSelfMessage()){
         //the msg has already been serviced
+        PMachine::assigned_VMs--;
         VMs--;
-        emit(assigned_VMs_Signal,VMs);
+        emit(utilizationRatio, PMachine::assigned_VMs/physicalRes);
         endService(msg);
     }else{
         //the message just got here
+        PMachine::assigned_VMs++;
         VMs++;
-        emit(assigned_VMs_Signal,VMs);
+        emit(utilizationRatio, PMachine::assigned_VMs/physicalRes);
         simtime_t serviceTime = startService( msg );
         scheduleAt( simTime()+serviceTime, msg );
     }

@@ -82,12 +82,12 @@ void CyclicSource::generateDistributionLength() {
 }
 
 double CyclicSource::generateInterArrivalTime(){
-    double simulationTime = simTime().dbl();
+    simtime_t simulationTime = simTime();
     if (simulationTime > previousTotalDuration) {
         generateDistributionLength();
         previousTotalDuration += tot_dist_length;
     }
-    double currTime = fmod(simTime().dbl(),tot_dist_length);
+    double currTime = fmod(simulationTime.dbl(),tot_dist_length);
     double interArrTime;
     std::ostringstream strs;
     const char *num;

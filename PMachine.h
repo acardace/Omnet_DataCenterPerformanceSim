@@ -24,18 +24,22 @@ namespace sds_project{
 class PMachine : public cSimpleModule
 {
   private:
-    simsignal_t assigned_VMs_Signal;
-
-    int VMs;
+    simsignal_t utilizationRatio;
     double degradation;
+    int VMs;
 
   protected:
+    int logicalRes;
+    int physicalRes;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
     virtual simtime_t startService(cMessage *job);
     virtual void endService(cMessage *job);
 
   public:
+    static int assigned_VMs;
+
     PMachine();
     virtual ~PMachine();
     int length();
