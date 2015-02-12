@@ -27,7 +27,7 @@ module DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        int vmDiskSize = default(100000B) @unit(B);
+        int vmDiskSize = default(100KiB) @unit(B);
         int mainQueueCapacity = default(-1);
         int uploadQueueCapacity = default(-1);
         @display("bgb=722,417;i=device/mainframe;tt=A data center network, which includes a group of servers and generates its own VMs.");
