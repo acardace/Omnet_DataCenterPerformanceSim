@@ -62,7 +62,7 @@ VirtualMachineImage *CyclicSource::createImage()
 {
     char buf[80];
     sprintf(buf, "%.60s-%d", jobName.c_str(), ++jobCounter);
-    VirtualMachineImage *image = new VirtualMachineImage(buf, par("jobType"), par("diskSize").longValue());
+    VirtualMachineImage *image = new VirtualMachineImage(buf, par("jobType"), par("diskSize").longValue()*8);
     return image;
 }
 
