@@ -24,8 +24,8 @@ import org.omnetpp.queueing.Sink;
 module UploadQueue
 {
     parameters:
-    	@display("i=block/network;bgb=535,248");
-    	int capacity = default(-1);
+        @display("i=block/network;bgb=762,248");
+        int capacity = default(-1);
     gates:
         input in;
         output out[];
@@ -48,10 +48,14 @@ module UploadQueue
             @display("p=413,45");
             resourceModuleName = ".queueSize";
         }
+        nic[sizeof(out)]: NIC {
+            @display("p=598,141");
+        }
     connections:
         in --> enqueue.in++;
         for i=0..sizeof(out)-1 {
-            selector.out++ --> out[i];
+            selector.out++ --> nic[i].in;
+            nic[i].out --> out[i];
         }
         selector.discard --> deallocate.in++;
         deallocate.out --> dropped.in++;

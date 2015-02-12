@@ -22,16 +22,17 @@ Define_Module(Selector);
 
 void Selector::initialize()
 {
-    neighbourSize = gateSize("out");
+    neighbourSize = getParentModule()->gateSize("out");
     if (neighbourSize > 0) {
         neighbour = new cModule* [neighbourSize];
         for (int i=0; i<neighbourSize; i++) {
-            cGate *outGate = gate("out", i); //gate of Selector
+            cGate *outGate = getParentModule()->gate("out", i); //gate of UploadQueue
+            ev << "outGate id=" << outGate->getId() << endl;
             // Iterate 3 times to get:
             // gate of UploadQueue
             // gate of DataCenter
             // gate of neighbour DataCenter
-            for (int j=1; j<=3; j++)
+            for (int j=1; j<=2; j++)
                 if (outGate)
                     outGate = outGate->getNextGate();
             if (outGate)
