@@ -22,16 +22,17 @@ Define_Module(Selector);
 
 void Selector::initialize()
 {
-    neighbourSize = gateSize("out");
+    neighbourSize = getParentModule()->gateSize("out");
     if (neighbourSize > 0) {
         neighbour = new cModule* [neighbourSize];
         for (int i=0; i<neighbourSize; i++) {
-            cGate *outGate = gate("out", i); //gate of Selector
+            cGate *outGate = getParentModule()->gate("out", i); //gate of UploadQueue
+            ev << "outGate id=" << outGate->getId() << endl;
             // Iterate 3 times to get:
             // gate of UploadQueue
             // gate of DataCenter
             // gate of neighbour DataCenter
-            for (int j=1; j<=3; j++)
+            for (int j=1; j<=2; j++)
                 if (outGate)
                     outGate = outGate->getNextGate();
             if (outGate)
@@ -43,15 +44,6 @@ void Selector::initialize()
     rrCounter = 0;
 }
 
-void Selector::tryToSend(cMessage *msg, int i) {
-    cGate *outGate = gate("out", i);
-    cChannel channel = outGate->getChannel();
-    if (channel->isBusy())
-        scheduleAt(channel->getTransmissionFinishTime(), msg);
-    else
-        send(msg, "out", i);
-}
-
 void Selector::handleMessage(cMessage *msg)
 {
     bool sent = false;
@@ -61,7 +53,7 @@ void Selector::handleMessage(cMessage *msg)
             queueing::IResourcePool *pool = check_and_cast<queueing::IResourcePool*>(neighbour[j]->getSubmodule("VMs"));
             //queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("resAllocator"));
             if (pool->tryToAllocate(this, 1, 0)) {
-                tryToSend(msg, j);
+                send(msg, "out", j);
                 sent = true;
                 break;
             }

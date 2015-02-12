@@ -13,30 +13,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __SDS_PROJECT_SELECTOR_H_
-#define __SDS_PROJECT_SELECTOR_H_
+#ifndef __SDS_PROJECT_NIC_H_
+#define __SDS_PROJECT_NIC_H_
 
 #include <omnetpp.h>
-#include "Allocate.h"
 
 /**
  * TODO - Generated class
  */
-
-namespace sds_project {
-
-class Selector : public queueing::Allocate
+class NIC : public cSimpleModule
 {
-private:
-    int neighbourSize;
-    cModule **neighbour;
-    int rrCounter;
+protected:
+    int capacity;
+    cChannel *channel;
+    cQueue queue;
+    cMessage *transmissionFinishedMsg;
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-  public:
-    void resourceGranted(queueing::IResourcePool *provider);
+    virtual void transmissionFinished();
+    virtual void tryToSend(cMessage *msg);
+  public :
+    virtual ~NIC();
 };
 
-}; //namespace
 #endif

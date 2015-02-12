@@ -13,30 +13,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __SDS_PROJECT_SELECTOR_H_
-#define __SDS_PROJECT_SELECTOR_H_
+package sds_project;
 
-#include <omnetpp.h>
-#include "Allocate.h"
-
-/**
- * TODO - Generated class
- */
-
-namespace sds_project {
-
-class Selector : public queueing::Allocate
+//
+// TODO auto-generated module
+//
+simple NIC
 {
-private:
-    int neighbourSize;
-    cModule **neighbour;
-    int rrCounter;
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-  public:
-    void resourceGranted(queueing::IResourcePool *provider);
-};
-
-}; //namespace
-#endif
+    parameters:
+        int capacity = default(-1);
+        @display("i=device/card");
+    gates:
+        input in;
+        output out;
+}
