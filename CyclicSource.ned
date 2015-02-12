@@ -33,7 +33,7 @@ simple CyclicSource
 		volatile double interArrivalTime3 @unit(s) = default(-1s);
 		volatile double interArrivalTime4 @unit(s) = default(-1s);
 		volatile double interArrivalTime5 @unit(s) = default(-1s);
-		volatile double interArrivalTimeDuration1 @unit(s) = default(0s);
+		volatile double interArrivalTimeDuration1 @unit(s) = default(5s);
 		volatile double interArrivalTimeDuration2 @unit(s) = default(0s);
 		volatile double interArrivalTimeDuration3 @unit(s) = default(0s);
 		volatile double interArrivalTimeDuration4 @unit(s) = default(0s);

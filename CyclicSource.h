@@ -31,6 +31,7 @@ class SourceBase : public cSimpleModule
 {
     protected:
         int jobCounter;
+        double previousTotalDuration;
         std::string jobName;
         simsignal_t createdSignal;
     protected:

@@ -43,7 +43,7 @@ void CyclicSource::initialize()
     startTime = par("startTime");
     stopTime = par("stopTime");
     numJobs = par("numJobs");
-
+    previousTotalDuration = 0;
     // decide to cycle only if more than one interArrivalTime was given
     /*int counter;
     for (int i=1; i<DIST_SIZE; i++) {
@@ -82,7 +82,11 @@ void CyclicSource::generateDistributionLength() {
 }
 
 double CyclicSource::generateInterArrivalTime(){
-    generateDistributionLength();
+    double simulationTime = simTime().dbl();
+    if (simulationTime > previousTotalDuration) {
+        generateDistributionLength();
+        previousTotalDuration += tot_dist_length;
+    }
     double currTime = fmod(simTime().dbl(),tot_dist_length);
     double interArrTime;
     std::ostringstream strs;
