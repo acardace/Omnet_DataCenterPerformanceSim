@@ -27,7 +27,11 @@ module DataCenter
         int mainQueueCapacity = default(-1);
         int uploadQueueCapacity = default(-1);
         @signal[utilization](type="double");
-    	@statistic[utilization](title="utilization ratio";record=vector,mean,min,max,timeavg;interpolationmode=none);
+    	@statistic[utilization](title="utilization ratio";record=vector,mean,max,timeavg);
+		@signal[waitingTime](type="double");
+    	@statistic[waitingTime](title="waiting time";record=vector,mean,min,max,timeavg);
+		@signal[federationAvailability](type="double");
+  		@statistic[federationAvailability](record=timeavg,mean,vector);
         @display("bgb=722,417;i=device/mainframe;tt=A data center network, which includes a group of servers and generates its own VMs.");
 
     gates:

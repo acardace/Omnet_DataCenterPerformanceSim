@@ -26,7 +26,7 @@ ResAllocator::~ResAllocator(){}
 
 void ResAllocator::initialize(){
     forwardedSignal = registerSignal("forwarded");
-    queueingTimeSignal = registerSignal("queueingTime");
+    queueingTimeSignal = registerSignal("waitingTime");
     queueLengthSignal = registerSignal("queueLength");
     emit(queueLengthSignal, 0l);
 
