@@ -21,8 +21,7 @@ package sds_project;
 simple PMachine{
     @class(sds_project::PMachine);
     @display("i=device/pc");
-    @signal[utilization](type="double");
-    @statistic[utilization](title="utilization ratio";record=vector,timeavg,max;interpolationmode=sample-hold);
+
 
     volatile double serviceTime @unit(s);
     double degradation_factor;

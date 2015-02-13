@@ -13,38 +13,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __SDS_PROJECT_PMACHINE_H_
-#define __SDS_PROJECT_PMACHINE_H_
+package sds_project;
+import org.omnetpp.queueing.ResourcePool;
 
-#include <omnetpp.h>
-#include <Job.h>
-
-namespace sds_project{
-
-class PMachine : public cSimpleModule
+//
+// TODO auto-generated module
+//
+simple VMPool extends ResourcePool
 {
-  private:
-    simsignal_t utilizationRatio;
-    double degradation;
-    int VMs;
-
-  protected:
-    int logicalRes;
-    int physicalRes;
-
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-    virtual simtime_t startService(cMessage *job);
-    virtual void endService(cMessage *job);
-
-  public:
-
-    PMachine();
-    virtual ~PMachine();
-    int length();
-
-};
-
-}; //namespace
-
-#endif
+    @class(sds_project::VMPool);
+	@signal[utilization](type="double");
+    @statistic[utilization](title="DataCenter utilization";record=vector,timeavg,mean,max;interpolationmode=none);
+}
