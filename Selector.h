@@ -28,6 +28,7 @@ namespace sds_project {
 class Selector : public queueing::Allocate
 {
 private:
+    simsignal_t federationAvailable;
     int neighbourSize;
     cModule **neighbour;
     int rrCounter;
