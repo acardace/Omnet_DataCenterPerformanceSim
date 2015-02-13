@@ -50,7 +50,7 @@ void ResAllocator::enqueueOrForward(VirtualMachineImage *vm){
     {
         EV << "Capacity full! Message forwarded.\n";
         if (ev.isGUI()) bubble("Forwarded!");
-        emit(forwardedSignal, 1);
+        emit(forwardedSignal, 1.0);
         send(vm, "discard");
     }
     else
@@ -59,6 +59,7 @@ void ResAllocator::enqueueOrForward(VirtualMachineImage *vm){
         vm->setTimestamp();
         queue.insert(vm);
         emit(queueLengthSignal, queue.length());
+        emit(forwardedSignal, 0.0);
     }
 }
 

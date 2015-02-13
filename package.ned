@@ -21,7 +21,7 @@ network Network
 {
     @display("bgb=775,348");
     submodules:
-        dataCenter: DataCenter {
+        dataCenter0: DataCenter {
             @display("p=105,92");
         }
         dataCenter1: DataCenter {
@@ -37,9 +37,9 @@ network Network
             @display("p=469,218");
         }
     connections:
-        dataCenter.out++ --> DatarateChannel --> dataCenter1.in++;
-        dataCenter.out++ --> DatarateChannel --> dataCenter2.in++;
-        dataCenter1.out++ --> DatarateChannel --> dataCenter.in++;
+        dataCenter0.out++ --> DatarateChannel --> dataCenter1.in++;
+        dataCenter0.out++ --> DatarateChannel --> dataCenter2.in++;
+        dataCenter1.out++ --> DatarateChannel --> dataCenter0.in++;
         dataCenter3.out++ --> DatarateChannel --> dataCenter2.in++;
         dataCenter4.out++ --> DatarateChannel --> dataCenter1.in++;
         dataCenter1.out++ --> DatarateChannel --> dataCenter3.in++;

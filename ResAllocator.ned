@@ -20,8 +20,8 @@ import org.omnetpp.queueing.Allocate;
 simple ResAllocator extends Allocate
 {
     parameters:
-        @signal[forwarded](type="long");
-        @statistic[forwarded](title="forwarded event";record=vector?,count;interpolationmode=none);
+        @signal[forwarded](type="double");
+        @statistic[forwarded](title="forwarded event";record=vector?,count,timeavg;interpolationmode=none);
     	@class(sds_project::ResAllocator);
     	fifo = true;
    	gates:
