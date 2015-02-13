@@ -54,7 +54,7 @@ void Selector::handleMessage(cMessage *msg)
             queueing::IResourcePool *pool = check_and_cast<queueing::IResourcePool*>(neighbour[j]->getSubmodule("VMs"));
             //queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("resAllocator"));
             if (pool->tryToAllocate(this, 1, 0)) {
-                emit(federationAvailable, 1);
+                emit(federationAvailable, 1.0);
                 send(msg, "out", j);
                 sent = true;
                 break;
@@ -62,7 +62,7 @@ void Selector::handleMessage(cMessage *msg)
         }
     }
     if (!sent) {
-        emit(federationAvailable, 0);
+        emit(federationAvailable, 0.0);
         send(msg, "discard");
     }
     if (neighbourSize > 0)
