@@ -69,7 +69,7 @@ bool ResAllocator::allocateResource(VirtualMachineImage *vm){
 
 void ResAllocator::handleMessage(cMessage *msg){
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
-    if (queue.isEmpty() && allocateResource(vm)){
+    if (  capacity!=0 && queue.isEmpty() && allocateResource(vm)){
         send(vm, "out");
     } else
         enqueueOrForward(vm);
