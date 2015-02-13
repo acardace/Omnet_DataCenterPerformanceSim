@@ -16,7 +16,7 @@
 #ifndef VIRTUALMACHINEIMAGE_H_
 #define VIRTUALMACHINEIMAGE_H_
 
-#include <cmessage.h>
+#include <omnetpp.h>
 
 namespace sds_project {
 
@@ -27,8 +27,9 @@ protected:
     int delayCount_var;
     int generation_var;
     simtime_t totalQueueingTime_var;
-    simtime_t totalServiceTime_var;
+    simtime_t serviceTime_var;
     simtime_t totalDelayTime_var;
+    std::string owner;
 
 public:
     VirtualMachineImage();
@@ -41,8 +42,8 @@ public:
     //statistics related functions
     virtual simtime_t getTotalQueueingTime() const;
     virtual void setTotalQueueingTime(simtime_t totalQueueingTime);
-    virtual simtime_t getTotalServiceTime() const;
-    virtual void setTotalServiceTime(simtime_t totalServiceTime);
+    virtual simtime_t getServiceTime() const;
+    virtual void setServiceTime(simtime_t serviceTime);
     virtual simtime_t getTotalDelayTime() const;
     virtual void setTotalDelayTime(simtime_t totalDelayTime);
     virtual int getQueueCount() const;
@@ -51,6 +52,8 @@ public:
     virtual void setDelayCount(int delayCount);
     virtual int getGeneration() const;
     virtual void setGeneration(int generation);
+    virtual std::string getOwner();
+    virtual void setOwner(std::string moduleOwner);
 };
 
 }; //namespace

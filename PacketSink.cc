@@ -23,13 +23,16 @@ Define_Module(PacketSink);
 void PacketSink::initialize()
 {
     lifeTimeSignal = registerSignal("lifeTime");
-    totalQueueingTimeSignal = registerSignal("totalQueueingTime");
     queuesVisitedSignal = registerSignal("queuesVisited");
-    totalServiceTimeSignal = registerSignal("totalServiceTime");
+    serviceTime = registerSignal("serviceTime");
     totalDelayTimeSignal = registerSignal("totalDelayTime");
     delaysVisitedSignal = registerSignal("delaysVisited");
     generationSignal = registerSignal("generation");
     keepJobs = par("keepJobs");
+}
+
+simsignal_t PacketSink::getServiceTimeSignal(){
+    return serviceTime;
 }
 
 void PacketSink::handleMessage(cMessage *msg)
@@ -38,12 +41,13 @@ void PacketSink::handleMessage(cMessage *msg)
 
     // gather statistics
     emit(lifeTimeSignal, simTime()- vm->getCreationTime());
-    emit(totalQueueingTimeSignal, vm->getTotalQueueingTime());
     emit(queuesVisitedSignal, vm->getQueueCount());
-    emit(totalServiceTimeSignal, vm->getTotalServiceTime());
     emit(totalDelayTimeSignal, vm->getTotalDelayTime());
     emit(delaysVisitedSignal, vm->getDelayCount());
     emit(generationSignal, vm->getGeneration());
+
+    //register ServiceTime
+    getModuleByPath(vm->getOwner().c_str())->emit(serviceTime,vm->getServiceTime());
 
     if (!keepJobs)
         delete msg;

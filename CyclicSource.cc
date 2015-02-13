@@ -64,6 +64,8 @@ VirtualMachineImage *CyclicSource::createImage()
     char buf[80];
     sprintf(buf, "%.60s-%d", jobName.c_str(), ++jobCounter);
     VirtualMachineImage *image = new VirtualMachineImage(buf, par("jobType"), par("diskSize").longValue()*8);
+    image->setOwner(getParentModule()->getModuleByPath(".Job_Completed")->getFullPath());
+    image->setServiceTime(0);
     return image;
 }
 
