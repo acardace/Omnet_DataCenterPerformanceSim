@@ -22,6 +22,7 @@ Define_Module(Selector);
 
 void Selector::initialize()
 {
+    federationAvailable = registerSignal("federation-available");
     neighbourSize = getParentModule()->gateSize("out");
     if (neighbourSize > 0) {
         neighbour = new cModule* [neighbourSize];
@@ -53,13 +54,17 @@ void Selector::handleMessage(cMessage *msg)
             queueing::IResourcePool *pool = check_and_cast<queueing::IResourcePool*>(neighbour[j]->getSubmodule("VMs"));
             //queueing::IResourceAllocator *allocator = check_and_cast<queueing::IResourceAllocator*>(neighbour[j]->getSubmodule("resAllocator"));
             if (pool->tryToAllocate(this, 1, 0)) {
+                emit(federationAvailable, 1);
                 send(msg, "out", j);
                 sent = true;
                 break;
             }
         }
     }
-    if (!sent) send(msg, "discard");
+    if (!sent) {
+        emit(federationAvailable, 0);
+        send(msg, "discard");
+    }
     if (neighbourSize > 0)
         rrCounter = (rrCounter+1)%neighbourSize;
 }
