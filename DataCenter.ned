@@ -28,6 +28,8 @@ module DataCenter
         int uploadQueueCapacity = default(-1);
         @signal[utilization](type="double");
     	@statistic[utilization](title="utilization ratio";record=vector,mean,min,max,timeavg;interpolationmode=none);
+		@signal[federationAvailability](type="double");
+  		@statistic[federationAvailability](record=timeavg,mean,vector);
         @display("bgb=722,417;i=device/mainframe;tt=A data center network, which includes a group of servers and generates its own VMs.");
 
     gates:
