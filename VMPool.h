@@ -13,36 +13,38 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __SDS_PROJECT_PMACHINE_H_
-#define __SDS_PROJECT_PMACHINE_H_
+#ifndef __SDS_PROJECT_VMPOOL_H_
+#define __SDS_PROJECT_VMPOOL_H_
 
-#include <omnetpp.h>
-#include <Job.h>
+#include <ResourcePool.h>
 
-namespace sds_project{
+/**
+ * Custom ResourcePool made to acquire stats about the DataCenter utilization
+ */
 
-class PMachine : public cSimpleModule
+namespace sds_project {
+
+class VMPool : public queueing::ResourcePool
 {
   private:
-    simsignal_t utilizationRatio;
-    double degradation;
-    int VMs;
+    simsignal_t utilization;
+    int physRes;
+    int logRes;
+    long amount;          // the amount of resource currently available
+    typedef std::list<AllocationRequest> AllocationRequestList;
+    AllocationRequestList allocatorList;
+
+    void add(AllocationRequest& request);
+    void updateDisplayString();
 
   protected:
-    int logicalRes;
-    int physicalRes;
-
     virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-    virtual simtime_t startService(cMessage *job);
-    virtual void endService(cMessage *job);
 
   public:
-
-    PMachine();
-    virtual ~PMachine();
-    int length();
-
+    VMPool();
+    virtual ~VMPool();
+    virtual bool tryToAllocate(queueing::IResourceAllocator *allocator, long amountToAllocate, int priority);
+    virtual void release(long amountToRelease);
 };
 
 }; //namespace
