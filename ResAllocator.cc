@@ -25,9 +25,10 @@ ResAllocator::ResAllocator(){}
 ResAllocator::~ResAllocator(){}
 
 void ResAllocator::initialize(){
-    forwardedSignal = registerSignal("forwarded");
+    droppedSignal = registerSignal("dropped");
     queueingTimeSignal = registerSignal("waitingTime");
     queueLengthSignal = registerSignal("queueLength");
+    lessThanRespLimitSignal = registerSignal("lessThanRespLimit");
     emit(queueLengthSignal, 0l);
 
     fifo = par("fifo");
@@ -36,6 +37,7 @@ void ResAllocator::initialize(){
 
     resourceAmount = par("resourceAmount");
     resourcePriority = par("resourcePriority");
+    respLimit = par("respLimit");
 
     const char *resourceName = par("resourceModuleName");
     cModule *mod = getParentModule()->getModuleByPath(resourceName);
@@ -48,9 +50,9 @@ void ResAllocator::enqueueOrForward(VirtualMachineImage *vm){
     // check for container capacity
     if (capacity >=0 && queue.length() >= capacity)
     {
-        EV << "Capacity full! Message forwarded.\n";
-        if (ev.isGUI()) bubble("Forwarded!");
-        emit(forwardedSignal, 1.0);
+        EV << "Capacity full! Message dropped.\n";
+        if (ev.isGUI()) bubble("Dropped!");
+        emit(droppedSignal, 1.0);
         send(vm, "discard");
     }
     else
@@ -59,7 +61,7 @@ void ResAllocator::enqueueOrForward(VirtualMachineImage *vm){
         vm->setTimestamp();
         queue.insert(vm);
         emit(queueLengthSignal, queue.length());
-        emit(forwardedSignal, 0.0);
+        emit(droppedSignal, 0.0);
     }
 }
 
@@ -70,6 +72,7 @@ bool ResAllocator::allocateResource(VirtualMachineImage *vm){
 void ResAllocator::handleMessage(cMessage *msg){
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
     if (queue.isEmpty() && allocateResource(vm)){
+        emit(lessThanRespLimitSignal, true);
         send(vm, "out");
     } else
         enqueueOrForward(vm);
@@ -82,6 +85,8 @@ VirtualMachineImage *ResAllocator::vmDequeue(){
     simtime_t dt = simTime() - vm->getTimestamp();
     vm->setTotalQueueingTime(vm->getTotalQueueingTime() + dt);
     emit(queueingTimeSignal, dt);
+    if (dt < respLimit)
+        emit(lessThanRespLimitSignal, true);
 
     return vm;
 }

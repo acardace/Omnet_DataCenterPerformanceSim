@@ -20,10 +20,13 @@ import org.omnetpp.queueing.Allocate;
 simple ResAllocator extends Allocate
 {
     parameters:
-        @signal[forwarded](type="double");
-        @statistic[forwarded](title="forwarded event";record=vector?,count,timeavg;interpolationmode=none);
+        @signal[dropped](type="double");
+        @signal[lessThanRespLimit](type="bool");
+        @statistic[dropped](title="Queue full, job dropped";record=vector?,count,timeavg;interpolationmode=none);
+        @statistic[lessThanRespLimit](title="Request accepted within time limit";record=vector?,count;interpolationmode=none);
     	@class(sds_project::ResAllocator);
     	fifo = true;
+    	double respLimit @unit(s) = default(60s);
    	gates:
    	    output discard;
 }

@@ -22,8 +22,8 @@
 namespace sds_project {
 
 /*
- * This is a variant of the Allocate module: when the resource pool is empty tokens are not queued;
- * instead they are marked as rejected and forwarded.
+ * This is a variant of the Allocate module: when the queue is full jobs are not lost;
+ * instead they are marked as rejected and sent on the "discarded" output.
  */
 
 #define ACCEPTED 0
@@ -40,11 +40,13 @@ class ResAllocator: public queueing::Allocate {
         queueing::IResourcePool *resourcePool;
         int resourceAmount;
         int resourcePriority;
+        double respLimit;
 
         // statistics
-        simsignal_t forwardedSignal;
+        simsignal_t droppedSignal;
         simsignal_t queueLengthSignal;
         simsignal_t queueingTimeSignal;
+        simsignal_t lessThanRespLimitSignal;
     public:
         ResAllocator();
         virtual ~ResAllocator();

@@ -11,29 +11,14 @@ network Network
 {
     @display("bgb=775,348");
     submodules:
-        dataCenter0: DataCenter {
+        localDataCenter: DataCenter {
             @display("p=105,92");
         }
-        dataCenter1: DataCenter {
-            @display("p=307,43");
-        }
-        dataCenter2: DataCenter {
-            @display("p=254,190");
-        }
-        dataCenter3: DataCenter {
-            @display("p=523,73");
-        }
-        dataCenter4: DataCenter {
-            @display("p=469,218");
+        remoteDataCenter[10]: DataCenter {
+            @display("p=345,131");
         }
     connections:
-        dataCenter0.out++ --> DatarateChannel --> dataCenter1.in++;
-        dataCenter0.out++ --> DatarateChannel --> dataCenter2.in++;
-        dataCenter1.out++ --> DatarateChannel --> dataCenter0.in++;
-        dataCenter3.out++ --> DatarateChannel --> dataCenter2.in++;
-        dataCenter4.out++ --> DatarateChannel --> dataCenter1.in++;
-        dataCenter1.out++ --> DatarateChannel --> dataCenter3.in++;
-        dataCenter3.out++ --> DatarateChannel --> dataCenter4.in++;
-        dataCenter4.out++ --> DatarateChannel --> dataCenter2.in++;
-        dataCenter1.out++ --> DatarateChannel --> dataCenter4.in++;
+        for i=0..9 {
+        	localDataCenter.out++ --> DatarateChannel --> remoteDataCenter[i].in++;
+        }
 }
