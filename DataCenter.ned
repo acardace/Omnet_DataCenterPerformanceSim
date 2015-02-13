@@ -16,11 +16,7 @@
 package sds_project;
 
 import ned.DatarateChannel;
-import org.omnetpp.queueing.Classifier;
 import org.omnetpp.queueing.Deallocate;
-import org.omnetpp.queueing.ResourcePool;
-import org.omnetpp.queueing.Sink;
-import org.omnetpp.queueing.Source;
 
 module DataCenter
 {
@@ -68,7 +64,7 @@ module DataCenter
             @display("p=210,100");
             capacity = uploadQueueCapacity;
         }
-        VMs: ResourcePool {
+        VMs: VMPool {
             @display("p=446,100");
             amount = virtualMachines;
         }

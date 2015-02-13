@@ -16,6 +16,7 @@
 #ifndef __SDS_PROJECT_VMPOOL_H_
 #define __SDS_PROJECT_VMPOOL_H_
 
+#include <omnetpp.h>
 #include <ResourcePool.h>
 
 /**
@@ -24,8 +25,20 @@
 
 namespace sds_project {
 
-class VMPool : public queueing::ResourcePool
+class VMPool : public cSimpleModule, public queueing::IResourcePool
 {
+  public:
+    struct AllocationRequest {
+      queueing::IResourceAllocator *allocator;
+      long amountToAllocate;
+      int priority;
+    };
+
+  VMPool();
+  virtual ~VMPool();
+  virtual bool tryToAllocate(queueing::IResourceAllocator *allocator, long amountToAllocate, int priority);
+  virtual void release(long amountToRelease);
+
   private:
     simsignal_t utilization;
     int physRes;
@@ -39,12 +52,6 @@ class VMPool : public queueing::ResourcePool
 
   protected:
     virtual void initialize();
-
-  public:
-    VMPool();
-    virtual ~VMPool();
-    virtual bool tryToAllocate(queueing::IResourceAllocator *allocator, long amountToAllocate, int priority);
-    virtual void release(long amountToRelease);
 };
 
 }; //namespace

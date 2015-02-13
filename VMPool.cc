@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "VMPool.h"
+#include <VMPool.h>
 
 namespace sds_project {
 
@@ -22,6 +22,12 @@ Define_Module(VMPool);
 VMPool::VMPool(){};
 
 VMPool::~VMPool(){};
+
+std::ostream& operator << (std::ostream& out, const VMPool::AllocationRequest& req)
+{
+    out << req.allocator->getFullPath() << " amount: " << req.amountToAllocate << " priority: " << req.priority;
+    return out;
+}
 
 void VMPool::initialize(){
     WATCH_LIST(allocatorList);
