@@ -24,7 +24,7 @@ namespace sds_project{
 class PMachine : public cSimpleModule
 {
   private:
-    simsignal_t utilizationRatio;
+    simsignal_t serviceTime;
     double degradation;
     int VMs;
 

@@ -49,15 +49,16 @@ void VirtualMachineImage::setTotalQueueingTime(simtime_t totalQueueingTime)
     this->totalQueueingTime_var = totalQueueingTime;
 }
 
-simtime_t VirtualMachineImage::getTotalServiceTime() const
+simtime_t VirtualMachineImage::getServiceTime() const
 {
-    return totalServiceTime_var;
+    return serviceTime_var;
 }
 
-void VirtualMachineImage::setTotalServiceTime(simtime_t totalServiceTime)
+void VirtualMachineImage::setServiceTime(simtime_t serviceTime)
 {
-    this->totalServiceTime_var = totalServiceTime;
+    this->serviceTime_var = serviceTime;
 }
+
 
 simtime_t VirtualMachineImage::getTotalDelayTime() const
 {
@@ -97,6 +98,14 @@ int VirtualMachineImage::getGeneration() const
 void VirtualMachineImage::setGeneration(int generation)
 {
     this->generation_var = generation;
+}
+
+std::string VirtualMachineImage::getOwner(){
+    return owner;
+}
+
+void VirtualMachineImage::setOwner(std::string moduleOwner){
+    owner = moduleOwner;
 }
 
 }; //namespace

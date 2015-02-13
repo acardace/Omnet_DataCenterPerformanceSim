@@ -33,12 +33,15 @@ class PacketSink : public cSimpleModule
     simsignal_t totalDelayTimeSignal;
     simsignal_t delaysVisitedSignal;
     simsignal_t generationSignal;
+    simsignal_t serviceTime;
     bool keepJobs;
 
-  protected:
+  public:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
     virtual void finish();
+
+    virtual simsignal_t getServiceTimeSignal();
 };
 
 }; //namespace

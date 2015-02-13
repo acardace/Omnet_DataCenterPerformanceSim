@@ -61,7 +61,7 @@ void PMachine::endService(cMessage *msg){
     EV << "Finishing service of " << msg->getName() << endl;
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
     simtime_t d = simTime() - vm->getTimestamp();
-    vm->setTotalServiceTime(vm->getTotalServiceTime() + d);
+    vm->setServiceTime(vm->getServiceTime() + d);
     send(msg, "out");
 }
 
