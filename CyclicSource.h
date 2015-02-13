@@ -31,9 +31,9 @@ class SourceBase : public cSimpleModule
 {
     protected:
         int jobCounter;
-        simtime_t previousTotalDuration;
         std::string jobName;
         simsignal_t createdSignal;
+
     protected:
         virtual void initialize();
         virtual void finish();
@@ -50,8 +50,9 @@ class CyclicSource : public SourceBase
         simtime_t stopTime;
 
         int numJobs;
-        double distribution_length[3];
+        simtime_t previousTotalDuration;
         double tot_dist_length;
+        double distribution_length[DIST_SIZE];
         VirtualMachineImage *last;
 
     protected:

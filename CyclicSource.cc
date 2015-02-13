@@ -44,6 +44,7 @@ void CyclicSource::initialize()
     stopTime = par("stopTime");
     numJobs = par("numJobs");
     previousTotalDuration = 0;
+    tot_dist_length =0;
     // decide to cycle only if more than one interArrivalTime was given
     /*int counter;
     for (int i=1; i<DIST_SIZE; i++) {
@@ -55,7 +56,6 @@ void CyclicSource::initialize()
     }
     cycle = counter > 1;*/
     // schedule the first message timer for start time
-    generateDistributionLength(); // also initialize distributions' length!
     scheduleAt(startTime, new cMessage("newjobTimer"));
 }
 
