@@ -29,10 +29,6 @@ void SourceBase::initialize()
         jobName = getName();
 }
 
-int SourceBase::getCreatedJobs(){
-    return jobCounter;
-}
-
 void SourceBase::finish()
 {
     emit(createdSignal, jobCounter);

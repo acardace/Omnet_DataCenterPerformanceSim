@@ -79,7 +79,7 @@ void PacketSink::finish()
    ResAllocator *allocator = (ResAllocator *) getParentModule()->findObject("resAllocator",false);
 
    if( source != NULL){
-       int createdJobs = source->getCreatedJobs();
+       int createdJobs = source->getJobCount();
        int lessThanRespJobs = allocator->getLessThanRespJobs();
        emit(responsivenessSignal, (double) lessThanRespJobs/createdJobs);
    }
