@@ -41,6 +41,7 @@ class ResAllocator: public queueing::Allocate {
         int resourceAmount;
         int resourcePriority;
         double respLimit;
+        int lessThanRespJobs;
 
         // statistics
         simsignal_t droppedSignal;
@@ -52,6 +53,7 @@ class ResAllocator: public queueing::Allocate {
         virtual ~ResAllocator();
 
         virtual void resourceGranted(queueing::IResourcePool *provider);
+        virtual int getLessThanRespJobs();
     protected:
         virtual void initialize();
         virtual void handleMessage(cMessage *msg);

@@ -14,8 +14,9 @@
 //
 
 #include "PacketSink.h"
-#include "VirtualMachineImage.h"
-#include "CyclicSource.h"
+#include <VirtualMachineImage.h>
+#include <CyclicSource.h>
+#include <ResAllocator.h>
 
 namespace sds_project {
 
@@ -30,6 +31,7 @@ void PacketSink::initialize()
     delaysVisitedSignal = registerSignal("delaysVisited");
     generationSignal = registerSignal("generation");
     availabilitySignal = registerSignal("availabilitySignal");
+    responsivenessSignal = registerSignal("responsiveness");
     keepJobs = par("keepJobs");
     calcAvailability = par("calcAvailability");
     jobCounter = 0;
@@ -72,6 +74,15 @@ void PacketSink::finish()
         double availability = 1.0 - (double)jobCounter / totalJobs;
         emit(availabilitySignal, availability);
     }
+
+   CyclicSource *source = (CyclicSource *) getParentModule()->findObject("cyclicSource",false);
+   ResAllocator *allocator = (ResAllocator *) getParentModule()->findObject("resAllocator",false);
+
+   if( source != NULL){
+       int createdJobs = source->getCreatedJobs();
+       int lessThanRespJobs = allocator->getLessThanRespJobs();
+       emit(responsivenessSignal, (double) lessThanRespJobs/createdJobs);
+   }
 }
 
 }; //namespace
