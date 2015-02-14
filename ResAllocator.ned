@@ -27,6 +27,8 @@ simple ResAllocator extends Allocate
     	@class(sds_project::ResAllocator);
     	fifo = true;
     	double respLimit @unit(s) = default(60s);
+    	bool instantService = default(true);
+    	bool availabilityOnDrop = default(true);
    	gates:
    	    output discard;
 }

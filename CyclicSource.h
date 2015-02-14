@@ -45,15 +45,16 @@ class SourceBase : public cSimpleModule
  */
 class CyclicSource : public SourceBase
 {
-    private:
+    protected:
         simtime_t startTime;
         simtime_t stopTime;
 
-        int numJobs;
+        int numJobs, lastIntArrTime;
         simtime_t previousTotalDuration;
         double tot_dist_length;
         double distribution_length[DIST_SIZE];
         VirtualMachineImage *last;
+        bool cycle, firstIteration;
 
     protected:
         virtual void initialize();

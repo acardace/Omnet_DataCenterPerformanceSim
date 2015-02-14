@@ -45,16 +45,9 @@ void CyclicSource::initialize()
     numJobs = par("numJobs");
     previousTotalDuration = 0;
     tot_dist_length =0;
-    // decide to cycle only if more than one interArrivalTime was given
-    /*int counter;
-    for (int i=1; i<DIST_SIZE; i++) {
-        std::ostringstream strs;
-        strs << (i+1);
-        const char *num = ("interArrivalTimeDuration"+(strs.str())).c_str();
-        double duration = par(num).doubleValue();
-        if (duration >= 0) counter++;
-    }
-    cycle = counter > 1;*/
+    cycle = par("cycle");
+    lastIntArrTime = 0;
+    firstIteration = true;
     // schedule the first message timer for start time
     scheduleAt(startTime, new cMessage("newjobTimer"));
 }
@@ -94,13 +87,17 @@ double CyclicSource::generateInterArrivalTime(){
     double interArrTime;
     std::ostringstream strs;
     const char *num;
-    int i;
 
-    for(i=0; i<DIST_SIZE; i++)
-        if( currTime <= distribution_length[i] )
-            break;
+    if (firstIteration || !cycle) {
+        for(int i=0; i<DIST_SIZE; i++)
+            if( currTime <= distribution_length[i] ) {
+                lastIntArrTime = i;
+                break;
+            }
+        lastIntArrTime++;
+    }
 
-    strs << (i+1);
+    strs << (lastIntArrTime);
     num = ("interArrivalTime"+(strs.str())).c_str();
     interArrTime = par(num);
     return interArrTime;

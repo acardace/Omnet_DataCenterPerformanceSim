@@ -29,13 +29,16 @@ void ResAllocator::initialize(){
     queueingTimeSignal = registerSignal("waitingTime");
     queueLengthSignal = registerSignal("queueLength");
     lessThanRespLimitSignal = registerSignal("lessThanRespLimit");
+    availability_tSignal = registerSignal("availability_t");
+    instantServiceSignal = registerSignal("instantService");
     emit(queueLengthSignal, 0l);
 
     lessThanRespJobs = 0;
     fifo = par("fifo");
     capacity = par("capacity");
     queue.setName("queue");
-
+    availabilityOnDrop = par("availabilityOnDrop");
+    instantService = par("instantService");
     resourceAmount = par("resourceAmount");
     resourcePriority = par("resourcePriority");
     respLimit = par("respLimit");
@@ -54,6 +57,8 @@ void ResAllocator::enqueueOrForward(VirtualMachineImage *vm){
         EV << "Capacity full! Message dropped.\n";
         if (ev.isGUI()) bubble("Dropped!");
         emit(droppedSignal, 1.0);
+        if (availabilityOnDrop)
+            emit(availability_tSignal, 0.0);
         send(vm, "discard");
     }
     else
@@ -63,6 +68,7 @@ void ResAllocator::enqueueOrForward(VirtualMachineImage *vm){
         queue.insert(vm);
         emit(queueLengthSignal, queue.length());
         emit(droppedSignal, 0.0);
+        emit(availability_tSignal, 1.0);
     }
 }
 
@@ -76,9 +82,13 @@ void ResAllocator::handleMessage(cMessage *msg){
         lessThanRespJobs++;
         emit(lessThanRespLimitSignal, true);
         emit(droppedSignal, 0.0);
+        emit(availability_tSignal, 1.0);
+        emit(instantServiceSignal, 1.0);
         send(vm, "out");
-    } else
+    } else {
+        emit(instantServiceSignal, 0.0);
         enqueueOrForward(vm);
+    }
 };
 
 VirtualMachineImage *ResAllocator::vmDequeue(){

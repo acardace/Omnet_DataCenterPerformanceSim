@@ -23,18 +23,20 @@ module DataCenter
     parameters:
         int phisicalMachines;
         int virtualMachines;
-        int vmDiskSize = default(100KiB) @unit(B);
+        int vmDiskSize @unit(B) = default(100KiB);
         int mainQueueCapacity = default(-1);
         int uploadQueueCapacity = default(-1);
         @signal[utilization](type="double");
-		@signal[waitingTime](type="double");
-		@signal[serviceTime](type="double");
-		@statistic[availability](source=availabilitySignal; title="job completed / total jobs ratio"; record=last);
-    	@statistic[utilization](title="utilization ratio";record=vector?,mean,max,timeavg);
-    	@statistic[waitingTime](title="waiting time";record=vector?,mean,min,max,timeavg);
-    	@statistic[serviceTime](title="datacenter service time";record=vector?,mean,min,max,timeavg);
-    	@statistic[waitServiceTime](title="waiting + service time"; source=mean(waitingTime)+mean(serviceTime); record=last,min,max);
-    	@statistic[responsiveness](record=last,vector?);
+        @signal[waitingTime](type="double");
+        @signal[serviceTime](type="double");
+        @statistic[availability](source=availabilitySignal; title="job completed / total jobs ratio"; record=last);
+        @statistic[utilization](title="utilization ratio"; record=vector?,mean,max,timeavg);
+        @statistic[waitingTime](title="waiting time"; record=vector?,mean,min,max,timeavg);
+        @statistic[serviceTime](title="datacenter service time"; record=vector?,mean,min,max,timeavg);
+        @statistic[waitServiceTime](title="waiting + service time"; source=mean(waitingTime)+mean(serviceTime); record=last,min,max);
+        @statistic[responsiveness](record=last,vector?);
+        @statistic[availability_t](record=mean,vector?; interpolationmode=sample-hold);
+        @statistic[instantService](record=vector?; interpolationmode=sample-hold);
         @display("bgb=722,417;i=device/mainframe;tt=A data center network, which includes a group of servers and generates its own VMs.");
 
     gates:
@@ -55,8 +57,9 @@ module DataCenter
         }
         resAllocator: ResAllocator {
             @display("p=89,221");
-            resourceModuleName = ".VMs";
             capacity = mainQueueCapacity;
+            resourceModuleName = ".VMs";
+            availabilityOnDrop = false;
         }
         Pqueue_out: Deallocate {
             @display("p=654,221");

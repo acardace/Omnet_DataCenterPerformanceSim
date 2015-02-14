@@ -34,6 +34,7 @@ module UploadQueue
             @display("p=104,141");
             capacity = capacity;
             resourceModuleName = ".queueSize";
+            instantService = false;
         }
         dropped: PacketSink {
             @display("p=244,45");

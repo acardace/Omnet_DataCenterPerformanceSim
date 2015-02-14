@@ -54,6 +54,7 @@ simple CyclicSource
         volatile int jobPriority = default(0);   // priority of the job
         double startTime @unit(s) = default(interArrivalTime1); // when the module sends out the first job
         double stopTime @unit(s) = default(-1s); // when the module stops the job generation (-1 means no limit)
+        bool cycle = default(true); // whether to cycle through the various interArrivalTimes
     gates:
         output out;
 }

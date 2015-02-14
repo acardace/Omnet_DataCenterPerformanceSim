@@ -36,7 +36,7 @@ class ResAllocator: public queueing::Allocate {
 
         // parameters
         int capacity;
-        bool fifo;
+        bool fifo, availabilityOnDrop, instantService;
         queueing::IResourcePool *resourcePool;
         int resourceAmount;
         int resourcePriority;
@@ -48,6 +48,8 @@ class ResAllocator: public queueing::Allocate {
         simsignal_t queueLengthSignal;
         simsignal_t queueingTimeSignal;
         simsignal_t lessThanRespLimitSignal;
+        simsignal_t availability_tSignal;
+        simsignal_t instantServiceSignal;
     public:
         ResAllocator();
         virtual ~ResAllocator();
