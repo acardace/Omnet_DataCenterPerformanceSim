@@ -34,7 +34,7 @@ void VMPool::initialize(){
     WATCH(amount);
     amount = par("amount");
     physRes = getParentModule()->par("phisicalMachines");
-    logRes = getParentModule()->par("virtualMachines");
+    logRes = par("amount");
     utilization = registerSignal("utilization");
     emit(utilization, (logRes-amount)/physRes);
     if (ev.isGUI())
