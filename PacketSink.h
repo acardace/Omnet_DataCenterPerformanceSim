@@ -34,6 +34,7 @@ class PacketSink : public cSimpleModule
     simsignal_t delaysVisitedSignal;
     simsignal_t generationSignal;
     simsignal_t serviceTime;
+    simsignal_t responsivenessSignal;
     bool keepJobs;
 
   public:

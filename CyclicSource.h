@@ -37,6 +37,9 @@ class SourceBase : public cSimpleModule
     protected:
         virtual void initialize();
         virtual void finish();
+
+    public:
+        virtual int getCreatedJobs();
 };
 
 

@@ -31,6 +31,7 @@ void ResAllocator::initialize(){
     lessThanRespLimitSignal = registerSignal("lessThanRespLimit");
     emit(queueLengthSignal, 0l);
 
+    lessThanRespJobs = 0;
     fifo = par("fifo");
     capacity = par("capacity");
     queue.setName("queue");
@@ -72,6 +73,7 @@ bool ResAllocator::allocateResource(VirtualMachineImage *vm){
 void ResAllocator::handleMessage(cMessage *msg){
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
     if (capacity!=0 && queue.isEmpty() && allocateResource(vm)){
+        lessThanRespJobs++;
         emit(lessThanRespLimitSignal, true);
         emit(droppedSignal, 0.0);
         send(vm, "out");
@@ -86,8 +88,10 @@ VirtualMachineImage *ResAllocator::vmDequeue(){
     simtime_t dt = simTime() - vm->getTimestamp();
     vm->setTotalQueueingTime(vm->getTotalQueueingTime() + dt);
     emit(queueingTimeSignal, dt);
-    if (dt < respLimit)
+    if (dt < respLimit){
+        lessThanRespJobs++;
         emit(lessThanRespLimitSignal, true);
+    }
 
     return vm;
 }
@@ -107,6 +111,10 @@ void ResAllocator::resourceGranted(queueing::IResourcePool *provider){
         send(vm, "out");
     }
 
+}
+
+int ResAllocator::getLessThanRespJobs(){
+    return lessThanRespJobs;
 }
 
 }; //namespace

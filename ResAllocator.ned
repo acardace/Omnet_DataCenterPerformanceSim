@@ -22,9 +22,8 @@ simple ResAllocator extends Allocate
     parameters:
         @signal[dropped](type="double");
         @signal[lessThanRespLimit](type="bool");
-		@signal[federationAvailability](type="double");
         @statistic[dropped](title="Queue full, job dropped";record=vector?,count,timeavg;interpolationmode=none);
-        @statistic[lessThanRespLimit](title="Request accepted within time limit";record=vector?,count;interpolationmode=none);
+        @statistic[lessThanRespLimit](title="Request accepted within time limit";record=vector,count;interpolationmode=none);
 		@statistic[availability](source=(1-(mean(dropped)+(1-mean(federationAvailability)))); record=last,vector?);
     	@class(sds_project::ResAllocator);
     	fifo = true;
