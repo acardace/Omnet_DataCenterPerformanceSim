@@ -53,7 +53,6 @@ class CyclicSource : public SourceBase
         simtime_t previousTotalDuration;
         double tot_dist_length;
         double distribution_length[DIST_SIZE];
-        VirtualMachineImage *last;
         bool cycle, firstIteration;
 
     protected:

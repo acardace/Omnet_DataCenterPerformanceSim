@@ -113,7 +113,6 @@ void CyclicSource::handleMessage(cMessage *msg)
         scheduleAt(simTime() + generateInterArrivalTime(), msg);
 
         VirtualMachineImage *image = createImage();
-        last = image;
         send(image, "out");
     }
     else
