@@ -22,7 +22,7 @@ Define_Module(Selector);
 
 void Selector::initialize()
 {
-    federationAvailable = getParentModule()->registerSignal("federationAvailability");
+    federationAvailable = registerSignal("federationAvailability");
     emit(federationAvailable, 1.0);
     neighbourSize = getParentModule()->gateSize("out");
     if (neighbourSize > 0) {

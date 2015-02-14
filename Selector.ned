@@ -22,6 +22,7 @@ simple Selector
 {
     parameters:
         @class(sds_project::Selector);
+  		@statistic[federationAvailability](record=timeavg,mean,count,vector?);
   		@display("i=block/dispatch");
     gates:
         input in;
