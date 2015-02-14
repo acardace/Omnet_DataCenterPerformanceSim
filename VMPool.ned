@@ -23,5 +23,5 @@ simple VMPool extends ResourcePool
 {
     @class(sds_project::VMPool);
 	@signal[utilization](type="double");
-    @statistic[utilization](title="DataCenter utilization";record=vector,timeavg,mean,max;interpolationmode=none);
+    //@statistic[utilization](title="DataCenter utilization";record=vector?,timeavg,mean,max;interpolationmode=none);
 }

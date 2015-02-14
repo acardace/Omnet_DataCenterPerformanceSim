@@ -30,7 +30,7 @@ simple PacketSink
         @signal[queuesVisited](type="long");
         @signal[delaysVisited](type="long");
         @signal[generation](type="long");
-        @statistic[lifeTime](title="lifetime of arrived jobs";unit=s;record=vector,mean,max;interpolationmode=none);
+        @statistic[lifeTime](title="lifetime of arrived jobs";unit=s;record=vector?,mean,max;interpolationmode=none);
         @statistic[totalQueueingTime](title="the total time spent in queues by arrived jobs";unit=s;record=vector?,mean,max;interpolationmode=none);
         @statistic[totalDelayTime](title="the total time spent in delay nodes by arrived jobs";unit=s;record=vector?,mean,max;interpolationmode=none);
         @statistic[totalServiceTime](title="the total time spent  by arrived jobs";unit=s;record=vector?,mean,max;interpolationmode=none);

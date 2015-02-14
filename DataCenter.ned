@@ -33,7 +33,7 @@ module DataCenter
     	@statistic[utilization](title="utilization ratio";record=vector?,mean,max,timeavg);
     	@statistic[waitingTime](title="waiting time";record=vector?,mean,min,max,timeavg);
     	@statistic[serviceTime](title="datacenter service time";record=vector?,mean,min,max,timeavg);
-    	@statistic[waitServiceTime](title="waiting + service time"; source=waitinTime+serviceTime; record=mean,min,max,timeavg);
+    	@statistic[waitServiceTime](title="waiting + service time"; source=mean(waitingTime)+mean(serviceTime); record=last,min,max);
     	@statistic[responsiveness](record=last,vector?);
         @display("bgb=722,417;i=device/mainframe;tt=A data center network, which includes a group of servers and generates its own VMs.");
 
