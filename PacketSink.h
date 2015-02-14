@@ -25,7 +25,7 @@ namespace sds_project {
  */
 class PacketSink : public cSimpleModule
 {
-  private:
+  protected:
     simsignal_t lifeTimeSignal;
     simsignal_t totalQueueingTimeSignal;
     simsignal_t queuesVisitedSignal;
@@ -34,7 +34,9 @@ class PacketSink : public cSimpleModule
     simsignal_t delaysVisitedSignal;
     simsignal_t generationSignal;
     simsignal_t serviceTime;
-    bool keepJobs;
+    simsignal_t availabilitySignal;
+    bool keepJobs, calcAvailability;
+    int jobCounter;
 
   public:
     virtual void initialize();

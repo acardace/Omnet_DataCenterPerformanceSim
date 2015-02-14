@@ -61,6 +61,8 @@ class CyclicSource : public SourceBase
         virtual VirtualMachineImage *createImage();
         virtual void generateDistributionLength();
         virtual double generateInterArrivalTime();
+    public:
+        virtual int getJobCount();
 };
 
 }; //namespace

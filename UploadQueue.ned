@@ -32,10 +32,12 @@ module UploadQueue
     submodules:
         enqueue: ResAllocator {
             @display("p=104,141");
+            capacity = capacity;
             resourceModuleName = ".queueSize";
         }
         dropped: PacketSink {
             @display("p=244,45");
+            calcAvailability = true;
         }
         selector: Selector {
             @display("p=413,141");

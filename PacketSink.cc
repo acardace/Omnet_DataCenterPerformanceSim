@@ -14,7 +14,8 @@
 //
 
 #include "PacketSink.h"
-#include <VirtualMachineImage.h>
+#include "VirtualMachineImage.h"
+#include "CyclicSource.h"
 
 namespace sds_project {
 
@@ -28,7 +29,10 @@ void PacketSink::initialize()
     totalDelayTimeSignal = registerSignal("totalDelayTime");
     delaysVisitedSignal = registerSignal("delaysVisited");
     generationSignal = registerSignal("generation");
+    availabilitySignal = registerSignal("availabilitySignal");
     keepJobs = par("keepJobs");
+    calcAvailability = par("calcAvailability");
+    jobCounter = 0;
 }
 
 simsignal_t PacketSink::getServiceTimeSignal(){
@@ -38,6 +42,9 @@ simsignal_t PacketSink::getServiceTimeSignal(){
 void PacketSink::handleMessage(cMessage *msg)
 {
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
+
+    // to calculate availability we have to count dropped jobs
+    ++jobCounter;
 
     // gather statistics
     emit(lifeTimeSignal, simTime()- vm->getCreationTime());
@@ -55,7 +62,16 @@ void PacketSink::handleMessage(cMessage *msg)
 
 void PacketSink::finish()
 {
-    // TODO missing scalar statistics
+    if (calcAvailability) {
+        // Calculate availability
+        cModule *parent = getParentModule();
+        cModule *parentsparent = parent->getParentModule();
+        cModule *circlicSource = parentsparent->getSubmodule("cyclicSource");
+        CyclicSource *source = check_and_cast<CyclicSource*>(circlicSource);
+        double totalJobs = (double) source->getJobCount();
+        double availability = 1.0 - (double)jobCounter / totalJobs;
+        emit(availabilitySignal, availability);
+    }
 }
 
 }; //namespace

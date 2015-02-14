@@ -126,4 +126,8 @@ void CyclicSource::handleMessage(cMessage *msg)
     }
 }
 
+int CyclicSource::getJobCount() {
+    return jobCounter;
+}
+
 }; //namespace

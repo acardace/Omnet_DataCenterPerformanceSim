@@ -37,7 +37,9 @@ simple PacketSink
         @statistic[queuesVisited](title="the total number of queues visited by arrived jobs";record=vector?,mean,max;interpolationmode=none);
         @statistic[delaysVisited](title="the total number of delays visited by arrived jobs";record=vector?,mean,max;interpolationmode=none);
         @statistic[generation](title="the generation of the arrived jobs";record=vector?,mean,max;interpolationmode=none);
+		@statistic[availability](source=availabilitySignal; title="job completed / total jobs ratio"; record=last);
         bool keepJobs = default(false); // whether to keep the received jobs till the end of simulation
+        bool calcAvailability = default(false); // whether to calculate data center availability (only for dropped jobs sink)
     gates:
         input in[];
 }
