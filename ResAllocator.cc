@@ -3,15 +3,15 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+//
 
 #include <omnetpp.h>
 #include <ResAllocator.h>
@@ -79,10 +79,13 @@ void ResAllocator::handleMessage(cMessage *msg){
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
     if (queue.isEmpty() && allocateResource(vm)){
         lessThanRespJobs++;
-        emit(lessThanRespLimitSignal, true);
+        if (respLimit > 0)
+            emit(lessThanRespLimitSignal, true);
         emit(droppedSignal, 0.0);
         emit(availability_tSignal, 1.0);
         emit(instantServiceSignal, 1.0);
+        // Set timestamp to record time spent inside the upload queue
+        vm->setTimestamp();
         send(vm, "out");
     } else {
         emit(instantServiceSignal, 0.0);
@@ -96,7 +99,7 @@ VirtualMachineImage *ResAllocator::vmDequeue(){
     emit(queueLengthSignal, queue.length());
     simtime_t dt = simTime() - vm->getTimestamp();
     vm->setTotalQueueingTime(vm->getTotalQueueingTime() + dt);
-    if (dt < respLimit){
+    if (dt < respLimit && respLimit > 0){
         lessThanRespJobs++;
         emit(lessThanRespLimitSignal, true);
     }

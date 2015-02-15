@@ -14,6 +14,7 @@
 // 
 
 #include "RemoteDeallocate.h"
+#include "VirtualMachineImage.h"
 
 namespace sds_project {
 
@@ -21,6 +22,7 @@ Define_Module(RemoteDeallocate);
 
 void RemoteDeallocate::initialize()
 {
+    waitingTimeSignal = registerSignal("waitingTime");
     resourceAmount = par("resourceAmount");
     resourceName = par("resourceModuleName");
 }
@@ -32,7 +34,12 @@ void RemoteDeallocate::handleMessage(cMessage *msg)
     queueing::IResourcePool *resourcePool = NULL;
     pool = remoteSelector->getParentModule()->getSubmodule(resourceName);
     if (pool) resourcePool = check_and_cast<queueing::IResourcePool*>(pool);
-    if (resourcePool) resourcePool->release(resourceAmount);
+    if (resourcePool) {
+        resourcePool->release(resourceAmount);
+        VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
+        simtime_t waitingTime = vm->getTimestamp()+simTime();
+        getModuleByPath(vm->getOwner().c_str())->emit(waitingTimeSignal, waitingTime);
+    }
     else throw cRuntimeError("Cannot find resource pool module `%s' in remote DataCenter", resourceName);
     send(msg, "out");
 }
