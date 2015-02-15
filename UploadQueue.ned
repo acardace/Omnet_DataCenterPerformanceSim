@@ -26,14 +26,16 @@ module UploadQueue
     parameters:
         @display("i=block/network;bgb=762,248");
         int capacity = default(-1);
+        int parallelTransfers = default(1);
     gates:
         input in;
         output out[];
     submodules:
         enqueue: ResAllocator {
             @display("p=104,141");
-            capacity = capacity;
+            capacity = 0;
             resourceModuleName = ".queueSize";
+            respLimit = 0;
             instantService = false;
         }
         dropped: PacketSink {

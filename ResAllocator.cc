@@ -80,10 +80,13 @@ void ResAllocator::handleMessage(cMessage *msg){
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
     if (capacity!=0 && queue.isEmpty() && allocateResource(vm)){
         lessThanRespJobs++;
-        emit(lessThanRespLimitSignal, true);
+        if (respLimit > 0)
+            emit(lessThanRespLimitSignal, true);
         emit(droppedSignal, 0.0);
         emit(availability_tSignal, 1.0);
         emit(instantServiceSignal, 1.0);
+        // Set timestamp to record time spent inside the upload queue
+        vm->setTimestamp();
         send(vm, "out");
     } else {
         emit(instantServiceSignal, 0.0);
@@ -98,7 +101,7 @@ VirtualMachineImage *ResAllocator::vmDequeue(){
     simtime_t dt = simTime() - vm->getTimestamp();
     vm->setTotalQueueingTime(vm->getTotalQueueingTime() + dt);
     emit(queueingTimeSignal, dt);
-    if (dt < respLimit){
+    if (dt < respLimit && respLimit > 0){
         lessThanRespJobs++;
         emit(lessThanRespLimitSignal, true);
     }

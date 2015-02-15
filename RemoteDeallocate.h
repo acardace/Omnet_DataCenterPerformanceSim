@@ -29,6 +29,7 @@ class RemoteDeallocate : public queueing::Deallocate
 {
 protected:
     const char *resourceName;
+    simsignal_t waitingTimeSignal;
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
