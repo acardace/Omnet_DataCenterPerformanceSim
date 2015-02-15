@@ -33,8 +33,8 @@ void PacketSink::initialize()
     availabilitySignal = registerSignal("availabilitySignal");
     responsivenessSignal = registerSignal("responsiveness");
     keepJobs = par("keepJobs");
-    calcAvailability = par("calcAvailability");
-    calcServiceTime = par("calcServiceTime");
+    calcAvailability = par("calcAvailability").boolValue();
+    calcServiceTime = par("calcServiceTime").boolValue();
     jobCounter = 0;
 }
 

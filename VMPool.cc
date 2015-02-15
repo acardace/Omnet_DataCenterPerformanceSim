@@ -31,12 +31,12 @@ std::ostream& operator << (std::ostream& out, const VMPool::AllocationRequest& r
 
 void VMPool::incrementUtilizedPM(){
     utilized_PM++;
-    emit(utilization, utilized_PM/physRes);
+    emit(utilization, (double) utilized_PM/physRes);
 }
 
 void VMPool::decrementUtilizedPM(){
     utilized_PM--;
-    emit(utilization, utilized_PM/physRes);
+    emit(utilization, (double) utilized_PM/physRes);
 }
 
 void VMPool::initialize(){
