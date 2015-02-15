@@ -18,6 +18,7 @@
 
 #include <omnetpp.h>
 #include <Job.h>
+#include <VMPool.h>
 
 namespace sds_project{
 
@@ -27,6 +28,7 @@ class PMachine : public cSimpleModule
     simsignal_t serviceTime;
     double degradation;
     int VMs;
+    VMPool *resAllocator;
 
   protected:
     int logicalRes;

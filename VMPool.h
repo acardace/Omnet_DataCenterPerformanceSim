@@ -38,11 +38,13 @@ class VMPool : public cSimpleModule, public queueing::IResourcePool
   virtual ~VMPool();
   virtual bool tryToAllocate(queueing::IResourceAllocator *allocator, long amountToAllocate, int priority);
   virtual void release(long amountToRelease);
+  virtual void incrementUtilizedPM();
+  virtual void decrementUtilizedPM();
 
   private:
     simsignal_t utilization;
     int physRes;
-    int logRes;
+    int utilized_PM;
     long amount;          // the amount of resource currently available
     typedef std::list<AllocationRequest> AllocationRequestList;
     AllocationRequestList allocatorList;

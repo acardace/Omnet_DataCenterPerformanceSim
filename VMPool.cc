@@ -29,14 +29,24 @@ std::ostream& operator << (std::ostream& out, const VMPool::AllocationRequest& r
     return out;
 }
 
+void VMPool::incrementUtilizedPM(){
+    utilized_PM++;
+    emit(utilization, utilized_PM/physRes);
+}
+
+void VMPool::decrementUtilizedPM(){
+    utilized_PM--;
+    emit(utilization, utilized_PM/physRes);
+}
+
 void VMPool::initialize(){
     WATCH_LIST(allocatorList);
     WATCH(amount);
     amount = par("amount");
+    utilized_PM = 0;
     physRes = getParentModule()->par("phisicalMachines");
-    logRes = par("amount");
     utilization = registerSignal("utilization");
-    emit(utilization, (logRes-amount)/physRes);
+    emit(utilization,0);
     if (ev.isGUI())
         updateDisplayString();
 }
@@ -46,7 +56,6 @@ bool VMPool::tryToAllocate(queueing::IResourceAllocator *allocator, long amountT
     Enter_Method("allocate(%ld): %s", amountToAllocate, amount >= amountToAllocate ? "success" : "fail");
     if (amount >= amountToAllocate) {
         amount -= amountToAllocate;
-        emit(utilization, (logRes-amount)/physRes);
         if (ev.isGUI())
             updateDisplayString();
         return true;
@@ -75,7 +84,6 @@ void VMPool::release(long amountToRelease)
         firstIt->allocator->resourceGranted(this);
         allocatorList.pop_front();
     }
-    emit(utilization, (logRes-amount)/physRes);
     if (ev.isGUI())
         updateDisplayString();
 }

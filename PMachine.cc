@@ -27,6 +27,7 @@ PMachine::~PMachine(){};
 void PMachine::initialize(){
     physicalRes = getParentModule()->par("phisicalMachines");
     logicalRes = getParentModule()->par("virtualMachines");
+    resAllocator = check_and_cast<VMPool *>(getParentModule()->findObject("VMs",false));
     VMs = 0;
 
     if( physicalRes < logicalRes )
@@ -38,10 +39,14 @@ void PMachine::initialize(){
 void PMachine::handleMessage(cMessage *msg){
     if(msg->isSelfMessage()){
         //the msg has already been serviced
+        if(VMs==1)
+            resAllocator->decrementUtilizedPM();
         VMs--;
         endService(msg);
     }else{
         //the message just got here
+        if(VMs==0)
+            resAllocator->incrementUtilizedPM();
         VMs++;
         simtime_t serviceTime = startService( msg );
         scheduleAt( simTime()+serviceTime, msg );
