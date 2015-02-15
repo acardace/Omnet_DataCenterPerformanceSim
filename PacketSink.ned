@@ -39,6 +39,7 @@ simple PacketSink
         @statistic[generation](title="the generation of the arrived jobs";record=vector?,mean,max;interpolationmode=none);
         bool keepJobs = default(false); // whether to keep the received jobs till the end of simulation
         bool calcAvailability = default(false); // whether to calculate data center availability (only for dropped jobs sink)
+        bool calcServiceTime = default(false);
     gates:
         input in[];
 }

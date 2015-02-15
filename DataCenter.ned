@@ -45,6 +45,7 @@ module DataCenter
     submodules:
         Job_Completed: PacketSink {
             @display("p=654,43");
+            calcServiceTime = true;
         }
         router: BetterRouter {
             @display("p=269,221");

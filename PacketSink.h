@@ -36,7 +36,7 @@ class PacketSink : public cSimpleModule
     simsignal_t serviceTime;
     simsignal_t availabilitySignal;
     simsignal_t responsivenessSignal;
-    bool keepJobs, calcAvailability;
+    bool keepJobs, calcAvailability, calcServiceTime;
     int jobCounter;
 
   public:

@@ -34,6 +34,7 @@ void PacketSink::initialize()
     responsivenessSignal = registerSignal("responsiveness");
     keepJobs = par("keepJobs");
     calcAvailability = par("calcAvailability");
+    calcServiceTime = par("calcServiceTime");
     jobCounter = 0;
 }
 
@@ -56,7 +57,8 @@ void PacketSink::handleMessage(cMessage *msg)
     emit(generationSignal, vm->getGeneration());
 
     //register ServiceTime
-    getModuleByPath(vm->getOwner().c_str())->emit(serviceTime,vm->getServiceTime());
+    if( calcServiceTime )
+        getModuleByPath(vm->getOwner().c_str())->emit(serviceTime,vm->getServiceTime());
 
     if (!keepJobs)
         delete msg;
