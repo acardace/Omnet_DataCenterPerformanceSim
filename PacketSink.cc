@@ -25,6 +25,7 @@ Define_Module(PacketSink);
 void PacketSink::initialize()
 {
     lifeTimeSignal = registerSignal("lifeTime");
+    waitingTimeSignal = registerSignal("waitingTime");
     queuesVisitedSignal = registerSignal("queuesVisited");
     serviceTime = registerSignal("serviceTime");
     totalDelayTimeSignal = registerSignal("totalDelayTime");
@@ -55,6 +56,7 @@ void PacketSink::handleMessage(cMessage *msg)
     emit(totalDelayTimeSignal, vm->getTotalDelayTime());
     emit(delaysVisitedSignal, vm->getDelayCount());
     emit(generationSignal, vm->getGeneration());
+    emit(waitingTimeSignal, vm->getTotalQueueingTime());
 
     //register ServiceTime
     if( calcServiceTime )

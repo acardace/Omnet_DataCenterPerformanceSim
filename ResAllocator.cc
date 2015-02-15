@@ -26,7 +26,6 @@ ResAllocator::~ResAllocator(){}
 
 void ResAllocator::initialize(){
     droppedSignal = registerSignal("dropped");
-    queueingTimeSignal = registerSignal("waitingTime");
     queueLengthSignal = registerSignal("queueLength");
     lessThanRespLimitSignal = registerSignal("lessThanRespLimit");
     availability_tSignal = registerSignal("availability_t");
@@ -78,7 +77,7 @@ bool ResAllocator::allocateResource(VirtualMachineImage *vm){
 
 void ResAllocator::handleMessage(cMessage *msg){
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
-    if (capacity!=0 && queue.isEmpty() && allocateResource(vm)){
+    if (queue.isEmpty() && allocateResource(vm)){
         lessThanRespJobs++;
         emit(lessThanRespLimitSignal, true);
         emit(droppedSignal, 0.0);
@@ -97,7 +96,6 @@ VirtualMachineImage *ResAllocator::vmDequeue(){
     emit(queueLengthSignal, queue.length());
     simtime_t dt = simTime() - vm->getTimestamp();
     vm->setTotalQueueingTime(vm->getTotalQueueingTime() + dt);
-    emit(queueingTimeSignal, dt);
     if (dt < respLimit){
         lessThanRespJobs++;
         emit(lessThanRespLimitSignal, true);

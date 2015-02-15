@@ -26,9 +26,6 @@ namespace sds_project {
  * instead they are marked as rejected and sent on the "discarded" output.
  */
 
-#define ACCEPTED 0
-#define REJECTED 1 //this goes out to .rest because there's no gate[1]
-
 class ResAllocator: public queueing::Allocate {
     private:
         // state
@@ -45,8 +42,7 @@ class ResAllocator: public queueing::Allocate {
 
         // statistics
         simsignal_t droppedSignal;
-        simsignal_t queueLengthSignal;
-        simsignal_t queueingTimeSignal;
+        simsignal_t queueLengthSignal;;
         simsignal_t lessThanRespLimitSignal;
         simsignal_t availability_tSignal;
         simsignal_t instantServiceSignal;

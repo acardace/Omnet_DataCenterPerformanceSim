@@ -27,7 +27,7 @@ class PacketSink : public cSimpleModule
 {
   protected:
     simsignal_t lifeTimeSignal;
-    simsignal_t totalQueueingTimeSignal;
+    simsignal_t waitingTimeSignal;
     simsignal_t queuesVisitedSignal;
     simsignal_t totalServiceTimeSignal;
     simsignal_t totalDelayTimeSignal;
