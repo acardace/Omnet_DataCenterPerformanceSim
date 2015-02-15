@@ -56,7 +56,9 @@ void PacketSink::handleMessage(cMessage *msg)
     emit(totalDelayTimeSignal, vm->getTotalDelayTime());
     emit(delaysVisitedSignal, vm->getDelayCount());
     emit(generationSignal, vm->getGeneration());
-    emit(waitingTimeSignal, vm->getTotalQueueingTime());
+
+    //could be coming from outer space
+    getModuleByPath(vm->getOwner().c_str())->emit(waitingTimeSignal, vm->getTotalQueueingTime());
 
     //register ServiceTime
     if( calcServiceTime )
