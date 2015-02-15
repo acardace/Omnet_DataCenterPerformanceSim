@@ -26,7 +26,6 @@ module UploadQueue
     parameters:
         @display("i=block/network;bgb=762,248");
         int capacity = default(-1);
-        int parallelTransfers = default(1);
     gates:
         input in;
         output out[];
