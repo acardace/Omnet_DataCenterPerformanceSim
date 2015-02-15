@@ -37,8 +37,8 @@ void RemoteDeallocate::handleMessage(cMessage *msg)
     if (resourcePool) {
         resourcePool->release(resourceAmount);
         VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
-        simtime_t waitingTime = vm->getTimestamp()+simTime();
-        getModuleByPath(vm->getOwner().c_str())->emit(waitingTimeSignal, waitingTime);
+        simtime_t waitingTime = simTime() - vm->getTimestamp();
+        vm->setTotalQueueingTime(vm->getTotalQueueingTime()+waitingTime);
     }
     else throw cRuntimeError("Cannot find resource pool module `%s' in remote DataCenter", resourceName);
     send(msg, "out");
