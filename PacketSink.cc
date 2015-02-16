@@ -36,6 +36,7 @@ void PacketSink::initialize()
     keepJobs = par("keepJobs");
     calcAvailability = par("calcAvailability").boolValue();
     calcServiceTime = par("calcServiceTime").boolValue();
+    calcWaitingTime = par("calcWaitingTime").boolValue();
     jobCounter = 0;
 }
 
@@ -58,7 +59,8 @@ void PacketSink::handleMessage(cMessage *msg)
     emit(generationSignal, vm->getGeneration());
 
     //could be coming from outer space
-    getModuleByPath(vm->getOwner().c_str())->emit(waitingTimeSignal, vm->getTotalQueueingTime());
+    if(calcWaitingTime)
+        getModuleByPath(vm->getOwner().c_str())->emit(waitingTimeSignal, vm->getTotalQueueingTime());
 
     //register ServiceTime
     if( calcServiceTime )
