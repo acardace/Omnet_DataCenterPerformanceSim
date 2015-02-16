@@ -88,16 +88,16 @@ double CyclicSource::generateInterArrivalTime(){
     std::ostringstream strs;
     const char *num;
 
-    if (firstIteration || !cycle) {
+    if (firstIteration || cycle) {
+        firstIteration = false;
         for(int i=0; i<DIST_SIZE; i++)
             if( currTime <= distribution_length[i] ) {
                 lastIntArrTime = i;
                 break;
             }
-        lastIntArrTime++;
     }
 
-    strs << (lastIntArrTime);
+    strs << (lastIntArrTime+1);
     num = ("interArrivalTime"+(strs.str())).c_str();
     interArrTime = par(num);
     return interArrTime;

@@ -24,7 +24,7 @@ import org.omnetpp.queueing.Sink;
 module UploadQueue
 {
     parameters:
-        @display("i=block/network;bgb=762,248");
+        @display("i=block/network;bgb=688,248");
         int capacity = default(-1);
     gates:
         input in;
