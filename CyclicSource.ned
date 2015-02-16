@@ -17,7 +17,8 @@ import org.omnetpp.queueing.Source;
 package sds_project;
 
 //
-// TODO auto-generated module
+// PacketSource which permits to define multiple interArrival times and
+// cycle through them according to some defined interArrival duration
 //
 simple CyclicSource
 {

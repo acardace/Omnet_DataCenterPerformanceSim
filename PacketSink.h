@@ -21,7 +21,7 @@
 namespace sds_project {
 
 /**
- * Consumes jobs; see NED file for more info.
+ * see NED file for more info
  */
 class PacketSink : public cSimpleModule
 {

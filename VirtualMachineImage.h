@@ -18,6 +18,10 @@
 
 #include <omnetpp.h>
 
+/*
+ * Abstraction of a Virtual Machine image
+ */
+
 namespace sds_project {
 
 class VirtualMachineImage: public cPacket{

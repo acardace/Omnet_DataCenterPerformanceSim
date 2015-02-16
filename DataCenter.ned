@@ -13,6 +13,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+//Compound module representing a dataCenter
+
 package sds_project;
 
 import ned.DatarateChannel;

@@ -20,7 +20,7 @@
 #include "Allocate.h"
 
 /**
- * TODO - Generated class
+ * See NED file for more info
  */
 
 namespace sds_project {

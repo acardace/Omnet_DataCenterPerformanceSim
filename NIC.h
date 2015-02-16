@@ -19,7 +19,7 @@
 #include <omnetpp.h>
 
 /**
- * TODO - Generated class
+ * See the NED declaration for more info.
  */
 class NIC : public cSimpleModule
 {

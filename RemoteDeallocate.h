@@ -20,7 +20,7 @@
 #include "Deallocate.h"
 
 /**
- * Objects of this type deallocate resources from a remote datacenter.
+ * see NED file for more info
  */
 
 namespace sds_project {

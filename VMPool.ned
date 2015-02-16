@@ -17,7 +17,7 @@ package sds_project;
 import org.omnetpp.queueing.ResourcePool;
 
 //
-// TODO auto-generated module
+// Custom ResourcePool made to acquire stats about the DataCenter utilization
 //
 simple VMPool extends ResourcePool
 {

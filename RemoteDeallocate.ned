@@ -17,7 +17,7 @@ import org.omnetpp.queueing.Deallocate;
 package sds_project;
 
 //
-// TODO auto-generated module
+// Objects of this type deallocate resources from a remote datacenter.
 //
 simple RemoteDeallocate extends Deallocate
 {

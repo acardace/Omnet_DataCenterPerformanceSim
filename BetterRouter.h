@@ -19,7 +19,7 @@
 #include <Router.h>
 
 /**
- * This module implements some additional routing algorithms.
+ * See the NED declaration for more info.
  */
 
 namespace sds_project {

@@ -20,6 +20,10 @@
 #include <Job.h>
 #include <VMPool.h>
 
+/*
+ * See NED file for more info
+ */
+
 namespace sds_project{
 
 class PMachine : public cSimpleModule

@@ -22,7 +22,7 @@
 #define DIST_SIZE 10
 
 /**
- * TODO - Generated class
+ * See the NED declaration for more info.
  */
 
 namespace sds_project {
