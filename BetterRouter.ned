@@ -17,7 +17,7 @@ import org.omnetpp.queueing.Router;
 package sds_project;
 
 //
-// TODO auto-generated module
+// Custom Router implementing some additional routing algorithms.
 //
 simple BetterRouter extends Router
 {

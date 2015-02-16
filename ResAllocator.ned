@@ -13,6 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+// This is a variant of the Allocate module: when the queue is full jobs are not lost;
+// instead they are marked as rejected and sent on the "discarded" output.
+
 package sds_project;
 
 import org.omnetpp.queueing.Allocate;

@@ -16,7 +16,7 @@
 package sds_project;
 
 //
-// TODO auto-generated module
+// Selector with additional features which allow to pre-allocate a resource from a remote DataCenter module
 //
 simple Selector
 {

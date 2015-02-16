@@ -16,7 +16,8 @@
 package sds_project;
 
 //
-// TODO auto-generated module
+// Module that manages a (connected) transmission channel, it's got a queue since only
+// one job at a time can be present in the trasmission channel
 //
 simple NIC
 {

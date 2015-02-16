@@ -22,8 +22,7 @@
 namespace sds_project {
 
 /*
- * This is a variant of the Allocate module: when the queue is full jobs are not lost;
- * instead they are marked as rejected and sent on the "discarded" output.
+ * See NED file for more info
  */
 
 class ResAllocator: public queueing::Allocate {

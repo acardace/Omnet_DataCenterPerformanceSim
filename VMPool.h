@@ -20,7 +20,7 @@
 #include <ResourcePool.h>
 
 /**
- * Custom ResourcePool made to acquire stats about the DataCenter utilization
+ * see NED file for more info.
  */
 
 namespace sds_project {

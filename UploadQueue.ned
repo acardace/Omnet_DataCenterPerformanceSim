@@ -13,12 +13,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+//Compound module representing the upload queue of a Datacenter, packets which have
+//reached this queue are going to be either dropped or forwarded in the Federation Cloud
+//according to the availability of the latter
+
 package sds_project;
 
 import org.omnetpp.queueing.Classifier;
 import org.omnetpp.queueing.Deallocate;
 import org.omnetpp.queueing.ResourcePool;
-import org.omnetpp.queueing.Sink;
 
 
 module UploadQueue
