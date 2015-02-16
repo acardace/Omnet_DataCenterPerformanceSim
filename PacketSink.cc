@@ -72,7 +72,7 @@ void PacketSink::handleMessage(cMessage *msg)
 
 void PacketSink::finish()
 {
-    if (calcAvailability) {
+/*    if (calcAvailability) {
         // Calculate availability
         cModule *parent = getParentModule();
         cModule *parentsparent = parent->getParentModule();
@@ -91,6 +91,7 @@ void PacketSink::finish()
        int lessThanRespJobs = allocator->getLessThanRespJobs();
        emit(responsivenessSignal, (double) lessThanRespJobs/createdJobs);
    }
+   */
 }
 
 }; //namespace

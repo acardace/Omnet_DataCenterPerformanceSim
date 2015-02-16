@@ -32,6 +32,7 @@ simple ResAllocator extends Allocate
     	double respLimit @unit(s) = default(60s);
     	bool instantService = default(true);
     	bool availabilityOnDrop = default(true);
+    	bool responsiveness = default(true);
    	gates:
    	    output discard;
 }

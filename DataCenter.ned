@@ -32,12 +32,12 @@ module DataCenter
         @signal[waitingTime](type="double");
         @signal[serviceTime](type="double");
         @statistic[availability](source=availabilitySignal; title="job completed / total jobs ratio"; record=last);
-        @statistic[utilization](title="utilization ratio"; record=vector?,mean,max,timeavg);
-        @statistic[waitingTime](title="waiting time"; record=vector?,mean,min,max,timeavg);
-        @statistic[serviceTime](title="datacenter service time"; record=vector?,mean,min,max,timeavg);
+        @statistic[utilization](title="utilization ratio"; record=vector,mean,max,timeavg);
+        @statistic[waitingTime](title="waiting time"; record=vector,mean,min,max,timeavg);
+        @statistic[serviceTime](title="datacenter service time"; record=vector,mean,min,max,timeavg);
         @statistic[waitServiceTime](title="waiting + service time"; source=mean(waitingTime)+mean(serviceTime); record=last,min,max);
-        @statistic[responsiveness](record=last,vector?);
-        @statistic[availability_t](record=timeavg,mean,vector; interpolationmode=sample-hold);
+        @statistic[responsiveness](record=mean,vector);
+        @statistic[availability_t](record=mean,vector; interpolationmode=sample-hold);
         @statistic[instantService](record=vector; interpolationmode=sample-hold);
         @display("bgb=722,417;i=device/mainframe;tt=A data center network, which includes a group of servers and generates its own VMs.");
 

@@ -25,14 +25,13 @@ ResAllocator::ResAllocator(){}
 ResAllocator::~ResAllocator(){}
 
 void ResAllocator::initialize(){
-    droppedSignal = registerSignal("dropped");
     queueLengthSignal = registerSignal("queueLength");
     lessThanRespLimitSignal = registerSignal("lessThanRespLimit");
     availability_tSignal = registerSignal("availability_t");
     instantServiceSignal = registerSignal("instantService");
+    responsivenessSignal = registerSignal("responsiveness");
     emit(queueLengthSignal, 0l);
 
-    lessThanRespJobs = 0;
     fifo = par("fifo");
     capacity = par("capacity");
     queue.setName("queue");
@@ -55,9 +54,10 @@ void ResAllocator::enqueueOrForward(VirtualMachineImage *vm){
     {
         EV << "Capacity full! Message dropped.\n";
         if (ev.isGUI()) bubble("Dropped!");
-        emit(droppedSignal, 1.0);
         if (availabilityOnDrop)
             emit(availability_tSignal, 0.0);
+        if (respLimit > 0)
+            emit(responsivenessSignal, 0.0);
         send(vm, "discard");
     }
     else
@@ -66,8 +66,8 @@ void ResAllocator::enqueueOrForward(VirtualMachineImage *vm){
         vm->setTimestamp();
         queue.insert(vm);
         emit(queueLengthSignal, queue.length());
-        emit(droppedSignal, 0.0);
-        emit(availability_tSignal, 1.0);
+        if (!availabilityOnDrop)
+            emit(availability_tSignal, 1.0);
     }
 }
 
@@ -78,11 +78,10 @@ bool ResAllocator::allocateResource(VirtualMachineImage *vm){
 void ResAllocator::handleMessage(cMessage *msg){
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
     if (capacity!=0 && queue.isEmpty() && allocateResource(vm)){
-        lessThanRespJobs++;
         if (respLimit > 0)
-            emit(lessThanRespLimitSignal, true);
-        emit(droppedSignal, 0.0);
-        emit(availability_tSignal, 1.0);
+            emit(responsivenessSignal, 1.0);
+        if (!availabilityOnDrop)
+            emit(availability_tSignal, 1.0);
         emit(instantServiceSignal, 1.0);
         // Set timestamp to record time spent inside the upload queue
         vm->setTimestamp();
@@ -99,10 +98,9 @@ VirtualMachineImage *ResAllocator::vmDequeue(){
     emit(queueLengthSignal, queue.length());
     simtime_t dt = simTime() - vm->getTimestamp();
     vm->setTotalQueueingTime(vm->getTotalQueueingTime() + dt);
-    if (dt < respLimit && respLimit > 0){
-        lessThanRespJobs++;
-        emit(lessThanRespLimitSignal, true);
-    }
+    if (dt < respLimit && respLimit > 0)
+        emit(responsivenessSignal, 1.0);
+    else emit(responsivenessSignal, 0.0);
 
     return vm;
 }
@@ -122,10 +120,6 @@ void ResAllocator::resourceGranted(queueing::IResourcePool *provider){
         send(vm, "out");
     }
 
-}
-
-int ResAllocator::getLessThanRespJobs(){
-    return lessThanRespJobs;
 }
 
 }; //namespace

@@ -26,7 +26,7 @@ namespace sds_project {
  */
 
 class ResAllocator: public queueing::Allocate {
-    private:
+    protected:
         // state
         cQueue queue;
 
@@ -37,20 +37,17 @@ class ResAllocator: public queueing::Allocate {
         int resourceAmount;
         int resourcePriority;
         double respLimit;
-        int lessThanRespJobs;
 
         // statistics
-        simsignal_t droppedSignal;
         simsignal_t queueLengthSignal;;
         simsignal_t lessThanRespLimitSignal;
         simsignal_t availability_tSignal;
         simsignal_t instantServiceSignal;
+        simsignal_t responsivenessSignal;
     public:
         ResAllocator();
         virtual ~ResAllocator();
-
         virtual void resourceGranted(queueing::IResourcePool *provider);
-        virtual int getLessThanRespJobs();
     protected:
         virtual void initialize();
         virtual void handleMessage(cMessage *msg);
