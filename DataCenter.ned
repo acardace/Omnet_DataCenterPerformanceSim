@@ -31,7 +31,6 @@ module DataCenter
         @signal[utilization](type="double");
         @signal[waitingTime](type="double");
         @signal[serviceTime](type="double");
-        @statistic[availability](source=availabilitySignal; title="job completed / total jobs ratio"; record=last);
         @statistic[utilization](title="utilization ratio"; record=vector,mean,max,timeavg);
         @statistic[waitingTime](title="waiting time"; record=vector,mean,min,max,timeavg);
         @statistic[serviceTime](title="datacenter service time"; record=vector,mean,min,max,timeavg);
