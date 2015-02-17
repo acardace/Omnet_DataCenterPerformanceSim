@@ -80,14 +80,16 @@ void ResAllocator::handleMessage(cMessage *msg){
     if (queue.isEmpty() && allocateResource(vm)){
         if (respLimit > 0)
             emit(responsivenessSignal, 1.0);
-        if (!availabilityOnDrop)
+        if (!availabilityOnDrop) {
             emit(availability_tSignal, 1.0);
-        emit(instantServiceSignal, 1.0);
+            emit(instantServiceSignal, 1.0);
+        }
         // Set timestamp to record time spent inside the upload queue
         vm->setTimestamp();
         send(vm, "out");
     } else {
-        emit(instantServiceSignal, 0.0);
+        if (!availabilityOnDrop)
+            emit(instantServiceSignal, 0.0);
         enqueueOrForward(vm);
     }
 };

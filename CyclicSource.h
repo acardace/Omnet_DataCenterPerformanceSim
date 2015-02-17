@@ -49,11 +49,10 @@ class CyclicSource : public SourceBase
         simtime_t startTime;
         simtime_t stopTime;
 
-        int numJobs, lastIntArrTime;
+        int numJobs;
         simtime_t previousTotalDuration;
         double tot_dist_length;
         double distribution_length[DIST_SIZE];
-        bool cycle, firstIteration;
 
     protected:
         virtual void initialize();
