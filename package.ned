@@ -9,7 +9,7 @@ import ned.DatarateChannel;
 //
 network Network
 {
-    @display("bgb=775,348");
+    @display("bgb=512,244");
     submodules:
         localDataCenter: DataCenter {
             @display("p=105,92");
@@ -19,6 +19,6 @@ network Network
         }
     connections:
         for i=0..9 {
-        	localDataCenter.out++ --> DatarateChannel --> remoteDataCenter[i].in++;
+            localDataCenter.out++ --> DatarateChannel --> remoteDataCenter[i].in++;
         }
 }
