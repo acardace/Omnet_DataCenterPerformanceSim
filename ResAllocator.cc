@@ -77,7 +77,7 @@ bool ResAllocator::allocateResource(VirtualMachineImage *vm){
 
 void ResAllocator::handleMessage(cMessage *msg){
     VirtualMachineImage *vm = check_and_cast<VirtualMachineImage*>(msg);
-    if (capacity!=0 && queue.isEmpty() && allocateResource(vm)){
+    if (queue.isEmpty() && allocateResource(vm)){
         if (respLimit > 0)
             emit(responsivenessSignal, 1.0);
         if (!availabilityOnDrop)
@@ -108,18 +108,19 @@ VirtualMachineImage *ResAllocator::vmDequeue(){
 void ResAllocator::resourceGranted(queueing::IResourcePool *provider){
     Enter_Method("resourceGranted");
 
-    // send out job for which resource was granted
-    ASSERT2(!queue.empty(), "Resource granted while no jobs are waiting");
-    VirtualMachineImage *vm = vmDequeue();
-    send(vm, "out");
-
-    // try to handle other waiting jobs as well
-    while (!queue.isEmpty() && allocateResource( (VirtualMachineImage *) queue.front() ))
-    {
+    if (capacity != 0) {
+        // send out job for which resource was granted
+        ASSERT2(!queue.empty(), "Resource granted while no jobs are waiting");
         VirtualMachineImage *vm = vmDequeue();
         send(vm, "out");
-    }
 
+        // try to handle other waiting jobs as well
+        while (!queue.isEmpty() && allocateResource( (VirtualMachineImage *) queue.front() ))
+        {
+            VirtualMachineImage *vm = vmDequeue();
+            send(vm, "out");
+        }
+    }
 }
 
 }; //namespace
