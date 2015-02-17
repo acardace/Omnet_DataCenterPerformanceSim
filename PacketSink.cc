@@ -71,28 +71,7 @@ void PacketSink::handleMessage(cMessage *msg)
 }
 
 void PacketSink::finish()
-{
-/*    if (calcAvailability) {
-        // Calculate availability
-        cModule *parent = getParentModule();
-        cModule *parentsparent = parent->getParentModule();
-        cModule *circlicSource = parentsparent->getSubmodule("cyclicSource");
-        CyclicSource *source = check_and_cast<CyclicSource*>(circlicSource);
-        double totalJobs = (double) source->getJobCount();
-        double availability = 1.0 - (double)jobCounter / totalJobs;
-        emit(availabilitySignal, availability);
-    }
-
-   CyclicSource *source = (CyclicSource *) getParentModule()->findObject("cyclicSource",false);
-   ResAllocator *allocator = (ResAllocator *) getParentModule()->findObject("resAllocator",false);
-
-   if( source != NULL){
-       int createdJobs = source->getJobCount();
-       int lessThanRespJobs = allocator->getLessThanRespJobs();
-       emit(responsivenessSignal, (double) lessThanRespJobs/createdJobs);
-   }
-   */
-}
+{}
 
 }; //namespace
 
