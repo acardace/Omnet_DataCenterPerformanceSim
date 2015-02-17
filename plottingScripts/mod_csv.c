@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
    else
       memcpy( outfile, argv[1], strlen(argv[1])-3);
    outfile[strlen(argv[1])-2] = '\0';
-   strcat( outfile, "png");
+   strcat( outfile, "svg");
 
    fprintf(out_csv,"X,Y\n");
 
@@ -44,21 +44,22 @@ int main(int argc, char *argv[]){
       counter--;
       //acc += scanned;
       if( counter==0 ){
+         //acc = acc/rep;
+         //fprintf(out_csv,"%d,%lf\n",x,acc);
+         //acc = 0.;
          counter = rep;
          x += x_step;
-         //acc = acc/rep;
-         //acc = 0.;
       }
       fprintf(out_csv,"%d,%lf\n",x,scanned);
    }
-
 
    fclose(in_csv);
    fclose(out_csv);
    rename(".tmp_csv",argv[1]);
 
-   sprintf(path,"Rscript plotter.R %s %s",argv[1],outfile);
+   sprintf(path,"Rscript plotter.R %s %s %s %s %s",argv[1],outfile, argv[5], argv[6], argv[7]);
    printf("OK -> %s modified correctly\n",argv[1]);
+   printf("output will be saved in -> %s\n",outfile);
    printf("Executing -> %s\n",path);
    if( execlp("Rscript",path,"plotter.R",argv[1],outfile, argv[5], argv[6], argv[7],(char*) NULL) == -1)
       perror("execlp()");
